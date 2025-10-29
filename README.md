@@ -35,18 +35,13 @@ Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorou
 cp -r .constitution /path/to/project/
 cp -r .claude /path/to/project/
 
-# Install pre-commit hooks
-cd /path/to/project
-uv sync  # or: pip install pre-commit
-pre-commit install
 
-# Customize CLAUDE.md from templates/CLAUDE.md.template
-# This file provides Claude with project-specific context and instructions
 cp templates/CLAUDE.md.template /path/to/project/CLAUDE.md
+
 # Edit CLAUDE.md with your project details
 ```
 
-**Note**: Configure quality checks in your `pyproject.toml`. Add description of tol usage to constitution/tools/`.
+**Note**: Configure quality checks in your `pyproject.toml`. Add description of tool usage to constitution/tools/`.
 
 ## Development Workflow
 

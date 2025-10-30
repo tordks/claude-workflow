@@ -1,10 +1,18 @@
 # Claude Workflow
 
-Experimental plan-driven development workflow for Claude Code with phase-based implementation.
+Experimental plan/spec-driven development workflow for Claude Code with phase-based implementation.
 
-Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorough in documenting features, but also heavier to use. The intent for this repo is to be a (slightly opinionated) Claude Code specific workflow.
+Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorough in documenting features, but also heavier to use. The intent for this repo is to be a playground for me to investigate Agent driven development.
 
-Another alternative is [superpowers](https://github.com/obra/superpowers).
+
+Other alternatives:
+* [superpowers](https://github.com/obra/superpowers): brainstorm->write plan -> implement workflow w. skills, commands and agents.
+* [spec-kitty](https://github.com/Priivacy-ai/spec-kitty): built on spec-kit. Adds tracking through dashboard.
+* [cc-sessions](https://github.com/GWUDCAP/cc-sessions): another workflow, but less documented.
+
+
+Martin Fowlers post on Spec Drive Development: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
+
 
 ## What This Repo Provides
 
@@ -177,3 +185,15 @@ Phase 2 Complete
 
 All phases complete!
 ```
+
+## TODO
+- Test superpowers, seems to be more lightweight than spec-kit
+- Constitution does not get read -> convert into session start hook, command or skills?
+
+- V2:
+  - simplification: Only provide /write-plan, /implement-plan and development principles.
+  - add a more defined plan and tasklist structure. Plan should provide context, while the tasklist phase division and bite-sized tasks.
+  - remove CLAUDE.md
+  - consider adding /start-brainstorm or /start-planning to prime context before a planning session.
+  - consider adding /review-plan to review plan and tasklist.
+  - consider removing tools/ from constitution, should rather be skills

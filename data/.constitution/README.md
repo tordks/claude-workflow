@@ -9,17 +9,9 @@ Coding standards, principles, and tool guides for this project.
 - **[Software Engineering Principles](principles/software-engineering.md)**: DRY, Orthogonality, YAGNI, Fail Fast, and universal guidelines
 - **[Python Standards](principles/python-standards.md)**: Pythonic code, type safety, error handling, modern idioms
 
-### Tool Guides
-
-- **[uv](tools/uv.md)**: Package management
-- **[ruff](tools/ruff.md)**: Linting and formatting
-- **[mypy](tools/mypy.md)**: Type checking
-- **[pre-commit](tools/pre-commit.md)**: Git hooks
-
 ### Workflow
 
 - **[Development Workflow](workflow.md)**: Protocols for before writing, while writing, reviewing, and when stuck
-
 ## Quick Reference
 
 | Principle | Core Idea |
@@ -34,7 +26,6 @@ Coding standards, principles, and tool guides for this project.
 ```text
 .constitution/
 ├── principles/               # Universal and language-specific principles
-├── tools/                    # Tool-specific guides
 ├── workflow.md               # Development protocols
 └── README.md                 # This file
 ```

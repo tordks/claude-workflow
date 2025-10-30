@@ -1,8 +1,10 @@
 # Claude Workflow
 
-Experimental plan-driven development workflow for Claude Code with phase-based implementation and automated quality checks.
+Experimental plan-driven development workflow for Claude Code with phase-based implementation.
 
 Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorough in documenting features, but also heavier to use. The intent for this repo is to be a (slightly opinionated) Claude Code specific workflow.
+
+Another alternative is [superpowers](https://github.com/obra/superpowers).
 
 ## What This Repo Provides
 
@@ -30,18 +32,48 @@ Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorou
 
 ## Installation
 
+### With uv/uvx (Recommended)
+
+[uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver.
+
+#### Option 1: Run without installing (uvx)
+
 ```bash
-# Copy files to your project
-cp -r .constitution /path/to/project/
-cp -r .claude /path/to/project/
+# Run without installing (using uvx with git URL)
+uvx --from git+https://github.com/tordks/claude-workflow.git claude-workflow install /path/to/project
 
-
-cp templates/CLAUDE.md.template /path/to/project/CLAUDE.md
-
-# Edit CLAUDE.md with your project details
+# Update existing installation
+uvx --from git+https://github.com/tordks/claude-workflow.git claude-workflow update /path/to/project
 ```
 
-**Note**: Configure quality checks in your `pyproject.toml`. Add description of tool usage to constitution/tools/`.
+#### Option 2: Install with uv tool
+
+```bash
+# Install the tool globally with uv
+uv tool install git+https://github.com/tordks/claude-workflow.git
+
+# Use the installed command
+claude-workflow install /path/to/project
+
+# Update existing installation
+claude-workflow update /path/to/project
+
+# Upgrade the tool itself
+uv tool upgrade claude-workflow
+```
+
+### CLI Options
+
+- `--dry-run` - Preview what would be installed without making changes
+- `--force` - Overwrite user-modified files during update
+
+
+### After Installation
+
+1. Edit `CLAUDE.md` with your project-specific details
+2. Review the workflow documentation in `.constitution/`
+3. Configure quality checks in your `pyproject.toml`
+4. Add tool usage descriptions to `.constitution/tools/` as needed
 
 ## Development Workflow
 

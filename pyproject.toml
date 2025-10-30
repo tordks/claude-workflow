@@ -1,0 +1,20 @@
+[project]
+name = "claude-workflow"
+version = "0.1.0"
+description = "A CLI tool to install Claude Code workflow files (.claude commands, coding constitution, and templates) into your projects"
+readme = "README.md"
+authors = [
+    { name = "Tord Kriznik Sørensen", email = "temp@temp.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+claude-workflow = "claude_workflow.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

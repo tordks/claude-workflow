@@ -1,27 +1,80 @@
 # Implement Command
 
-Implement the **$ARGUMENTS** feature by following the plan and tasklist documents.
+Implement a feature by following the plan and tasklist documents.
 
 ## Context
 
-This command is called in a fresh chat session. You need to bootstrap yourself by reading the planning documents for the **$ARGUMENTS** feature.
+This command is called in a fresh chat session. You need to bootstrap yourself by:
+1. Calling the read-constitution command
+2. Reading the planning documents for the feature
 
-**Arguments**: `$ARGUMENTS` captures the feature name if provided (e.g., `/implement query-command`).
+## Arguments
+
+**Input**: `$ARGUMENTS`
+
+From the arguments above, identify the feature name. The feature name is typically:
+- A kebab-case identifier (e.g., `query-command`, `user-auth`)
+- The first clear token in the arguments
+- May be accompanied by additional instructions or context
+
+If the feature name is clear from the arguments, extract it and use it as `{feature-name}` throughout this command.
+
+If no feature name is provided or it's unclear:
+- List all plan files in the `plans/` directory (look for `*-plan.md` files)
+- Extract feature names from filenames (e.g., `query-plan.md` → `query`)
+- Present available features to the user
+- Ask user to select which feature to implement
+- Use the selected feature name for the rest of the command
+
+**Example usage:**
+- `/implement query-command` → feature-name: `query-command`
+- `/implement user-auth continue Phase 3` → feature-name: `user-auth`, context: "continue Phase 3"
+- `/implement` (no args) → list available plans and ask user to select
+
+**Example when no feature name provided:**
+```
+Input: $ARGUMENTS is empty
+
+Scanning plans/ directory...
+
+Found the following features:
+1. query-command - Document query and search functionality
+2. user-auth - User authentication system
+3. data-export - Data export capabilities
+
+Which feature would you like to implement? (1-3, or type the feature name)
+```
+
+**Example with context but no clear feature name:**
+```
+Input: $ARGUMENTS = "continue with the caching implementation"
+
+I see you want to continue with the caching implementation, but I need to know
+which feature this applies to.
+
+Scanning plans/ directory...
+
+Found the following features:
+1. query-command - Document query and search functionality
+2. user-auth - User authentication system
+3. data-export - Data export capabilities
+
+Which feature should I continue implementing? (1-3, or type the feature name)
+
+Context: "continue with the caching implementation"
+```
 
 ## Instructions
 
-0. **Determine feature name**:
-   - If `$ARGUMENTS` is provided, use that as the feature name
-   - If `$ARGUMENTS` is empty:
-     - List all plan files in the `plans/` directory (look for `*-plan.md` files)
-     - Extract feature names from filenames (e.g., `query-plan.md` → `query`)
-     - Present available features to the user
-     - Ask user to select which feature to implement
-     - Use the selected feature name for the rest of the command
-
 1. **Read the planning documents**:
-   - `plans/$ARGUMENTS-plan.md` - for implementation guidance and context
-   - `plans/$ARGUMENTS-tasklist.md` - for the task checklist
+   - `plans/{feature-name}-plan.md` - for architectural context, design decisions, and project structure
+   - `plans/{feature-name}-tasklist.md` - for step-by-step task execution and progress tracking
+
+   **How to use both documents**:
+   - The **plan** provides WHY (rationale) and WHAT (architecture) - use it to understand the overall design
+   - The **tasklist** provides WHEN (phase order) and HOW (specific steps) - use it for execution
+   - Read the plan first to understand the architecture, then follow the tasklist for implementation
+   - Refer back to the plan when task details are unclear or you need more context
 
 2. **Check progress and resume from current position**:
    - Review the tasklist to identify which tasks are already completed (marked with `[x]`)
@@ -34,7 +87,7 @@ This command is called in a fresh chat session. You need to bootstrap yourself b
 3. **Phase-by-phase implementation**:
    - Work through tasks in order, one phase at a time
    - Implement each task according to the plan
-   - **Check off tasks** by editing `plans/$ARGUMENTS-tasklist.md` and changing `- [ ]` to `- [x]` for completed tasks
+   - **Check off tasks** by editing `plans/{feature-name}-tasklist.md` and changing `- [ ]` to `- [x]` for completed tasks
    - After completing ALL tasks in a phase, STOP and inform the user
    - Wait for user approval before proceeding to the next phase
 
@@ -68,9 +121,9 @@ This command is called in a fresh chat session. You need to bootstrap yourself b
 ## Example Flow - Starting Fresh (With Feature Name)
 
 ````text
-Reading plans for feature: $ARGUMENTS
-- Plan document: plans/$ARGUMENTS-plan.md
-- Tasklist: plans/$ARGUMENTS-tasklist.md
+Reading plans for feature: {feature-name}
+- Plan document: plans/{feature-name}-plan.md
+- Tasklist: plans/{feature-name}-tasklist.md
 
 Progress check: No tasks completed yet. Starting from Phase 1.
 
@@ -134,9 +187,9 @@ Progress check: No tasks completed yet. Starting from Phase 1.
 ## Example Flow - Resuming Work
 
 ````text
-Reading plans for feature: $ARGUMENTS
-- Plan document: plans/$ARGUMENTS-plan.md
-- Tasklist: plans/$ARGUMENTS-tasklist.md
+Reading plans for feature: {feature-name}
+- Plan document: plans/{feature-name}-plan.md
+- Tasklist: plans/{feature-name}-tasklist.md
 
 Progress check:
 ✓ Phase 1: Complete (3/3 tasks done)
@@ -181,8 +234,11 @@ All phases finished. Ready for final review and merge.
 
 ### Handling Unclear Tasks
 
-- **First attempt**: If a task description is unclear, refer to the plan document (`plans/$ARGUMENTS-plan.md`) for additional context
-- **Check related sections**: Look for relevant sections in the plan that explain the architecture, approach, or design decisions
+- **Check related sections**: Look for:
+  - Project Structure section for file locations and what to create/modify
+  - Design Decisions for rationale behind architectural choices
+  - Technical Approach for implementation details
+  - Phase Breakdown for understanding how phases connect
 - **Still unclear?**: If after reading the plan document a task or phase is STILL unclear or ambiguous:
   - STOP implementation
   - **Use the AskUserQuestion tool** to get clarification with specific options

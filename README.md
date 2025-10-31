@@ -16,11 +16,12 @@ Experimental plan/spec-driven development workflow for Claude Code with phase-ba
 
 **Current thoughts:**
 
-The workflow `brainstorm/plan -> write phase based plan -> review plan (auto+manual) -> implement phase -> review phase -> next phase until done`, with an additional `amend plan` step during development, seems to be the way to go. All the alternatives above implement this workflow in some way or another.
+The workflow `brainstorm/plan -> write phase based plan -> review plan -> implement phase -> review phase -> next phase until done`, with an additional `amend plan` step during development, seems to be the way to go. All the alternatives above implement this workflow in some way or another.
 
 ## What This Repo Provides
 
 **Slash Commands** (.claude/commands/):
+- `/read-constitution` - Load all constitution documents into context
 - `/write-plan` - Create plan and tasklist from planning discussion
 - `/implement-plan` - Execute plan one phase at a time
 - `/amend-plan` - Update plans during development
@@ -28,19 +29,9 @@ The workflow `brainstorm/plan -> write phase based plan -> review plan (auto+man
 **Coding Constitution**:
 ```
 .constitution/
-├── README.md                     # Overview and quick reference
-├── workflow.md                   # Development protocols
-├── principles/
-│   ├── software-engineering.md   # Universal principles
-│   └── python-standards.md       # Python-specific standards
-└── tools/
-    ├── uv.md                     # Package and dependency management
-    ├── ruff.md                   # Linting and code formatting
-    ├── mypy.md                   # Static type checking
-    └── pre-commit.md             # Git hooks and automated quality checks
+├── software-engineering.md   # Universal software engineering principles
+└── python-standards.md       # Python-specific standards and idioms
 ```
-
-**Template**: CLAUDE.md for project-specific instructions
 
 ## Installation
 
@@ -83,14 +74,15 @@ uv tool upgrade claude-workflow
 ### After Installation
 
 1. Edit `CLAUDE.md` with your project-specific details
-2. Review the workflow documentation in `.constitution/`
-3. Configure quality checks in your `pyproject.toml`
-4. Add tool usage descriptions to `.constitution/tools/` as needed
+2. Review constitution documents in `.constitution/` (software-engineering.md, python-standards.md)
+3. Run `/read-constitution` to load the constitution into your first development session
+4. Configure quality checks in your `pyproject.toml` if needed
 
 ## Development Workflow
 
 ### Workflow Summary
 
+0. Run `/read-constitution` to read the constitution into context
 1. Plan feature in plan mode
 2. Use `/write-plan {feature-name}` to create plan and tasklist
 3. Review `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
@@ -157,6 +149,7 @@ Created: plans/user-auth-tasklist.md
 # (Review the generated markdown files)
 
 # Step 5: Implement first phase
+> /clear
 > /implement-plan user-auth
 
 Phase 0 Complete
@@ -191,16 +184,15 @@ All phases complete!
 ```
 
 ## TODO
+To test:
 - Test superpowers, seems to be more lightweight than spec-kit
-- Constitution does not get read -> convert into session start hook, command or skills?
+- fork and adapt superpowers?
 
-- V2:
-  - simplification: Only provide /write-plan, /implement-plan and development principles.
-  - remove CLAUDE.md
-  - consider adding /start-brainstorm or /start-planning to prime context before a planning session.
-    - Make a script/skill that concatenates and prints constitution on startup or through command
-  - consider adding /review-plan to review plan and tasklist.
-  - add a more defined plan and tasklist structure. Plan should provide context, while the tasklist phase division and bite-sized tasks.
-
-- V3?:
-  - fork and adapt superpowers?
+Improvements:
+  - Add a more defined plan and tasklist structure. Plan should provide context, while the tasklist phase division and bite-sized tasks.
+  - Add skills that can be read on demand, to avoid manual steps and selectively update context.
+    - See superpowers for examples
+    - eg:
+      - read-constitution (allows for selectively reading relevant parts)
+      - review-plan
+      - etc.

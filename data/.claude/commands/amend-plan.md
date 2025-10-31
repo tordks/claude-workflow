@@ -1,12 +1,66 @@
 # Amend Plan Command
 
-Update the existing plan and tasklist for the **$ARGUMENTS** feature based on conversation context.
+Update the existing plan and tasklist for a feature based on conversation context.
 
 ## Context
 
 This command is used when you've discussed amendments, changes, or extensions to an existing plan with the user. The user has already discussed specific modifications they want to make. Your job is to understand those changes from the conversation and apply them safely.
 
-**Arguments**: `$ARGUMENTS` captures the feature name (e.g., `/amend-plan query-command`).
+## Arguments
+
+**Input**: `$ARGUMENTS`
+
+From the arguments above, identify the feature name. The feature name is typically:
+- A kebab-case identifier (e.g., `query-command`, `user-auth`)
+- The first clear token in the arguments
+- May be accompanied by additional instructions or context about what to amend
+
+If the feature name is clear from the arguments, extract it and use it as `{feature-name}` throughout this command.
+
+If no feature name is provided or it's unclear:
+- List all plan files in the `plans/` directory (look for `*-plan.md` files)
+- Extract feature names from filenames (e.g., `query-plan.md` → `query`)
+- Present available features to the user
+- Ask user to select which plan to amend
+- Use the selected feature name for the rest of the command
+
+**Example usage:**
+- `/amend-plan query-command` → feature-name: `query-command`
+- `/amend-plan user-auth add OAuth flows` → feature-name: `user-auth`, context: "add OAuth flows"
+- `/amend-plan` (no args) → list available plans and ask user to select
+
+**Example when no feature name provided:**
+```
+Input: $ARGUMENTS is empty
+
+Scanning plans/ directory...
+
+Found the following plans:
+1. query-command - Document query and search functionality
+2. user-auth - User authentication system
+3. data-export - Data export capabilities
+
+Which plan would you like to amend? (1-3, or type the feature name)
+```
+
+**Example with context but no clear feature name:**
+```
+Input: $ARGUMENTS = "add OAuth 2.0 flows and token refresh"
+
+I see you want to add OAuth 2.0 flows and token refresh, but I need to know
+which feature plan to amend.
+
+Scanning plans/ directory...
+
+Found the following plans:
+1. query-command - Document query and search functionality
+2. user-auth - User authentication system
+3. data-export - Data export capabilities
+
+Which plan should I amend? (1-3, or type the feature name)
+
+Amendment context: "add OAuth 2.0 flows and token refresh"
+```
 
 ## Instructions
 
@@ -14,16 +68,10 @@ This command is used when you've discussed amendments, changes, or extensions to
 
 Read the existing planning documents:
 
-- `plans/$ARGUMENTS-plan.md` - the comprehensive plan document
-- `plans/$ARGUMENTS-tasklist.md` - the phase-based tasklist
+- `plans/{feature-name}-plan.md` - the comprehensive plan document (provides architectural context and design decisions)
+- `plans/{feature-name}-tasklist.md` - the phase-based tasklist (provides step-by-step execution tracking)
 
-**If `$ARGUMENTS` is empty**:
-
-- List all plan files in the `plans/` directory (look for `*-plan.md` files)
-- Extract feature names from filenames (e.g., `query-plan.md` → `query`)
-- Present available features to the user
-- Ask user to select which plan to amend
-- Use the selected feature name for the rest of the command
+**Document relationship**: The plan provides WHY and WHAT (architecture), while the tasklist provides WHEN and HOW (execution steps). Amendments should maintain this synergy.
 
 ### 2. Analyze Conversation for Amendment Intent
 
@@ -56,15 +104,15 @@ Examine the tasklist to determine:
 **STOP and present a clear summary** of proposed changes to the user:
 
 ```markdown
-## Proposed Amendments to {feature} Plan
+## Proposed Amendments to {feature-name} Plan
 
 Based on the conversation, I understand you want to make the following changes:
 
-### Changes to Plan Document (plans/{feature}-plan.md)
+### Changes to Plan Document (plans/{feature-name}-plan.md)
 - [List specific sections to add/modify, e.g., "Add new subsection 'Caching Strategy' to Architecture section"]
 - [Show brief preview of new content]
 
-### Changes to Tasklist (plans/{feature}-tasklist.md)
+### Changes to Tasklist (plans/{feature-name}-tasklist.md)
 - [List specific tasks to add, e.g., "Add tasks P3.4-P3.6 to Phase 3: [descriptions]"]
 - [OR: "Add new Phase 4: [goal and tasks]"]
 - [Show where tasks will be inserted]
@@ -148,8 +196,8 @@ After applying amendments, provide a summary:
 ## Amendments Applied ✅
 
 ### Updated Files
-- plans/{feature}-plan.md - [brief description of changes]
-- plans/{feature}-tasklist.md - [brief description of changes]
+- plans/{feature-name}-plan.md - [brief description of changes]
+- plans/{feature-name}-tasklist.md - [brief description of changes]
 
 ### Summary of Changes
 - [List what was added/modified]
@@ -157,14 +205,13 @@ After applying amendments, provide a summary:
 
 ### Next Steps
 The amended plan is ready. You can:
-- Continue iterating with `/amend-plan` for further changes
-- Start/resume implementation with `/implement {feature}`
+- Continue iterating with `/amend-plan {feature-name}` for further changes
+- Start/resume implementation with `/implement {feature-name}`
 - Review the updated files to verify changes
 ```
 
 ## Requirements
 
-- **Feature name**: Must be provided or selected from available plans
 - **Conversation analysis**: Thoroughly review recent messages to understand intent
 - **Interactive confirmation**: ALWAYS confirm understanding before making changes
 - **Safety first**: NEVER modify completed work - block and explain

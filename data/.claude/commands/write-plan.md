@@ -4,7 +4,17 @@ You are being asked to formalize the planning discussion from plan mode into str
 
 ## Context
 
-This command is run AFTER iterating with Claude in plan mode. The user has already discussed and refined the approach with you. Your job is to capture and formalize what was discussed.
+This command is run AFTER iterating with Claude in plan mode. The user has
+already discussed and refined the approach with you. Your job is to capture and
+  formalize what was discussed.
+
+Assume that the engineer that shall use the plan has zero context for our
+codebase and questionable taste. document everything they need to know. which
+files to touch for each task, code, testing, docs they might need to check. how
+to test it.
+
+Assume they are a skilled developer, but know almost nothing about our toolset
+or problem domain.
 
 **Arguments**: `$ARGUMENTS` captures the feature name if provided (e.g., `/write-plan query-command`).
 

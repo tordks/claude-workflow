@@ -1,18 +1,22 @@
 # Claude Workflow
 
-Experimental plan/spec-driven development workflow for Claude Code with phase-based implementation.
-
-Inspired by [spec-kit](https://github.com/github/spec-kit), which is more thorough in documenting features, but also heavier to use. The intent for this repo is to be a playground for me to investigate Agent driven development.
+Experimental plan/spec-driven development workflow for Claude Code with phase-based implementation. The intent for this repo is to be a playground for me to investigate Agent driven development.
 
 
-Other alternatives:
-* [superpowers](https://github.com/obra/superpowers): brainstorm->write plan -> implement workflow w. skills, commands and agents.
+**Spec Driven Development tools/workflows/alternatives:**
+* [spec-kit](https://github.com/github/spec-kit): Provides a specify->clarify->plan->task->analyze->implement workflow with thourough spec creation.
 * [spec-kitty](https://github.com/Priivacy-ai/spec-kitty): built on spec-kit. Adds tracking through dashboard.
+* [superclaude](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master): brainstorm->write plan->implement workflow. Uses Claude Skills and pre session hook to provide context.
 * [cc-sessions](https://github.com/GWUDCAP/cc-sessions): another workflow, but less documented.
+* [superpowers](https://github.com/obra/superpowers): brainstorm->write plan -> implement workflow w. skills, commands and agents.
+
+**Other resources:**
+* Martin Fowlers post on Spec Driven Development: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
 
 
-Martin Fowlers post on Spec Drive Development: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
+**Current thoughts:**
 
+The workflow `brainstorm/plan -> write phase based plan -> review plan (auto+manual) -> implement phase -> review phase -> next phase until done`, with an additional `amend plan` step during development, seems to be the way to go. All the alternatives above implement this workflow in some way or another.
 
 ## What This Repo Provides
 
@@ -192,8 +196,11 @@ All phases complete!
 
 - V2:
   - simplification: Only provide /write-plan, /implement-plan and development principles.
-  - add a more defined plan and tasklist structure. Plan should provide context, while the tasklist phase division and bite-sized tasks.
   - remove CLAUDE.md
   - consider adding /start-brainstorm or /start-planning to prime context before a planning session.
+    - Make a script/skill that concatenates and prints constitution on startup or through command
   - consider adding /review-plan to review plan and tasklist.
-  - consider removing tools/ from constitution, should rather be skills
+  - add a more defined plan and tasklist structure. Plan should provide context, while the tasklist phase division and bite-sized tasks.
+
+- V3?:
+  - fork and adapt superpowers?

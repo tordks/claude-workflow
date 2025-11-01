@@ -1,66 +1,22 @@
 # Amend Plan Command
 
-Update the existing plan and tasklist for a feature based on conversation context.
+Update an existing plan and tasklist based on conversation context.
+
+## Bootstrap
+
+Use the SlashCommand tool to execute: `/prime-planning-commands`
+
+Wait for it to complete, then proceed with instructions below.
 
 ## Context
 
-This command is used when you've discussed amendments, changes, or extensions to an existing plan with the user. The user has already discussed specific modifications they want to make. Your job is to understand those changes from the conversation and apply them safely.
+This command is used when amendments, changes, or extensions to an existing plan have been discussed. Your job is to understand those changes from the conversation and apply them safely.
 
 ## Arguments
 
 **Input**: `$ARGUMENTS`
 
-From the arguments above, identify the feature name. The feature name is typically:
-- A kebab-case identifier (e.g., `query-command`, `user-auth`)
-- The first clear token in the arguments
-- May be accompanied by additional instructions or context about what to amend
-
-If the feature name is clear from the arguments, extract it and use it as `{feature-name}` throughout this command.
-
-If no feature name is provided or it's unclear:
-- List all plan files in the `plans/` directory (look for `*-plan.md` files)
-- Extract feature names from filenames (e.g., `query-plan.md` → `query`)
-- Present available features to the user
-- Ask user to select which plan to amend
-- Use the selected feature name for the rest of the command
-
-**Example usage:**
-- `/amend-plan query-command` → feature-name: `query-command`
-- `/amend-plan user-auth add OAuth flows` → feature-name: `user-auth`, context: "add OAuth flows"
-- `/amend-plan` (no args) → list available plans and ask user to select
-
-**Example when no feature name provided:**
-```
-Input: $ARGUMENTS is empty
-
-Scanning plans/ directory...
-
-Found the following plans:
-1. query-command - Document query and search functionality
-2. user-auth - User authentication system
-3. data-export - Data export capabilities
-
-Which plan would you like to amend? (1-3, or type the feature name)
-```
-
-**Example with context but no clear feature name:**
-```
-Input: $ARGUMENTS = "add OAuth 2.0 flows and token refresh"
-
-I see you want to add OAuth 2.0 flows and token refresh, but I need to know
-which feature plan to amend.
-
-Scanning plans/ directory...
-
-Found the following plans:
-1. query-command - Document query and search functionality
-2. user-auth - User authentication system
-3. data-export - Data export capabilities
-
-Which plan should I amend? (1-3, or type the feature name)
-
-Amendment context: "add OAuth 2.0 flows and token refresh"
-```
+Use the standard feature name parsing pattern from `/prime-planning-commands`.
 
 ## Instructions
 
@@ -220,182 +176,64 @@ The amended plan is ready. You can:
 - **Inline changes**: Make direct updates to files without separate "amendment" sections (unless context requires it)
 - **Consistent formatting**: Match the existing document style precisely
 
-## Amendment Types Supported
+## Amendment Types
 
-### 1. Add Tasks to Existing Phase
+| Type | Example | Allowed? |
+|------|---------|----------|
+| Add tasks to incomplete phase | Add [P3.4], [P3.5] to Phase 3 (has incomplete tasks) | ✅ Yes |
+| Add new phase | Create Phase 4 after Phase 3 | ✅ Yes |
+| Modify incomplete task description | Change `[ ] [P3.2] Add tests` to `[ ] [P3.2] Add unit and integration tests with >90% coverage` | ✅ Yes |
+| Update plan sections | Add new subsection "Caching Strategy" to Architecture | ✅ Yes |
+| Modify completed task | Change `[x] [P2.1]` description | ❌ No - immutable |
+| Add task to completed phase | Add task to Phase 1 (all tasks `[x]`) | ❌ No - inconsistent |
 
-```markdown
-## Phase 2: Implementation
+### When Blocked
 
-**Goal**: Build core functionality
-
-**Tasks**:
-- [x] [P2.1] Implement parser
-- [x] [P2.2] Add validation
-- [ ] [P2.3] Add error handling        ← existing incomplete task
-- [ ] [P2.4] Add logging and metrics   ← NEW TASK (added via amendment)
-- [ ] [P2.5] Add rate limiting         ← NEW TASK (added via amendment)
-```
-
-### 2. Add New Phase
-
-```markdown
-## Phase 4: Performance Optimization    ← NEW PHASE
-
-**Goal**: Optimize query performance and add caching
-
-**Deliverable**: System handles 1000+ queries/sec with <100ms latency
-
-**Tasks**:
-- [ ] [P4.1] Implement Redis caching layer
-- [ ] [P4.2] Add query result caching
-- [ ] [P4.3] Add performance benchmarks
-- [ ] [P4.4] Optimize database queries
-
-**Phase 4 Checkpoint**: Performance targets met, caching operational
-```
-
-### 3. Modify Incomplete Task
-
-```markdown
-Before:
-- [ ] [P3.2] Add tests
-
-After:
-- [ ] [P3.2] Add comprehensive unit and integration tests with >90% coverage
-```
-
-### 4. Update Plan Section
-
-```markdown
-## Architecture & Design
-
-### Core Components
-[existing content...]
-
-### Caching Strategy    ← NEW SUBSECTION
-We'll implement a two-tier caching approach:
-- L1: In-memory LRU cache (5000 items, 5min TTL)
-- L2: Redis distributed cache (50000 items, 1hr TTL)
-
-[detailed explanation...]
-```
-
-## Safety Violations and Responses
-
-### ❌ Attempting to Modify Completed Task
-
-**User request**: "Change task P2.1 to include database optimization"
-**Response**:
-
-```text
-Cannot modify task [P2.1] because it is already completed (marked [x]).
-Completed tasks are immutable to preserve implementation history.
-
-Alternative approaches:
-1. Add a new task to Phase 2: "[P2.X] Add database optimization to existing parser"
-2. Create a new phase for optimization work
-3. Create a refactoring phase to revisit completed work
-
-Would you like me to add a new task instead?
-```
-
-### ❌ Attempting to Add Task to Completed Phase
-
-**User request**: "Add a new task to Phase 1"
-**Response**:
-
-```text
-Cannot add tasks to Phase 1 because all tasks in this phase are completed.
-Adding tasks to completed phases would be inconsistent with implementation history.
-
-Alternative approaches:
-1. Create a new phase (e.g., "Phase 1B: Additional Foundation Work")
-2. Add the task to the next incomplete phase if logically appropriate
-3. Create a new phase specifically for the new functionality
-
-Which approach would you prefer?
-```
-
-### ✅ Valid Amendment
-
-**User request**: "Add caching tasks to Phase 3"
-**Response**:
-
-```text
-Phase 3 has 2 incomplete tasks, so I can safely add new tasks here.
-
-Proposed amendments:
-- Add [P3.4] Implement Redis caching layer
-- Add [P3.5] Add cache invalidation logic
-- Add [P3.6] Add caching integration tests
-
-These will be added after existing task [P3.3]. Proceed?
-```
+If user requests modification of completed work:
+1. Explain why it's not allowed (immutability, implementation history)
+2. Suggest alternatives: new task, new phase, or refactoring phase
+3. Use AskUserQuestion tool to present options
 
 ## Example Flow
 
 ```text
-Loading plan for feature: query-command
-- Reading: plans/query-command-plan.md ✅
-- Reading: plans/query-command-tasklist.md ✅
+Loading plan: query-command
+- Read plans/query-command-plan.md ✅
+- Read plans/query-command-tasklist.md ✅
 
-Analyzing recent conversation...
-
-From the conversation, I understand you want to:
-1. Add caching functionality to Phase 3
-2. Create a new Phase 4 for performance testing
-3. Update the Architecture section with caching design
+Analyzing conversation...
+You want to: add caching to Phase 3, create Phase 4 for performance testing
 
 Current state:
-- Phase 1: ✅ Complete (3/3 tasks)
-- Phase 2: ✅ Complete (4/4 tasks)
-- Phase 3: ⏳ In Progress (2/5 tasks complete)
-- Last task in Phase 3: [P3.5]
+- Phase 1: ✅ Complete (3/3)
+- Phase 2: ✅ Complete (4/4)
+- Phase 3: ⏳ In Progress (2/5 complete)
 
 ## Proposed Amendments
 
-### Tasklist Changes
-**Phase 3: Add 3 new tasks**
-- [P3.6] Implement Redis caching client with connection pooling
-- [P3.7] Add caching middleware to query pipeline
-- [P3.8] Add cache hit/miss metrics and monitoring
+**Tasklist:**
+- Phase 3: Add tasks [P3.6]-[P3.8] for caching
+- Phase 4: New phase with 4 tasks for performance testing
 
-**Phase 4: New phase**
-- Goal: Validate performance and scalability
-- 4 tasks for load testing, benchmarking, optimization
+**Plan:**
+- Add "Caching Strategy" subsection to Architecture section
 
-### Plan Document Changes
-**Architecture section**: Add "Caching Strategy" subsection with:
-- Two-tier caching design (L1: memory, L2: Redis)
-- Cache key strategy and TTL policies
-- Invalidation approach
+Safety check: ✅ All amendments target incomplete phases
 
-Safety check: ✅ All amendments target incomplete phases only
+Proceed? [User confirms]
 
-Is this correct? Should I proceed?
+Applying...
+✅ Updated plans/query-command-plan.md (added Caching Strategy section)
+✅ Updated plans/query-command-tasklist.md (added P3.6-P3.8, new Phase 4)
 
-[User confirms]
-
-Applying amendments...
-
-✅ Updated plans/query-command-plan.md
-   - Added "Caching Strategy" subsection to Architecture (45 lines added)
-
-✅ Updated plans/query-command-tasklist.md
-   - Added tasks [P3.6] through [P3.8] to Phase 3
-   - Added Phase 4 with tasks [P4.1] through [P4.4]
-
-Amendments applied successfully! The plan now includes caching functionality
-and performance validation. Resume implementation with `/implement query-command`.
+Done! Resume with `/implement query-command`.
 ```
 
 ## Notes
 
-- **Be thorough in conversation analysis**: Don't miss important details from the discussion
-- **Confirm before acting**: Always present proposed changes and wait for approval
-- **Explain safety blocks**: If a requested change violates safety rules, explain why and suggest alternatives
-- **Maintain consistency**: Ensure amendments fit naturally with existing plan structure
-- **Preserve context**: Keep the plan cohesive - new additions should integrate well with existing content
-- **Be precise with IDs**: Task ID allocation must follow sequential numbering within each phase
-- **Test integration**: Amendments should work seamlessly with `/implement` command
+- Thoroughly analyze conversation - don't miss details
+- Always confirm proposed changes before applying
+- Explain safety blocks and suggest alternatives
+- Ensure amendments integrate naturally with existing structure
+- Follow sequential task ID numbering within phases
+- Test that amendments work seamlessly with `/implement`

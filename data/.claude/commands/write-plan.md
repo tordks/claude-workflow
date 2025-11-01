@@ -35,100 +35,24 @@ Should I proceed with "query-command" as the feature name?
 
 ## Instructions
 
-Review the conversation history from plan mode and create two documents in the `plans/` directory:
+Review the conversation history from plan mode and create two documents in the `plans/` directory.
 
-### 1. Plan Document: `plans/{feature-name}-plan.md`
+### Document Structure
 
-Formalize the discussed plan with this structure:
+**Plan (`plans/{feature-name}-plan.md`):**
+- Overview: purpose, scope, success criteria
+- Architecture & Design: component overview, project structure (file tree with [CREATE]/[MODIFY]), design decisions (with WHY rationale), data flow
+- Technical Approach: dependencies, integration points, error handling
+- Implementation Strategy: phase breakdown, testing approach, deployment notes
+- Risks & Considerations: challenges, performance, security, technical debt
 
-#### Overview
-- **Purpose**: What is being built and why (from discussion)
-- **Scope**: What's included and what's not
-- **Success Criteria**: How we know it's complete
+**Tasklist (`plans/{feature-name}-tasklist.md`):**
+- Usage header (see prime-planning-commands.md for format)
+- Phase 0: Branch setup with git command
+- Phase 1+: Each phase has goal, deliverable, tasks (with [PX.Y] IDs), checkpoint
+- Tasks: 15-30 min each, atomic, testable, reference specific files
 
-#### Architecture & Design
-
-**Component Overview**: High-level description of major components and their relationships
-
-**Project Structure**: Show a file tree with [CREATE] and [MODIFY] annotations
-```
-src/
-├── feature/
-│   ├── __init__.py          [CREATE] - Public exports
-│   ├── models.py            [CREATE] - Data models
-│   ├── service.py           [MODIFY] - Integration points
-tests/
-└── test_feature.py          [CREATE] - Tests
-```
-
-**Design Decisions**: Key architectural choices and their rationale
-- List decisions with WHY (rationale), not just WHAT
-- Include trade-offs that were accepted
-
-**Data Flow**: How data moves through the system (descriptions or diagrams if discussed)
-
-#### Technical Approach
-- **Dependencies**: External libraries, system requirements, configuration changes
-- **Integration Points**: How this integrates with existing codebase
-- **Error Handling Strategy**: Approach to errors, validation, edge cases
-
-#### Implementation Strategy
-- **Phase Breakdown**: Brief overview of what each phase accomplishes and why they're ordered this way
-- **Testing Approach**: Unit testing strategy, integration testing approach, manual testing steps
-- **Migration/Deployment Notes**: Any special considerations for rolling out (if applicable)
-
-#### Risks & Considerations
-- Potential challenges or blockers
-- Performance implications
-- Security considerations
-- Technical debt or future refactoring needs
-
-**Note**: The plan provides architectural context and design decisions. It answers WHY and WHAT (architecture). Keep it balanced - detailed enough to guide implementation but not overly prescriptive.
-
-### 2. Tasklist Document: `plans/{feature-name}-tasklist.md`
-
-Convert the discussed plan into a phase-based tasklist with this structure:
-
-#### Header Section
-Include a brief usage guide at the top:
-```markdown
-> **Using This Tasklist**
-> - Each task is designed to take 15-30 minutes
-> - Complete all tasks in a phase before moving to the next
-> - Code must be runnable after each phase
-> - Refer to `{feature-name}-plan.md` for architectural context
-```
-
-#### Phase 0: Branch Setup (always first)
-- **Goal**: Create and checkout feature branch for isolated development
-- **Tasks**: Single task with git command
-  - Format: `- [ ] [P0.1] Create feature branch {branch-name} for {brief description}`
-  - Include: `git checkout -b {suggested-branch-name}`
-
-#### Subsequent Phases
-Organize logically (e.g., Phase 1: Foundation, Phase 2: Core Implementation, Phase 3: Testing)
-
-Each phase must have:
-- **Goal**: One-sentence description of what this phase accomplishes
-- **Deliverable**: Concrete outcome (e.g., "Working data models with validation passing tests")
-- **Tasks**: List of granular tasks (15-30 minutes each)
-  - Each task format: `- [ ] [PX.Y] {Specific atomic action} - {File/component detail}`
-  - Tasks should be atomic and testable
-  - When relevant, mention specific files being created/modified
-  - Examples of granular tasks:
-    - `- [ ] [P1.1] Create User model with Pydantic validation in models.py`
-    - `- [ ] [P1.2] Add email validation logic to User model`
-    - `- [ ] [P1.3] Write unit tests for User model validation`
-- **Phase X Checkpoint**: Brief description of system state after phase completion
-
-#### Requirements
-- **Task granularity**: Each task should take 15-30 minutes and be a single, testable action
-- **Runnable state**: Code must be in a working, runnable state after completing each phase
-- **Task IDs**: Unique ID using phase numbering (e.g., `[P0.1]`, `[P1.1]`, `[P1.2]`)
-- **Checkboxes**: Format `- [ ]` for tracking completion
-- **Clear descriptions**: Actionable based on what was discussed, reference specific files when relevant
-
-**Note**: The tasklist provides step-by-step execution tracking. It answers WHEN (phase order) and HOW (specific steps). It breaks down the plan into bite-sized, achievable tasks.
+See prime-planning-commands.md for standard formats and task ID conventions. See Example Output below for concrete structure.
 
 ## Requirements
 

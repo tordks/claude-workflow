@@ -30,7 +30,7 @@ All planning commands accept a feature name as their first argument.
 ### Example Response When Missing
 
 ```
-Input: $ARGUMENTS is empty
+Input: $ARGUMENTS is empty or does not contain a clear feature name.
 
 Scanning plans/ directory...
 
@@ -105,7 +105,7 @@ plans/
 - **Y:** Task number within phase (1, 2, 3...)
 
 ### Rules
-- Phase 0 is always branch setup
+- Phase 0 is always setup
 - Task numbering starts at 1 within each phase
 - Sequential numbering within phases (no gaps)
 - IDs are immutable once created

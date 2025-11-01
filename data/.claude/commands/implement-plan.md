@@ -20,46 +20,16 @@ Use the standard feature name parsing pattern from `/prime-planning-commands`.
 
 ## Instructions
 
-1. **Read the planning documents**:
-   - `plans/{feature-name}-plan.md` - for architectural context, design decisions, and project structure
-   - `plans/{feature-name}-tasklist.md` - for step-by-step task execution and progress tracking
+1. **Load documents:** Read `plans/{feature-name}-plan.md` (architecture/rationale) and `plans/{feature-name}-tasklist.md` (execution tasks). See prime-planning-commands.md for document relationship.
 
-   **How to use both documents**:
-   - The **plan** provides WHY (rationale) and WHAT (architecture) - use it to understand the overall design
-   - The **tasklist** provides WHEN (phase order) and HOW (specific steps) - use it for execution
-   - Read the plan first to understand the architecture, then follow the tasklist for implementation
-   - Refer back to the plan when task details are unclear or you need more context
+2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
 
-2. **Check progress and resume from current position**:
-   - Review the tasklist to identify which tasks are already completed (marked with `[x]`)
-   - Identify which phases are complete
-   - Find the first incomplete task in the first incomplete phase
-   - If all tasks in a phase are complete, start with the next phase
-   - If all phases are complete, inform the user that implementation is finished
-   - Communicate clearly where you're resuming from
+3. **Execute phase-by-phase:**
+   - Implement each task following plan and constitution
+   - Mark complete: edit tasklist changing `- [ ]` to `- [x]`
+   - After ALL phase tasks complete: present summary with ✅, explain checkpoint, suggest conventional commit format (`<type>: <description>\n\n<body with WHY/HOW>`), STOP for approval
 
-3. **Phase-by-phase implementation**:
-   - Work through tasks in order, one phase at a time
-   - Implement each task according to the plan
-   - **Check off tasks** by editing `plans/{feature-name}-tasklist.md` and changing `- [ ]` to `- [x]` for completed tasks
-   - After completing ALL tasks in a phase, STOP and inform the user
-   - Wait for user approval before proceeding to the next phase
-
-4. **Task completion workflow**:
-   - Read the current task from the tasklist
-   - Implement the task following the plan and coding constitution
-   - Test that the code works
-   - Edit the tasklist file to mark the task as complete: `- [x] [PX.Y] Task description`
-   - Move to the next task in the same phase
-   - After the last task in a phase:
-     - Present phase completion with detailed summary of changes (use ✅ checkmarks)
-     - Include a "Phase Checkpoint" explaining current state and referencing constitution principles
-     - Suggest a commit message following conventional commits format:
-       - Format: `<type>: <short description>\n\n<detailed body explaining WHY and HOW>`
-       - Types: feat, fix, docs, refactor, test, chore, perf, style, ci, build
-       - Short description: concise summary (max 72 chars)
-       - Detailed body: 1-2 sentences focusing on **WHY** and **HOW**, not WHAT
-     - STOP for review
+4. **Task workflow:** Read task → implement → test → mark complete → next task. After last task in phase: stop and wait for approval before next phase.
 
 ## Requirements
 

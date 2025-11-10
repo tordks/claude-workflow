@@ -1,6 +1,10 @@
 # Claude Workflow
 
-Experimental plan/spec-driven development workflow for Claude Code with phase-based implementation. The intent for this repo is to be a playground for me to investigate Agent driven development.
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/tordks/claude-workflow/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.com/claude-code)
+
+Plan-driven development workflow for Claude Code with phase-based implementation.
 
 
 **Spec Driven Development tools/workflows/alternatives:**
@@ -20,65 +24,36 @@ Experimental plan/spec-driven development workflow for Claude Code with phase-ba
 
 The workflow `brainstorm/plan -> write phase based plan -> review plan -> implement phase -> review phase -> next phase until done`, with an additional `amend plan` step during development, seems to be the way to go. All the alternatives above implement this workflow in some way or another.
 
-## What This Repo Provides
+## What This Provides
 
-**Slash Commands** (.claude/commands/):
+**Slash Commands**:
 - `/read-constitution` - Load all constitution documents into context
 - `/write-plan` - Create plan and tasklist from planning discussion
 - `/implement-plan` - Execute plan one phase at a time
 - `/amend-plan` - Update plans during development
+- `/prime-planning-commands` - Load shared planning conventions
+- `/create-claude-md` - Generate project context template [experimental]
+
+**Skills**:
+- `skill-creator` - Guide for creating custom skills (copy from anthropic)
 
 **Coding Constitution**:
 ```
 .constitution/
 ├── software-engineering.md   # Universal software engineering principles
-└── python-standards.md       # Python-specific standards and idioms
+├── python-standards.md       # Python-specific standards and idioms
+└── testing.md                # Testing philosophy and best practices
 ```
 
 ## Installation
 
-### With uv/uvx (Recommended)
 
-[uv](https://docs.astral.sh/uv/) is a fast Python package installer and resolver.
+In Claude Code:
 
-#### Option 1: Run without installing (uvx)
-
-```bash
-# Run without installing (using uvx with git URL)
-uvx --from git+https://github.com/tordks/claude-workflow.git claude-workflow install /path/to/project
-
-# Update existing installation
-uvx --from git+https://github.com/tordks/claude-workflow.git claude-workflow update /path/to/project
 ```
-
-#### Option 2: Install with uv tool
-
-```bash
-# Install the tool globally with uv
-uv tool install git+https://github.com/tordks/claude-workflow.git
-
-# Use the installed command
-claude-workflow install /path/to/project
-
-# Update existing installation
-claude-workflow update /path/to/project
-
-# Upgrade the tool itself
-uv tool upgrade claude-workflow
+/plugin marketplace add tordks/claude-workflow
+/plugin install cwf
 ```
-
-### CLI Options
-
-- `--dry-run` - Preview what would be installed without making changes
-- `--force` - Overwrite user-modified files during update
-
-
-### After Installation
-
-1. Edit `CLAUDE.md` with your project-specific details
-2. Review constitution documents in `.constitution/` (software-engineering.md, python-standards.md)
-3. Run `/read-constitution` to load the constitution into your first development session
-4. Configure quality checks in your `pyproject.toml` if needed
 
 ## Development Workflow
 

@@ -1,0 +1,32 @@
+{
+  "name": "claude-workflow",
+  "owner": {
+    "name": "tordks",
+    "email": "tordks@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "cwf",
+      "version": "2.0.0",
+      "description": "Plan-driven development workflow with phase-based implementation for Claude Code",
+      "source": "./",
+      "author": {
+        "name": "tordks",
+        "url": "https://github.com/tordks"
+      },
+      "repository": "https://github.com/tordks/claude-workflow",
+      "homepage": "https://github.com/tordks/claude-workflow",
+      "license": "MIT",
+      "keywords": [
+        "workflow",
+        "planning",
+        "software-development",
+        "constitution",
+        "spec-driven",
+        "phase-based",
+        "implementation"
+      ],
+      "category": "Development"
+    }
+  ]
+}

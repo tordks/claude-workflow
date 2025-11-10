@@ -9,8 +9,10 @@ Experimental plan/spec-driven development workflow for Claude Code with phase-ba
 * [superclaude](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master): brainstorm->write plan->implement workflow. Uses Claude Skills and pre session hook to provide context.
 * [cc-sessions](https://github.com/GWUDCAP/cc-sessions): another workflow, but less documented.
 * [superpowers](https://github.com/obra/superpowers): brainstorm->write plan -> implement workflow w. skills, commands and agents.
+* [BMAD-method](https://github.com/bmad-code-org/BMAD-METHOD): larger framewoek with planning on different scales.
 
 **Other resources:**
+* [awesome-claude-skills](https://github.com/BehiSecc/awesome-claude-skills)
 * Martin Fowlers post on Spec Driven Development: https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html
 
 

@@ -1,3 +1,7 @@
+---
+description: Generate project context template for CLAUDE.md
+---
+
 # Create CLAUDE.md Command
 
 Generate a CLAUDE.md project context file for Claude Code.

@@ -1,11 +1,15 @@
+---
+description: Execute plan phase-by-phase following tasklist
+---
+
 # Implement Command
 
 Implement a feature by following the plan and tasklist documents.
 
 ## Bootstrap
 
-1. Use the SlashCommand tool to execute: `/prime-planning-commands`
-2. Use the SlashCommand tool to execute: `/read-constitution`
+1. Use the Skill tool to load: `read-constitution`
+2. Use the Skill tool to load: `cfw-planning`
 3. Wait for both to complete, then proceed with instructions below.
 
 ## Context
@@ -16,25 +20,32 @@ This command is called in a fresh chat session to implement a planned feature. A
 
 **Input**: `$ARGUMENTS`
 
-Use the standard feature name parsing pattern from `/prime-planning-commands`.
+Use the feature name parsing pattern from cfw-planning skill.
 
 ## Instructions
 
-1. **Load documents:** Read `plans/{feature-name}-plan.md` (architecture/rationale) and `plans/{feature-name}-tasklist.md` (execution tasks). See prime-planning-commands.md for document relationship.
+1. **Load documents:**
+   - **FIRST:** Read `plans/{feature-name}-plan.md` in full to understand architecture, design decisions, and rationale
+   - **SECOND:** Read `plans/{feature-name}-tasklist.md` for execution guidance
+   - See cfw-planning skill for why this order matters and how documents work together
 
-2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
+2. **Validate document structure:**
+   - Validate against cfw-planning skill's validation reference
+   - **If validation fails:** STOP and notify user of structural issues before proceeding
 
-3. **Execute phase-by-phase:**
+3. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
+
+4. **Execute phase-by-phase:**
    - Implement each task following plan and constitution
    - Mark complete: edit tasklist changing `- [ ]` to `- [x]`
    - After ALL phase tasks complete: present summary with ✅, explain checkpoint, suggest conventional commit format (`<type>: <description>\n\n<body with WHY/HOW>`), STOP for approval
 
-4. **Task workflow:** Read task → implement → test → mark complete → next task. After last task in phase: stop and wait for approval before next phase.
+5. **Task workflow:** Read task → implement → test → mark complete → next task. After last task in phase: stop and wait for approval before next phase.
 
 ## Requirements
 
 - **Check existing progress first** - don't restart completed work
-- **Follow the coding constitution** (see CLAUDE.md and constitution.md)
+- **Follow the constitution** (loaded via read-constitution skill)
 - **Ensure code is runnable** after each phase
 - **Run quality checks** when appropriate (ruff, mypy, pre-commit)
 - **Actually edit the tasklist file** to check off tasks - don't just say you did it
@@ -94,9 +105,10 @@ Resuming from Phase 3, Task [P3.2]...
 ## Notes
 
 ### When Tasks Are Unclear
-1. **Check plan document** sections: Project Structure, Design Decisions, Technical Approach
+1. **Check plan document sections** for clarification (see cfw-planning skill's plan-structure.md for section descriptions)
 2. **Still unclear?** STOP and use AskUserQuestion tool:
    - Specify which task ID and what's unclear
+   - Reference which plan sections you've checked
    - Provide 2-4 concrete options
    - Don't guess critical implementation details
 

@@ -1,6 +1,0 @@
-{
-  "name": "testing-conventions",
-  "description": "Pragmatic testing philosophy - test what matters, skip trivial code, maximize confidence",
-  "keywords": ["test", "testing", "coverage", "quality", "validation"],
-  "load_once": true
-}

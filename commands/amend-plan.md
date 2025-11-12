@@ -1,10 +1,14 @@
+---
+description: Update existing plan and tasklist based on conversation
+---
+
 # Amend Plan Command
 
 Update an existing plan and tasklist based on conversation context.
 
 ## Bootstrap
 
-Use the SlashCommand tool to execute: `/prime-planning-commands`
+Use the Skill tool to load: `cfw-planning`
 
 Wait for it to complete, then proceed with instructions below.
 
@@ -16,18 +20,17 @@ This command is used when amendments, changes, or extensions to an existing plan
 
 **Input**: `$ARGUMENTS`
 
-Use the standard feature name parsing pattern from `/prime-planning-commands`.
+Use the feature name parsing pattern from cfw-planning skill.
 
 ## Instructions
 
 ### 1. Load Existing Documents
 
 Read the existing planning documents:
+- `plans/{feature-name}-plan.md`
+- `plans/{feature-name}-tasklist.md`
 
-- `plans/{feature-name}-plan.md` - the comprehensive plan document (provides architectural context and design decisions)
-- `plans/{feature-name}-tasklist.md` - the phase-based tasklist (provides step-by-step execution tracking)
-
-**Document relationship**: The plan provides WHY and WHAT (architecture), while the tasklist provides WHEN and HOW (execution steps). Amendments should maintain this synergy.
+(See cfw-planning skill for document relationship and synergy principles)
 
 ### 2. Analyze Conversation for Amendment Intent
 
@@ -84,65 +87,9 @@ Is this understanding correct? Should I proceed with these amendments?
 
 ### 5. Apply Amendments Safely
 
-Once confirmed, apply the changes following these rules:
+Once confirmed, apply the changes following amendment safety rules from cfw-planning skill's amendment.md reference.
 
-#### Safety Rules (CRITICAL)
-
-- **NEVER modify completed tasks**: Tasks marked `[x]` are immutable
-- **NEVER modify completed phases**: Phases where all tasks are `[x]` cannot be changed
-- **NEVER change task IDs**: Existing task IDs like `[P1.2]` must remain unchanged
-- **BLOCK invalid operations**: If user requests modifying completed work, explain why it cannot be done and suggest alternatives
-
-#### Allowed Operations
-
-**For Tasklist Amendments**:
-
-1. **Add tasks to incomplete phases**:
-   - Insert after the last existing task in that phase
-   - Use next sequential task ID (e.g., if last task is `[P2.3]`, new task is `[P2.4]`)
-   - New tasks start with `[ ]` (unchecked)
-   - Preserve phase goal and deliverable statements
-
-2. **Add new phases**:
-   - Add after the highest existing phase number or as a sub-phase, ie Phase 3.1, depending on context.
-   - Follow phase structure: Goal, Deliverable, Tasks section
-   - Start all tasks unchecked `[ ]`
-   - Number tasks starting from `.1` (e.g., `[P4.1]`, `[P4.2]`)
-
-3. **Modify incomplete task descriptions**:
-   - Only if task is marked `[ ]` (not `[x]`)
-   - Preserve task ID and checkbox format
-   - Update description text inline
-
-4. **Update phase goals/deliverables**:
-   - Only for incomplete phases
-   - Preserve the section structure and formatting
-
-**For Plan Document Amendments**:
-
-1. **Add new sections**:
-   - Insert in logical position (e.g., new architecture subsection)
-   - Match existing formatting and header levels
-   - Include context about why the amendment was made
-
-2. **Update existing sections**:
-   - Enhance or clarify existing content
-   - Add examples, diagrams, or code snippets
-   - Preserve original section structure
-
-3. **Add clarifications**:
-   - Inline additions to existing sections
-   - New subsections for substantial additions
-   - Keep amendments focused and concise
-
-#### File Update Process
-
-1. Use the Edit tool to make precise changes
-2. Preserve all existing formatting (headers, lists, code blocks)
-3. Maintain consistent markdown style
-4. Keep line breaks and spacing consistent with original
-5. For tasklist: Ensure task ID sequences are continuous within each phase
-6. Verify checkboxes remain in correct format: `- [ ]` or `- [x]`
+See cfw-planning skill for complete amendment safety rules, allowed/blocked operations, and detailed guidelines.
 
 ### 6. Confirm Completion
 
@@ -176,23 +123,9 @@ The amended plan is ready. You can:
 - **Inline changes**: Make direct updates to files without separate "amendment" sections (unless context requires it)
 - **Consistent formatting**: Match the existing document style precisely
 
-## Amendment Types
+## Amendment Safety
 
-| Type | Example | Allowed? |
-|------|---------|----------|
-| Add tasks to incomplete phase | Add [P3.4], [P3.5] to Phase 3 (has incomplete tasks) | ✅ Yes |
-| Add new phase | Create Phase 4 after Phase 3 | ✅ Yes |
-| Modify incomplete task description | Change `[ ] [P3.2] Add tests` to `[ ] [P3.2] Add unit and integration tests with >90% coverage` | ✅ Yes |
-| Update plan sections | Add new subsection "Caching Strategy" to Architecture | ✅ Yes |
-| Modify completed task | Change `[x] [P2.1]` description | ❌ No - immutable |
-| Add task to completed phase | Add task to Phase 1 (all tasks `[x]`) | ❌ No - inconsistent |
-
-### When Blocked
-
-If user requests modification of completed work:
-1. Explain why it's not allowed (immutability, implementation history)
-2. Suggest alternatives: new task, new phase, or refactoring phase
-3. Use AskUserQuestion tool to present options
+For complete amendment rules, allowed/blocked operations, and when blocked guidance, see cfw-planning skill's amendment.md reference.
 
 ## Example Flow
 

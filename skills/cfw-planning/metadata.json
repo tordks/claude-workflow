@@ -1,6 +1,0 @@
-{
-  "name": "cfw-planning",
-  "description": "Claude Workflow planning conventions and structures - feature naming, task IDs, branch naming, plan/tasklist format and relationship",
-  "keywords": ["plan", "tasklist", "phase", "feature-name", "task-id", "branch", "convention"],
-  "load_once": true
-}

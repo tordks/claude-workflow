@@ -1,6 +1,0 @@
-{
-  "name": "python-development",
-  "description": "Python standards and idioms - type hints, PEP 8/20, modern Python patterns",
-  "keywords": ["python", "type hints", "pydantic", "pythonic", "PEP8", "typing"],
-  "load_once": true
-}

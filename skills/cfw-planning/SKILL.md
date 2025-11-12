@@ -1,357 +1,181 @@
-# Claude Workflow Planning
+---
+name: cfw-planning
+description: This skill should be used for plan-driven development - provides planning conventions, phase structure, task ID formats, and file naming patterns
+---
 
-This skill provides comprehensive guidance for creating and managing plans and tasklists in Claude Workflow. It covers planning conventions, document structures, and how plans and tasklists work together.
+# CFW Planning
+
+Knowledge repository for Claude Workflow (CWF) planning system.
+
+## Overview
+
+CWF is a plan-driven development workflow using two complementary documents that work together to guide feature implementation:
+
+**Plan Document (`{feature-name}-plan.md`):**
+- Captures architectural context and design rationale
+- Documents WHY decisions were made and WHAT the solution is
+- Contains: Overview, Architecture & Design, Technical Approach, Implementation Strategy, Risks & Considerations
+
+**Tasklist Document (`{feature-name}-tasklist.md`):**
+- Provides step-by-step execution guidance
+- Documents WHEN to do tasks and HOW to implement them
+- Contains: Phase-by-phase tasks with IDs, goals, deliverables, and checkpoints
+
+## CWF Workflow
+
+The CWF planning workflow follows these stages:
+
+### 1. Planning Phase
+- Discuss feature requirements and approach
+- Consider architecture, design decisions, and trade-offs
+- Identify phases, tasks, and dependencies
+
+### 2. Documentation
+- Create plan document with architectural context
+- Create tasklist document with execution steps
+- Validate structure and consistency between documents
+
+### 3. Implementation
+- Read plan first for architectural understanding
+- Follow tasklist phase-by-phase
+- Mark tasks complete as work progresses
+- Stop at phase boundaries for review
+
+### 4. Amendment
+- Add tasks to incomplete phases as needed
+- Create new phases for additional work
+- Update plan sections with new context
+- Follow amendment safety rules (completed work is immutable)
+
+## Quick Reference
+
+| Need to understand... | Read This Reference |
+|----------------------|---------------------|
+| **Implementation workflow (minimal, start here)** | `references/implementation-essentials.md` |
+| **Validation checklist** | `references/validation.md` |
+| **Amendment rules and safety** | `references/amendment.md` |
+| Plan document structure and requirements | `references/plan-structure.md` |
+| Tasklist document structure and requirements | `references/tasklist-structure.md` |
+| How plan and tasklist work together | `references/document-synergy.md` |
+| Feature naming, file structure, branch naming | `references/conventions.md` |
+
+## Reference Organization
+
+### references/implementation-essentials.md
+**Content:** Minimal guide for implementing features (LOAD THIS FIRST for implementation)
+
+- Finding plan and tasklist files
+- Implementation workflow (3 steps: read plan → read tasklist → execute)
+- Phase structure basics
+- Task ID format and marking complete
+- When to reference full guides
+- Quick validation checklist
+
+**This is the starting point for implementation.** It provides just enough to begin executing tasks, with pointers to full guides when needed.
+
+### references/validation.md
+**Content:** Quick validation checklist for plans and tasklists
+
+- Feature naming validation (kebab-case, branch names, file names)
+- Plan document validation (5 required sections, file tree format, design decisions)
+- Tasklist document validation (Phase 0, task IDs, phase structure, granularity)
+- Document synergy validation (WHY/WHAT vs WHEN/HOW, consistency rules)
+- Quick validation checklist (complete list for commands)
+- Validation failure guidance
+
+**Use when:** Creating or validating plans/tasklists, checking document structure before implementation.
+
+### references/amendment.md
+**Content:** Amendment rules and safety guidelines
+
+- Core principles (NEVER/ALWAYS rules)
+- Why amendment rules exist (immutability rationale)
+- Allowed operations (add tasks, add phases, modify descriptions, update plan sections)
+- Blocked operations (modify completed work, change task IDs)
+- When to update each document
+- Quick reference table of amendment types
+
+**Use when:** Modifying existing plans or tasklists, adding tasks/phases to in-progress features, clarifying incomplete tasks.
+
+### references/conventions.md
+**Content:** Shared naming and structure conventions
+
+- Feature name format (kebab-case, 2-3 words)
+- File structure (plans/ directory layout)
+- Branch naming convention ({prefix}-{feature-name})
+- Discovery patterns
+
+### references/plan-structure.md
+**Content:** Plan document structure (WHY and WHAT)
+
+- Required sections (Overview, Architecture & Design, Technical Approach, Implementation Strategy, Risks & Considerations)
+- File tree format with [CREATE]/[MODIFY] markers
+- Design decision template with rationale
+- Examples for each section
+
+### references/tasklist-structure.md
+**Content:** Tasklist document structure (WHEN and HOW)
+
+- Tasklist header template
+- Phase structure (Goal, Deliverable, Tasks, Checkpoint)
+- Phase 0 special case (branch setup only)
+- Task granularity guidelines (15-30 min, atomic, testable, file-specific)
+- Task ordering principles
+- Task ID format and rules ([PX.Y])
+- Checkpoint format
+
+### references/document-synergy.md
+**Content:** How plan and tasklist work together
+
+- WHY/WHAT vs WHEN/HOW separation principles
+- Document relationship and implementation workflow
+- Consistency rules (feature names, phases, file references)
+
+## Critical Principles
+
+These principles are fundamental to CWF planning:
+
+1. **Plan = WHY/WHAT** (architecture, rationale) | **Tasklist = WHEN/HOW** (execution, steps)
+2. **Phase 0 is always branch setup only** - never anything else
+3. **Task IDs are immutable** - [PX.Y] format, never change once created
+4. **Completed work is immutable** - never modify tasks marked [x] or completed phases
+5. **Tasks are 15-30 minutes** - atomic, testable, file-specific
+6. **Code must be runnable after each phase** - no broken states between phases
+
+## Document Relationship
+
+Plans and tasklists are complementary:
+
+**For implementation, start with `implementation-essentials.md`** which provides:
+- Minimal workflow guidance
+- How to find and use plan/tasklist files
+- Task completion basics
+- Quick validation
+
+**Read plan first** to understand:
+- Overall architecture
+- WHY decisions were made
+- How components relate
+- Technical constraints
+
+**Then follow tasklist** to:
+- Execute tasks in order
+- Track progress with checkboxes
+- Stop at phase boundaries
+- Verify deliverables
+
+**Refer back to plan** when:
+- Tasks are unclear
+- Need architectural context
+- Question implementation approach
+- Want to understand trade-offs
+
+**Load full reference guides** when:
+- Creating new plans/tasklists (use plan-structure.md, tasklist-structure.md)
+- Amending existing documents (use document-synergy.md)
+- Need detailed structure validation
+- Implementing and need clarification on standards
 
 ---
 
-## Part 1: Plan Document Structure (WHY/WHAT - Strategic)
-
-Plans provide architectural context and design rationale. They explain WHY decisions were made and WHAT the feature accomplishes.
-
-### Plan Document: `plans/{feature-name}-plan.md`
-
-**Purpose:** WHY and WHAT
-- Architectural context and design rationale
-- Component overview and relationships
-- Design decisions with trade-offs
-- Technical approach and dependencies
-- Risks and considerations
-
-**When to read:** First, to understand overall design
-
-### File Structure Conventions
-
-#### Directory Layout
-```
-plans/
-├── {feature-name}-plan.md       # Architectural plan
-└── {feature-name}-tasklist.md   # Execution tasklist
-```
-
-#### Naming Rules
-- Feature name must match between both files
-- Use kebab-case consistently
-- Plan: `{feature-name}-plan.md`
-- Tasklist: `{feature-name}-tasklist.md`
-
-#### Discovery
-- List plans: Find `*-plan.md` in `plans/` directory
-- Extract feature name: Remove `-plan.md` suffix
-- Verify tasklist exists: Check for matching `*-tasklist.md`
-
-### Required Plan Sections
-
-Every plan document should include these sections:
-
-#### 1. Overview
-- **Purpose:** One-sentence description of what feature does
-- **Scope:** What's included and explicitly NOT included
-- **Success Criteria:** Testable conditions for "done"
-
-#### 2. Architecture & Design
-- **Component Overview:** High-level system parts
-- **Project Structure:** File tree with [CREATE] and [MODIFY] markers
-- **Design Decisions:** Decision + WHY rationale format
-- **Data Flow:** How information moves through system (if applicable)
-
-#### 3. Technical Approach
-- **Dependencies:** External libraries, tools, services
-- **Integration Points:** How feature connects to existing code
-- **Error Handling:** Strategy for managing failures
-
-#### 4. Implementation Strategy
-- **Phase Breakdown:** Overview of phases and their goals
-- **Testing Approach:** How feature will be validated
-- **Deployment Notes:** Any special deployment considerations
-
-#### 5. Risks & Considerations
-- **Technical Challenges:** What could go wrong
-- **Performance Considerations:** Scalability, speed concerns
-- **Security Considerations:** Vulnerabilities, mitigations
-- **Technical Debt:** Known limitations or shortcuts
-
-### File Tree Conventions
-
-Use code blocks with file paths to show project structure:
-- Mark new files: `[CREATE]`
-- Mark modified files: `[MODIFY]`
-
-**Example:**
-```
-src/auth/
-├── __init__.py    [CREATE]
-├── models.py      [CREATE]
-└── login.py       [MODIFY]
-```
-
-### Design Decision Format
-
-Document decisions with rationale:
-
-```markdown
-### Design Decisions
-
-**1. Decision Name**
-- **Decision:** What was chosen
-- **Rationale:** WHY this choice was made (trade-offs, constraints, benefits)
-- **Alternatives Considered:** What else was evaluated
-- **Impact:** How this affects architecture
-```
-
----
-
-## Part 2: Tasklist Document Structure (WHEN/HOW - Tactical)
-
-Tasklists provide phased execution steps. They explain WHEN tasks happen and HOW to implement them.
-
-### Tasklist Document: `plans/{feature-name}-tasklist.md`
-
-**Purpose:** WHEN and HOW
-- Phased execution with sequential tasks
-- Specific implementation steps
-- Task IDs for tracking
-- Phase goals and deliverables
-- Checkpoints for progress validation
-
-**When to read:** During implementation, for step-by-step guidance
-
-### Feature Name Requirements
-
-All planning commands accept a feature name as their first argument.
-
-#### Format Requirements
-- **Pattern:** kebab-case (e.g., `query-command`, `user-auth`)
-- **Length:** 2-3 words, concise and descriptive
-- **Characters:** lowercase letters, numbers, hyphens only
-
-#### Standard Parsing Pattern
-
-**Input:** `$ARGUMENTS`
-
-1. **If feature name is clear:** Extract from first token and use as `{feature-name}`
-2. **If unclear or missing:**
-   - Scan `plans/` directory for `*-plan.md` files
-   - Extract feature names from filenames (e.g., `query-plan.md` → `query`)
-   - Present numbered list with brief descriptions
-   - Ask user to select by number or type feature name
-   - Use selected name for rest of command
-
-#### Example Response When Missing
-
-```
-Input: $ARGUMENTS is empty or does not contain a clear feature name.
-
-Scanning plans/ directory...
-
-Found the following features:
-1. query-command - Document query and search functionality
-2. user-auth - User authentication system
-3. data-export - Data export capabilities
-
-Which feature would you like to work with? (1-3, or type the feature name)
-```
-
-### Task ID Format
-
-#### Structure: `[PX.Y]`
-- **P:** Prefix indicating "Phase"
-- **X:** Phase number (0, 1, 2, 3...)
-- **Y:** Task number within phase (1, 2, 3...)
-
-#### Rules
-- Phase 0 is always setup
-- Task numbering starts at 1 within each phase
-- Sequential numbering within phases (no gaps)
-- IDs are immutable once created
-- Never reuse or skip IDs
-
-#### Checkbox Format
-```markdown
-- [ ] [P2.3] Incomplete task description
-- [x] [P2.3] Completed task description
-```
-
-#### Example Sequence
-```markdown
-## Phase 0: Branch Setup
-- [ ] [P0.1] Create feature branch feat-query-command
-
-## Phase 1: Foundation
-- [x] [P1.1] Create query/ directory and __init__.py
-- [x] [P1.2] Create QueryModel class with Pydantic
-- [ ] [P1.3] Add validation to QueryModel
-- [ ] [P1.4] Write unit tests for QueryModel
-```
-
-### Branch Naming Convention
-
-#### Format: `{prefix}-{feature-name}`
-
-#### Valid Prefixes
-| Prefix | Purpose |
-|--------|---------|
-| `feat` | New features (default) |
-| `fix` | Bug fixes |
-| `refactor` | Code refactoring |
-| `docs` | Documentation only |
-| `test` | Test additions/changes |
-| `chore` | Maintenance tasks |
-| `perf` | Performance improvements |
-
-#### Requirements
-- Use kebab-case (lowercase with hyphens)
-- No special characters except hyphens
-- Keep concise and descriptive
-
-#### Examples
-- `feat-query-command`
-- `fix-auth-token-refresh`
-- `refactor-module-structure`
-- `perf-cache-optimization`
-
-### Standard Phase Structure
-
-Every phase in a tasklist follows this structure:
-
-```markdown
-## Phase X: Descriptive Name
-
-**Goal:** One-sentence description of what this phase accomplishes
-
-**Deliverable:** Concrete outcome (e.g., "Working data models with validation passing tests")
-
-**Tasks:**
-- [ ] [PX.1] Specific atomic action - file/component detail
-- [ ] [PX.2] Another specific action with clear scope
-- [ ] [PX.3] Write tests for implemented functionality
-- [ ] [PX.4] Verify tests pass and code quality checks succeed
-
-**Phase X Checkpoint:** Brief description of system state after phase completion
-```
-
-#### Phase Requirements
-- Code must be in runnable state after each phase
-- Each task should be atomic and testable (15-30 minutes)
-- Clear goal and deliverable defined upfront
-- Checkpoint describes what's been accomplished
-- Tasks ordered logically (setup → implementation → testing → validation)
-
-### Task Granularity Guidelines
-
-- Each task should be 15-30 minutes
-- Tasks should be atomic (one clear action)
-- Tasks should be testable (verifiable completion)
-- Tasks should reference specific files or components
-
-### Status Tracking
-
-- `- [ ]` Pending (not started)
-- `- [x]` Complete (finished and verified)
-
-### Task Ordering Principles
-
-Within each phase, order tasks:
-1. Setup/preparation tasks (create directories, models)
-2. Implementation tasks (add functionality, business logic)
-3. Testing tasks (write tests, run tests)
-4. Validation tasks (verify phase complete, check quality)
-5. Documentation tasks (update docs, add comments)
-
-Dependencies always come before dependents.
-
-### Phase 0 Special Case
-
-Phase 0 is always branch setup:
-- Typically has 1-2 tasks: create branch, initialize structure
-
-**Example:**
-```markdown
-## Phase 0: Branch Setup
-**Goal:** Create feature branch for isolated development
-**Tasks:**
-- [ ] [P0.1] Create feature branch `feat-{feature-name}`
-  ```bash
-  git checkout -b feat-{feature-name}
-  ```
-```
-
-### Tasklist Header
-
-Include this at the top of every tasklist:
-
-```markdown
-> **Using This Tasklist**
-> - Each task is designed to take 15-30 minutes
-> - Complete all tasks in a phase before moving to the next
-> - Code must be runnable after each phase
-> - Refer to `{feature-name}-plan.md` for architectural context
-```
-
----
-
-## Part 3: Document Synergy (Relationship)
-
-Plans and tasklists are complementary documents that work together throughout implementation.
-
-### How They Work Together
-
-Planning creates two complementary documents:
-
-**Plan Document: `plans/{feature-name}-plan.md`**
-- **Purpose:** WHY and WHAT
-- Architectural context and design rationale
-- Component overview and relationships
-- Design decisions with trade-offs
-- Technical approach and dependencies
-- Risks and considerations
-- **When to read:** First, to understand overall design
-
-**Tasklist Document: `plans/{feature-name}-tasklist.md`**
-- **Purpose:** WHEN and HOW
-- Phased execution with sequential tasks
-- Specific implementation steps
-- Task IDs for tracking
-- Phase goals and deliverables
-- Checkpoints for progress validation
-- **When to read:** During implementation, for step-by-step guidance
-
-### Working Together
-
-1. Read plan first to understand architecture and rationale
-2. Follow tasklist for implementation
-3. Refer back to plan when task details need clarification
-
-### Consistency Rules
-
-- Feature name must match between both files
-- Phase breakdown in plan should align with phases in tasklist
-- Success criteria in plan should align with final phase deliverable in tasklist
-- File references in plan should match files created/modified in tasklist
-
-### When to Update Each
-
-- **Update plan when:** Architecture changes, design decisions change, new risks identified
-- **Update tasklist when:** Tasks need to be added/removed/reordered, phase structure changes
-- **Update both when:** Scope changes, requirements change, implementation approach pivots
-
-### Plan Provides Context for Tasklist
-
-- Why decisions were made → Informs how to implement tasks
-- What components exist → Clarifies which files to modify
-- What risks to consider → Guides error handling in tasks
-- What testing approach → Informs which tests to write
-
-### Tasklist Operationalizes Plan
-
-- Phases break down implementation strategy
-- Tasks make architecture concrete
-- Checkpoints validate plan assumptions
-- Status tracking shows progress toward success criteria
-
----
-
-## Summary
-
-**Plans** explain WHY and WHAT (strategic, architectural)
-**Tasklists** explain WHEN and HOW (tactical, execution)
-**Together** they provide complete guidance from concept to implementation
+**Skill loaded.** CWF planning concepts and patterns are now available.

@@ -1,6 +1,0 @@
-{
-  "name": "software-development",
-  "description": "Software engineering principles - DRY, YAGNI, orthogonality, fail-fast, separation of concerns",
-  "keywords": ["DRY", "YAGNI", "orthogonality", "architecture", "design", "principles", "engineering"],
-  "load_once": true
-}

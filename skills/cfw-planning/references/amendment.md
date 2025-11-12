@@ -2,26 +2,29 @@
 
 Guidelines for safely modifying existing CWF plans and tasklists.
 
-## Core Principles
+## Core Amendment Principles
 
-**NEVER:**
-- Modify completed tasks (marked [x])
-- Modify completed phases (all tasks marked [x])
-- Change task IDs (they are immutable references)
-- Delete completed work from documents
-- Modify historical decisions in plan
+### Protect Completed Work
 
-**ALWAYS:**
+**Do not modify:**
+- Completed tasks (marked [x]) - they represent implemented code
+- Completed phases (all tasks marked [x]) - history is immutable
+- Task IDs - they are stable references
+- Historical decisions - document new decisions instead
+
+### Safe Amendment Practices
+
+**When amending:**
 - Add new tasks to incomplete phases only
 - Use next sequential task ID when adding tasks
 - Preserve existing task IDs when modifying descriptions
 - Confirm changes with user before applying
-- Explain why blocked operations aren't allowed
+- Explain why certain operations aren't safe
 
-**BLOCK and explain alternatives when:**
-- User requests modification of completed work
-- Operation would break immutability rules
-- Changes would violate task ID sequencing
+**If user requests unsafe modifications:**
+- Block the operation
+- Explain why it's not recommended
+- Suggest safe alternatives
 
 ## Why These Rules Exist
 

@@ -2,9 +2,9 @@
 
 The plan document captures architectural context and design rationale (WHY and WHAT).
 
-## Required Sections
+## Core Plan Sections
 
-Every plan must include these sections:
+Every plan should include these sections, adapting the level of detail to feature complexity. Simple features may have brief sections; complex features need more depth.
 
 ### 1. Overview
 **Purpose:** High-level summary of the feature
@@ -14,6 +14,12 @@ Every plan must include these sections:
 - Feature purpose (what does this feature do?)
 - Scope (what's included and what's explicitly out of scope)
 - Success criteria (how will we know this is complete and working?)
+
+**Guidelines:**
+- All items are recommended but adapt to feature complexity
+- Simple features may combine problem/purpose into one statement
+- For small changes, success criteria might be brief (e.g., "Tests pass, documentation updated")
+- Complex features should thoroughly document all four items
 
 **Example:**
 ```markdown
@@ -136,6 +142,16 @@ src/
 - Phase 4: Testing and validation
 
 ### Testing Approach
+
+Describe the testing strategy appropriate for your feature. Not all features need all test types.
+
+Common approaches:
+- Simple utilities: Unit tests may be sufficient
+- New features: Unit + integration tests
+- User-facing features: Add E2E tests
+- Performance-critical: Add performance tests
+
+Example (comprehensive feature):
 - Unit tests: Each component in isolation
 - Integration tests: Parser → Ranker → API flow
 - E2E tests: Full search request through API

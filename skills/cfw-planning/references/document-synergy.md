@@ -4,7 +4,7 @@ How plan and tasklist work together to guide implementation.
 
 ## WHY/WHAT vs WHEN/HOW Separation
 
-**CRITICAL:** Maintain strict separation of concerns between documents.
+**Important principle:** Maintain strict separation of concerns between documents for optimal clarity.
 
 **Plan Document (WHY and WHAT):**
 - **WHY:** Architectural decisions with RATIONALE
@@ -15,7 +15,7 @@ How plan and tasklist work together to guide implementation.
   - What pieces make up the solution?
   - What dependencies exist?
   - What risks should we be aware of?
-- **DO NOT include:** Step-by-step execution instructions, specific file editing commands, task checklists
+- **Avoid including:** Step-by-step execution instructions, specific file editing commands, task checklists (these belong in the tasklist)
 
 **Tasklist Document (WHEN and HOW):**
 - **WHEN:** Sequential execution order
@@ -26,7 +26,9 @@ How plan and tasklist work together to guide implementation.
   - How to create each file
   - How to implement each function
   - How to run tests and verify results
-- **DO NOT include:** Architectural rationale, design alternatives, lengthy technical context
+- **Avoid including:** Architectural rationale, design alternatives, lengthy technical context (these belong in the plan)
+
+**Note:** While the separation should be strong, minor contextual overlap is acceptable if it improves clarity. The goal is avoiding duplicate or conflicting information, not obsessive separation.
 
 ## Examples of Correct Separation
 
@@ -98,13 +100,13 @@ method, then write tests in test_ranker.py, then run pytest.
 
 ## Consistency Rules
 
-**Feature name must match:**
+**Feature name should be consistent across:**
 - Plan filename: `{feature-name}-plan.md`
 - Tasklist filename: `{feature-name}-tasklist.md`
 - Branch name: `{prefix}-{feature-name}`
 - All references in documents
 
-**Phases should align:**
+**Phases should generally align:**
 - If plan mentions "Phase 2: Ranking Algorithm", tasklist should have "Phase 2: Ranking Implementation"
 - Phase numbers match between documents
 - Phase goals reflect plan's architecture

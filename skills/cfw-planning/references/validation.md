@@ -1,6 +1,11 @@
 # Validation Reference
 
-Quick validation checklist for CWF plans and tasklists.
+Use these guidelines to validate CWF plans and tasklists. Adapt validation criteria based on feature complexity:
+- **Simple features** (bug fixes, small utilities): May skip some optional items
+- **Medium features** (new components): Should follow most guidelines
+- **Complex features** (major systems): Follow all guidelines thoroughly
+
+The checkboxes below represent comprehensive validation. Not every item is mandatory for every feature type.
 
 ## Feature Naming Validation
 
@@ -22,7 +27,7 @@ Quick validation checklist for CWF plans and tasklists.
 
 ## Plan Document Validation
 
-✅ **Required sections (must have all 5):**
+✅ **Core sections (all 5 recommended, adapt depth to complexity):**
 1. Overview
    - Problem statement
    - Feature purpose
@@ -32,20 +37,17 @@ Quick validation checklist for CWF plans and tasklists.
    - Component overview
    - Project structure with file tree
    - Design decisions with WHY rationale
-   - Data flow
+   - Data flow (optional for simple changes)
 3. Technical Approach
-   - Dependencies
+   - Dependencies (if adding new ones)
    - Integration points
-   - Error handling
+   - Error handling (for features with failure modes)
 4. Implementation Strategy
    - Phase breakdown
-   - Testing approach
-   - Deployment notes
+   - Testing approach (adapt to feature complexity)
 5. Risks & Considerations
-   - Technical challenges
-   - Performance implications
-   - Security concerns
-   - Technical debt
+   - Include only relevant categories (may have 0-4 subsections)
+   - Technical challenges, performance, security, technical debt
 
 ✅ **File tree format:**
 - Use `[CREATE]` marker for new files
@@ -68,11 +70,11 @@ Quick validation checklist for CWF plans and tasklists.
 - Includes usage instructions
 - References plan document for context
 
-✅ **Phase 0 (special case):**
-- Always branch setup only
-- Exactly one task: Create git branch
+✅ **Phase 0 (typical pattern):**
+- Typically branch setup only (adapt for your workflow)
+- Usually one task: Create git branch
 - Task ID: `[P0.1]`
-- Must complete before Phase 1
+- Generally complete before Phase 1 (unless branch already exists)
 
 ✅ **Phase structure (all phases must have):**
 - Header: `## Phase X: Descriptive Name`

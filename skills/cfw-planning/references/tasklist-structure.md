@@ -4,7 +4,7 @@ The tasklist document provides step-by-step execution guidance (WHEN and HOW).
 
 ## Tasklist Header
 
-Include this at the top of every tasklist:
+Include usage instructions at the top of every tasklist. Use this template or adapt as needed:
 
 ```markdown
 > **Using This Tasklist**
@@ -16,7 +16,7 @@ Include this at the top of every tasklist:
 
 ## Phase Structure
 
-Every phase follows this exact structure:
+Every phase should follow this standard structure (maintain these elements but adapt phrasing as needed):
 
 ```markdown
 ## Phase X: Descriptive Name
@@ -34,9 +34,9 @@ Every phase follows this exact structure:
 **Phase X Checkpoint:** Brief description of system state after phase completion
 ```
 
-## Phase 0 Special Case
+## Phase 0: Branch Setup
 
-**Phase 0 is ALWAYS branch setup only:**
+**Standard approach - Phase 0 is branch setup:**
 
 ```markdown
 ## Phase 0: Branch Setup
@@ -51,15 +51,17 @@ Every phase follows this exact structure:
 **Phase 0 Checkpoint:** Feature branch created, ready for implementation
 ```
 
-**Requirements:**
-- Always exactly one task
-- Always branch creation with git command
-- Branch name follows format: `{prefix}-{feature-name}` (see conventions.md)
-- Must complete before Phase 1
+**Guidelines:**
+- Typically exactly one task for branch creation
+- Standard git command: `git checkout -b {prefix}-{feature-name}`
+- Customize branch naming for your project's conventions
+- Complete before Phase 1 in typical workflow
+
+**Note:** If your project uses different branching strategies (trunk-based development, PR-from-fork, etc.), adapt Phase 0 accordingly or skip if branch already exists.
 
 ## Task Granularity Guidelines
 
-**Every task must meet these criteria:**
+**Tasks should aim to meet these criteria:**
 
 **Time:** 15-30 minutes to complete
 - Too small: Overhead of context switching
@@ -79,6 +81,8 @@ Every phase follows this exact structure:
 - Mentions specific file names (e.g., "in parser.py")
 - Identifies specific components (e.g., "QueryParser class")
 - Clear scope boundaries
+
+**Note:** These are guidelines for effective task breakdown. Real-world tasks may occasionally deviate based on feature complexity and context.
 
 **Examples:**
 
@@ -101,12 +105,14 @@ Every phase follows this exact structure:
 
 ## Task Ordering Principles
 
-**Standard task flow within a phase:**
+**Common task flow within a phase:**
 
 1. **Setup** - Create files, directories, boilerplate
 2. **Implementation** - Write core functionality
 3. **Testing** - Write tests for implemented code
 4. **Validation** - Verify tests pass, run quality checks
+
+**Note:** This is a typical pattern. Adapt for your approach (e.g., TDD reverses implementation and testing, some teams validate continuously). The key is logical dependency ordering.
 
 **Dependency rule:** Tasks that depend on others come AFTER
 

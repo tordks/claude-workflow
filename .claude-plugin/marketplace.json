@@ -9,8 +9,7 @@
       "name": "cwf",
       "version": "0.2.0",
       "source": "./",
-      "description": "Plan-driven development workflow for Claude Code with phase-based implementation",
-      "strict": false
+      "description": "Plan-driven development workflow for Claude Code with phase-based implementation"
     }
   ]
 }

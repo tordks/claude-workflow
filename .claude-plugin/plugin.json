@@ -1,0 +1,13 @@
+{
+  "name": "cwf",
+  "version": "0.2.0",
+  "description": "Plan-driven development workflow for Claude Code with phase-based implementation",
+  "author": {
+    "name": "tordks",
+    "email": "tordks@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/tordks/claude-workflow",
+  "repository": "https://github.com/tordks/claude-workflow",
+  "license": "MIT",
+  "keywords": ["workflow", "planning", "development", "phase-based"]
+}

@@ -126,6 +126,20 @@ context is cleared will assume that we have made no amendments. This is a recipe
 confusion and erroneous implementations.
 
 
+### Coding Constitution
+
+CWF supports a coding constitution (`.constitution/` directory) that guides implementation quality and consistency. The constitution is automatically loaded by `/write-plan`, `/implement-plan`, `/amend-plan` and by `/read-sontitution`. Example constitution files are available separately:
+
+- **Software Engineering Principles:** DRY, YAGNI, orthogonality, separation of concerns
+- **Testing Philosophy:** Test coverage expectations, testing patterns, when to test
+- **Language Standards:** Python-specific conventions and best practices
+
+
+Without shared standards, agents apply inconsistent conventions and make inconsistent quality decisions. The constitution ensures every implementation follows the same engineering principles.
+
+Customize the .constitution for your project's standards.
+
+
 ### Command Reference
 
 | Command | When to Use | Inputs | What It Does |

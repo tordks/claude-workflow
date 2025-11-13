@@ -8,9 +8,9 @@ Formalize the planning discussion from plan mode into structured documentation.
 
 ## Bootstrap
 
-Use the Skill tool to load: `cfw-planning`
-
-Wait for it to complete, then proceed with instructions below.
+1. Use the Skill tool to load: `read-constitution`
+2. Use the Skill tool to load: `cfw-planning`
+3. Wait for both to complete, then proceed with instructions below.
 
 ## Context
 

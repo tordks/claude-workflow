@@ -1,6 +1,6 @@
 ---
 name: cfw-planning
-description: This skill should be used for plan-driven development - provides planning conventions, phase structure, task ID formats, and file naming patterns
+description: Load for any CWF planning task including: explaining the workflow, answering planning questions, creating plans, amending plans, and implementing features. Contains conventions, phase structure, task formats, validation rules, and templates.
 ---
 
 # CFW Planning

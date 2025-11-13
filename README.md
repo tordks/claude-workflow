@@ -7,7 +7,7 @@ Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code
 
 ### What Problem Does CWF Solve?
 
-Software development with AI assistants often suffers from three problems:
+Software development with AI assistants often suffers from a couple of problems:
 
 1. **Lost Context:** Agents lose architectural rationale and design decisions in long contexts and between sessions. Why was this approach chosen? What alternatives were considered? The Agent is stateless and if the context is removed it "forgets".
 

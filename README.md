@@ -46,7 +46,7 @@ Claude Code has different modes for different types of work. CWF is a workflow f
 
 Install as plugin in claude code:
 1. `/plugin marketplace add tordks/claude-workflow`
-2. `/plugin install cwf`
+2. `/plugin install cwf@claude-workflow`
 
 
 ## The Workflow

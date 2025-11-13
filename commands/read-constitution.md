@@ -1,7 +1,7 @@
 ---
-description: Load coding principles from constitution files
+description: Load coding principles from constitution
 ---
 
-Use the Skill tool to load: `read-constitution`
 
-The skill will read all constitution files from the `.constitution` directory and load the principles into context.
+1. Use the Skill tool to load: `read-constitution`
+2. After loading the constitution, acknowledge that the content has been read and understood.

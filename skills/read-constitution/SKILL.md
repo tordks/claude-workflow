@@ -1,15 +1,7 @@
 ---
 name: read-constitution
-description: This skill should be used to load the constitution
+description: This skill should be used to load the constitution files located in .constitution
 ---
-
-# Read Constitution
-
-Load all coding constitution files into context to inform implementation.
-
-## Purpose
-
-This skill reads the constitution files that establish fundamental principles.
 
 ## Instructions
 
@@ -19,9 +11,5 @@ Read each file in the `.constitution` directory using the Read tool:
    ```
    pattern: "**/.constitution/**/*"
    ```
-2. Read each constitution file found.
-3. After loading the constitution, acknowledge that the content has been read and understood.
-
-If no constitution directory is found, or if there are no files in the constitution directory, stop and reply with "No constitution files found".
-
-**Skill loaded.** Constitution principles are now available to guide implementation.
+2a. If no files are found, then we don't need to read any files.
+2b. If a .constitution folder exists and there are any files in it, use the Read tool to read each constitution file found.

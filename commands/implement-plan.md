@@ -76,8 +76,8 @@ Summary of changes:
 Phase 1 Checkpoint: Foundation layer complete following constitution principles. All code type-safe and passes quality checks.
 
 Suggested commit:
-```
 feat: establish foundational architecture
+```
 
 Enables modular development with core models, strict type validation,
 and clear module boundaries.
@@ -94,19 +94,18 @@ Progress check:
 Resuming from Phase 3, Task [P3.2]...
 ```
 
-## Notes
 
-### When Tasks Are Unclear
+## When Tasks Are Unclear
 1. Check relevant sections in the plan document first
 2. Still unclear? Use AskUserQuestion tool with task ID, what's unclear, which plan sections checked, and recommended approach
 
-### When Issues Arise
+## When Issues Arise
 - Document the issue clearly
 - Use AskUserQuestion for multiple valid approaches or critical decisions
 - Continue with reasonable assumptions if minor
 - Stop and ask if significant or affects architecture
 
-### Code Quality
+## Code Quality
 - Keep codebase runnable throughout
 - Run tests after implementing functionality
 - Follow constitution and project principles

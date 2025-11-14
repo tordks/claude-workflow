@@ -32,24 +32,28 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 
 ## Instructions
 
+
+### 1. Analyze conversation history and create plan and tasklist documents
 Review the conversation history from plan mode and create two documents in the `plans/` directory.
 
 The plan-guide.md and tasklist-guide.md references provide complete structure requirements for both documents. See these references for detailed templates, examples, and validation criteria.
 
-## Requirements
+Write the planning documents.
+
+**Requirements:**
 
 - Stay faithful to what was discussed and agreed upon in plan mode
 - Ensure tasks reflect the implementation approach from the discussion
 - Make sure completing each phase leaves the codebase in a stable state
 - Use clear, concise language
 
-## Per document Validation
+### 2. Per document Validation
 
-Before finalizing documents, validate against plan-guide.md and tasklist-guide.md validation checklists.
+Validate the written plan and tasklist against plan-guide.md and tasklist-guide.md validation checklists.
 
-## Cross-Document Coherence Validation
+### 3. Cross-Document Coherence Validation
 
-After creating both documents, verify they are coherent:
+Validate the written plan and tasklist for coherency.
 
 **Quick coherence checks:**
 1. **Phases match plan** - Each tasklist phase implements components/features described in plan

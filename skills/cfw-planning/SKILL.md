@@ -5,7 +5,7 @@ description: Load for any CWF planning task including: explaining the workflow, 
 
 # CFW Planning
 
-Knowledge repository for Claude Workflow (CWF) planning system.
+Knowledge repository for Claude Workflow (CWF).
 
 ## Overview
 
@@ -69,29 +69,71 @@ CWF specifications define three conformance levels:
 
 ## CWF Workflow
 
-The CWF planning workflow follows these stages:
+The CWF planning workflow follows this command-driven flow:
 
-### 1. Planning Phase
-- Discuss feature requirements and approach
-- Consider architecture, design decisions, and trade-offs
-- Identify phases, tasks, and dependencies
+```
+  Planning Discussion [Human ↔ Agent]
+         ↓
+     /write-plan [Human runs]
+         ↓
+   Plan + Tasklist [Agent writes]
+         ↓
+   /implement-plan [Human runs]
+         ↓
+  Phase 1 [Agent implements] → Review [Human] → ✓ → /clear [Human runs]
+         ↓
+ Phase 2 [Agent implements] → Review [Human] → ✓ → /clear [Human runs]
+  [Changes?] → /amend-plan [Human runs] ──┐
+         ↓                                │
+  Continue development [Agent] ←──────────┘
+         ↓
+  Feature Complete ✓ [Human confirms]
+```
 
-### 2. Documentation
-- Create plan document with architectural context
-- Create tasklist document with execution steps
-- Validate structure and consistency between documents
+### Stage Breakdown
 
-### 3. Implementation
-- Read plan first for architectural understanding
-- Follow tasklist phase-by-phase
-- Mark tasks complete as work progresses
-- Stop at phase boundaries for review
+**1. Planning Discussion**
+- **Human:** Describes feature requirements and constraints
+- **Agent:** Discusses approach, architecture, and design decisions
+- **Outcome:** Shared understanding of what needs to be built and why
 
-### 4. Amendment
-- Add tasks to incomplete phases as needed
-- Create new phases for additional work
-- Update plan sections with new context
-- Follow amendment safety rules (completed work is immutable)
+**2. `/write-plan` Command**
+- **Human:** Runs `/write-plan` command
+- **Agent:** Generates two documents:
+  - Plan: Architectural context and WHY/WHAT decisions
+  - Tasklist: Step-by-step HOW/WHEN execution guidance
+  - Validates structure and consistency between documents
+
+**3. Phase-by-Phase Implementation**
+
+The implementation follows this repeating cycle:
+
+- **Human:** Runs `/implement-plan` command
+- **Agent:**
+  - Reads plan for architectural understanding
+  - Checks tasklist to identify completed tasks and current phase
+  - Works through tasks for current phase sequentially
+  - Marks tasks complete as work progresses
+  - Signals phase completion for review at phase boundary
+- **Human:**
+  - Reviews phase results when agent signals completion
+  - Runs `/clear` to start fresh session for next phase
+  - **Repeats cycle:** Runs `/implement-plan` again for next phase
+
+**Note:** Conversation history is lost after `/clear`; only plan, tasklist checkboxes, and committed code persist across cycles.
+
+**4. `/amend-plan` Command (When Needed)**
+- **Human:** Discusses amendment and runs `/amend-plan` when requirements change during development
+- **Agent:**
+  - Adds tasks to incomplete phases
+  - Creates new phases for additional work
+  - Updates plan sections with new context
+  - Follows amendment safety rules
+- **Agent:** Continues development with amended plan
+
+**5. Feature Completion**
+- **Agent:** Completes all phases and signals completion
+- **Human:** Reviews and confirms feature is complete (✓)
 
 ## Quick Reference
 

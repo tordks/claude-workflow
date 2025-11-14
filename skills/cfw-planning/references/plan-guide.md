@@ -1,12 +1,74 @@
-# Plan Document Structure
+# Plan Document Guide
 
-The plan document captures architectural context and design rationale (WHY and WHAT).
+Complete guide for creating high-quality plan documents in the CWF workflow.
+
+## What is a Plan Document?
+
+The plan document captures **architectural context and design rationale** (WHY and WHAT). It provides the foundation for implementation by documenting decisions, alternatives, and reasoning.
+
+**Plan = WHY/WHAT** | Tasklist = WHEN/HOW
+
+---
+
+## Document Header Structure
+
+Every plan document must start with YAML frontmatter and a usage header to make it self-contained.
+
+### YAML Frontmatter Template
+
+```yaml
+---
+feature: {feature-name}
+plan_file: plans/{feature-name}-plan.md
+tasklist_file: plans/{feature-name}-tasklist.md
+created: YYYY-MM-DD
+last_updated: YYYY-MM-DD
+---
+```
+
+**Field descriptions:**
+- `feature`: The feature name (e.g., `query-command`)
+- `plan_file`: Path to this plan document
+- `tasklist_file`: Path to companion tasklist document
+- `created`: Date when plan was created (YYYY-MM-DD format)
+- `last_updated`: Date of last amendment (same as created initially)
+
+### Usage Header Template
+
+After the frontmatter and title, include a usage blockquote:
+
+```markdown
+# {Feature Name} - Implementation Plan
+
+> **How to Use This Plan**
+>
+> **Purpose:** This plan provides architectural context (WHY/WHAT) for the `{feature-name}` feature.
+> It explains design decisions, rationale, and how components fit together.
+>
+> **When to read:**
+> 1. **Before implementation:** Read in full to understand the overall architecture
+> 2. **During implementation:** Refer back when tasks are unclear or need clarification
+> 3. **When blocked:** Check relevant sections before asking questions
+>
+> **Related documents:**
+> - **Tasklist:** `plans/{feature-name}-tasklist.md` - Step-by-step execution tasks (WHEN/HOW)
+>
+> **Document structure:**
+> - **Overview** - What and why we're building
+> - **Architecture & Design** - How components fit together, design decisions with rationale
+> - **Technical Approach** - Dependencies, integration points, error handling
+> - **Implementation Strategy** - Phase breakdown and testing approach
+> - **Risks & Considerations** - Potential issues and mitigations
+```
+
+---
 
 ## Core Plan Sections
 
 Every plan should include these sections, adapting the level of detail to feature complexity. Simple features may have brief sections; complex features need more depth.
 
-### 1. Overview
+### Section 1: Overview
+
 **Purpose:** High-level summary of the feature
 
 **Contains:**
@@ -40,7 +102,10 @@ Every plan should include these sections, adapting the level of detail to featur
 - Test coverage >80%
 ```
 
-### 2. Architecture & Design
+---
+
+### Section 2: Architecture & Design
+
 **Purpose:** Component structure and design decisions with rationale
 
 **Contains:**
@@ -53,10 +118,11 @@ Every plan should include these sections, adapting the level of detail to featur
 Use markers to show file operations:
 - `[CREATE]` for new files
 - `[MODIFY]` for changed files
+- `[REMOVE]` for removed files
 - No marker for existing unchanged files
 
 **Example:**
-```markdown
+````markdown
 ## Architecture & Design
 
 ### Component Overview
@@ -91,9 +157,12 @@ src/
 **Trade-offs:**
 - Pro: Fast implementation, predictable results, no dependencies
 - Con: Doesn't understand semantics, sensitive to exact keyword matches
-```
+````
 
-### 3. Technical Approach
+---
+
+### Section 3: Technical Approach
+
 **Purpose:** Implementation details and dependencies
 
 **Contains:**
@@ -123,42 +192,21 @@ src/
 - Timeout (>5s) → 408 with partial results
 ```
 
-### 4. Implementation Strategy
-**Purpose:** How implementation will proceed
+---
+
+### Section 4: Implementation Strategy
+
+**Purpose:** How implementation will proceed and what the strategy for implementation is.
 
 **Contains:**
 - Phase breakdown (summary of tasklist phases)
-- Testing approach (unit, integration, e2e)
+- Feature appropriate testing approach (unit, integration, e2e)
 
-**Example:**
-```markdown
-## Implementation Strategy
 
-### Phase Breakdown
-- Phase 0: Branch setup
-- Phase 1: Core data models and parser
-- Phase 2: Ranking algorithm implementation
-- Phase 3: API endpoint integration
-- Phase 4: Testing and validation
+---
 
-### Testing Approach
+### Section 5: Risks & Considerations
 
-Describe the testing strategy appropriate for your feature. Not all features need all test types.
-
-Common approaches:
-- Simple utilities: Unit tests may be sufficient
-- New features: Unit + integration tests
-- User-facing features: Add E2E tests
-- Performance-critical: Add performance tests
-
-Example (comprehensive feature):
-- Unit tests: Each component in isolation
-- Integration tests: Parser → Ranker → API flow
-- E2E tests: Full search request through API
-- Performance tests: Verify <100ms requirement
-```
-
-### 5. Risks & Considerations
 **Purpose:** Potential issues and mitigation strategies
 
 **Contains:**
@@ -208,7 +256,10 @@ Identify and document risks relevant to your feature. Common categories include:
   - Future: Parallel processing if needed for >10K documents
 ```
 
-**Note:** This example shows all four common categories. Your feature may only need 0-2 categories. For instance, a simple utility function might only have "Technical Challenges" and omit the others entirely
+**Note:** This example shows all four common categories. Your feature may only need 0-2 categories. For instance, a simple utility function might only have "Technical Challenges" and omit the others entirely.
+
+---
+
 
 ## Design Decision Template
 
@@ -226,3 +277,85 @@ When documenting design decisions, use this structure:
 ```
 
 This ensures architectural context is captured with clear reasoning for future reference.
+
+---
+
+## Plan Validation Checklist
+
+Before finalizing your plan document, validate against these criteria:
+
+### Document Header
+✅ **YAML frontmatter present** with all required fields.
+
+✅ **Usage header present** after title with required fields.
+
+### Core Sections
+✅ **All sections present** (adapt depth to feature complexity):
+1. Overview (Problem, Purpose, Scope, Success Criteria)
+2. Architecture & Design (Components, Structure, Decisions, Data Flow)
+3. Technical Approach (Dependencies, Integration, Error Handling)
+4. Implementation Strategy (Phase Breakdown, Testing Approach)
+5. Risks & Considerations (Relevant categories only)
+
+### File Tree Format
+✅ **Markers used correctly:**
+- `[CREATE]` for new files
+- `[MODIFY]` for changed files
+- `[REMOVE]` for removed files
+- No marker for existing unchanged files
+
+### Design Decisions
+✅ **Include WHY rationale** (not just WHAT)
+✅ **Document alternatives considered**
+✅ **Explain trade-offs** (pros and cons)
+
+### Content Focus
+✅ **Contains architectural context** (WHY/WHAT)
+✅ **Does NOT contain step-by-step execution instructions**
+✅ **Does NOT contain task checklists**
+
+### File Naming
+✅ **Plan filename:** `plans/{feature-name}-plan.md`
+✅ **Examples:** `query-command-plan.md`, `user-auth-plan.md`, `data-export-plan.md`
+
+---
+
+## Common Mistakes to Avoid
+
+**❌ Mixing execution steps into plan**
+- Plan should explain WHY and WHAT, not HOW step-by-step
+- Move execution details to tasklist
+
+**❌ Missing WHY rationale in design decisions**
+- Don't just say "Use Redis for caching"
+- Explain: "Use Redis for caching because it provides sub-millisecond latency and persistence, crucial for our high-traffic API. Considered Memcached (faster but no persistence) and in-memory (simpler but doesn't survive restarts)."
+
+**❌ File tree without markers**
+- Always use `[CREATE]` and `[MODIFY]` markers
+- Helps implementers know what files to create vs modify
+
+**❌ Vague success criteria**
+- Don't say "Feature works correctly"
+- Say "Search returns results in <100ms, handles 1000+ documents"
+
+---
+
+## Adapting to Feature Complexity
+
+**Simple features** (bug fixes, small utilities):
+- Brief sections (1-2 paragraphs each)
+- May skip some subsections (e.g., Data Flow, Security Concerns)
+- Focus on core information needed for implementation
+
+**Medium features** (new components):
+- Moderate detail in all sections
+- Include most subsections
+- Document key design decisions thoroughly
+
+**Complex features** (major systems):
+- Comprehensive detail in all sections
+- Include all subsections
+- Extensive design decision documentation
+- Multiple risks and mitigations
+
+The validation checklist represents comprehensive validation. Not every item is mandatory for every feature type - adapt to your needs.

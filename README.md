@@ -97,8 +97,8 @@ checkpoint where we can review and evaluate progress. It also enables us
 to stay in control over what is implemented and catch errors early.
 
 **TIP:**
-- If planning over multiple sessions or you for some reason need to clear or compact context, ask the agent to save the planning to file.
-- A plan made in plan-mode can be a great starting point for writing the plan
+- If planning over multiple sessions or if you need to clear or compact context, ask the agent to save the discussion to file and load it when starting a new session.
+- A plan made in plan-mode can be a great starting point before calling `/write-plan`
 - You can add description or instructions when writing the plan: `/write-plan user-auth write a plan for phase 1 in my-complex-auth-plan.md`
 
 ### Implementation
@@ -154,8 +154,8 @@ Customize the .constitution for your project's standards.
 
 | Skill | Contains | How It's Used |
 |-------|----------|---------------|
-| `cfw-planning` | Planning structure, phase patterns, task format, amendment rules | Loaded by planning commands for consistency |
-| `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Loaded by /implement-plan for code quality |
+| `cfw-planning` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
+| `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Manually at the start of a planning session or by cwf commands automatically|
 
 ### Tips for Success
 
@@ -170,7 +170,7 @@ It is all about solidifying our intent and reducing the solution space in which 
 **During Implementation:**
 - Review at phase boundaries before approving
 - Use `/amend-plan` when requirements change
-- Keep phases small
+- `/clear` between each phase
 
 
 ## Alternatives & Resources

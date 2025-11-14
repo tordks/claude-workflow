@@ -20,38 +20,31 @@ This command is called in a fresh chat session to implement a planned feature. A
 
 **Input**: `$ARGUMENTS`
 
-Use the feature name parsing pattern from cfw-planning skill.
+Parse input arguments using the standard parsing pattern from the cfw-planning skill's `parsing-arguments.md` reference.
 
-## Instructions
+
+## Implementation workflow
 
 1. **Load documents:**
-   - **FIRST:** Read `plans/{feature-name}-plan.md` in full to understand architecture, design decisions, and rationale
+   - **FIRST:** Read `plans/{feature-name}-plan.md` in full
    - **SECOND:** Read `plans/{feature-name}-tasklist.md` for execution guidance
-   - See cfw-planning skill for why this order matters and how documents work together
 
-2. **Validate document structure:**
-   - Validate against cfw-planning skill's validation reference
-   - **If validation fails:** STOP and notify user of structural issues before proceeding
+   Both documents have usage instructions at the top explaining how to use them.
 
-3. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
+2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
 
-4. **Execute phase-by-phase:**
+3. **Execute phase-by-phase and task-by-task:**
+   - Follow the workflow guidance in the tasklist header
    - Implement each task following plan and constitution
    - Mark complete: edit tasklist changing `- [ ]` to `- [x]`
-   - After ALL phase tasks complete: present summary with ✅, explain checkpoint, suggest conventional commit format (`<type>: <description>\n\n<body with WHY/HOW>`), STOP for approval
+   - After ALL phase tasks complete:
+     - Apply checkpoint instructions
+     - present summary with ✅
+     - suggest conventional commit format (`<type>: <description>\n\n<body with WHY/HOW>`)
+     - STOP for approval
 
-5. **Task workflow:** Read task → implement → test → mark complete → next task. After last task in phase: stop and wait for approval before next phase.
+**Task workflow:** Read task → implement → test → mark task complete → next task. After last task in phase: stop and wait for approval before next phase.
 
-## Requirements
-
-- **Check existing progress first** - don't restart completed work
-- **Follow the constitution** (loaded via read-constitution skill)
-- **Ensure code is runnable** after each phase
-- **Run quality checks** when appropriate (ruff, mypy, pre-commit)
-- **Actually edit the tasklist file** to check off tasks - don't just say you did it
-- **Be explicit** about which task you're working on using its ID
-- **Stop after each phase** - do not proceed to the next phase without user approval
-- **Communicate clearly** when a phase is complete and you're waiting for review
 
 ## Example Workflow
 
@@ -80,8 +73,7 @@ Summary of changes:
 ✅ Implemented core data models with Pydantic validation
 ✅ Added type hints and proper __init__.py exports
 
-Phase 1 Checkpoint: Foundation layer complete following constitution principles
-(orthogonality, encapsulation). All code type-safe and passes quality checks.
+Phase 1 Checkpoint: Foundation layer complete following constitution principles. All code type-safe and passes quality checks.
 
 Suggested commit:
 ```
@@ -105,12 +97,8 @@ Resuming from Phase 3, Task [P3.2]...
 ## Notes
 
 ### When Tasks Are Unclear
-1. **Check plan document sections** for clarification (see cfw-planning skill's plan-structure.md for section descriptions)
-2. **Still unclear?** STOP and use AskUserQuestion tool:
-   - Specify which task ID and what's unclear
-   - Reference which plan sections you've checked
-   - Provide 2-4 concrete options
-   - Don't guess critical implementation details
+1. Check relevant sections in the plan document first
+2. Still unclear? Use AskUserQuestion tool with task ID, what's unclear, which plan sections checked, and recommended approach
 
 ### When Issues Arise
 - Document the issue clearly
@@ -121,5 +109,4 @@ Resuming from Phase 3, Task [P3.2]...
 ### Code Quality
 - Keep codebase runnable throughout
 - Run tests after implementing functionality
-- Follow constitution principles (DRY, YAGNI, orthogonality)
-- Refer to existing patterns when in doubt
+- Follow constitution and project principles

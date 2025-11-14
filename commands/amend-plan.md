@@ -12,6 +12,12 @@ Update an existing plan and tasklist based on conversation context.
 2. Use the Skill tool to load: `cfw-planning`
 3. Wait for both to complete, then proceed with instructions below.
 
+**Key references from cfw-planning:**
+- `plan-guide.md` - Complete plan document guide with structure and validation
+- `tasklist-guide.md` - Complete tasklist document guide with structure and validation
+- `amendment.md` - Complete amendment safety rules
+- `conventions.md` - Feature name format and file discovery patterns
+
 ## Context
 
 This command is used when amendments, changes, or extensions to an existing plan have been discussed. Your job is to understand those changes from the conversation and apply them safely.
@@ -20,7 +26,7 @@ This command is used when amendments, changes, or extensions to an existing plan
 
 **Input**: `$ARGUMENTS`
 
-Use the feature name parsing pattern from cfw-planning skill.
+Parse arguments using the standard parsing pattern from the cfw-planning skill's `parsing-arguments.md`.
 
 ## Instructions
 
@@ -30,7 +36,6 @@ Read the existing planning documents:
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
 
-(See cfw-planning skill for document relationship and synergy principles)
 
 ### 2. Analyze Conversation for Amendment Intent
 
@@ -89,7 +94,12 @@ Is this understanding correct? Should I proceed with these amendments?
 
 Once confirmed, apply the changes following amendment safety rules from cfw-planning skill's amendment.md reference.
 
-See cfw-planning skill for complete amendment safety rules, allowed/blocked operations, and detailed guidelines.
+**YAML Frontmatter:** When editing documents:
+- Preserve all YAML frontmatter fields
+- Update the `last_updated` field to today's date (YYYY-MM-DD format)
+- Do NOT modify other frontmatter fields (`feature`, `plan_file`, `tasklist_file`, `created`)
+- Preserve usage headers - do NOT modify them during amendments
+
 
 ### 6. Confirm Completion
 
@@ -161,12 +171,3 @@ Applying...
 
 Done! Resume with `/implement query-command`.
 ```
-
-## Notes
-
-- Thoroughly analyze conversation - don't miss details
-- Always confirm proposed changes before applying
-- Explain safety blocks and suggest alternatives
-- Ensure amendments integrate naturally with existing structure
-- Follow sequential task ID numbering within phases
-- Test that amendments work seamlessly with `/implement`

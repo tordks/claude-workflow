@@ -77,6 +77,32 @@ After the frontmatter and title, include a usage blockquote:
 
 ---
 
+## Required Syntax
+
+Every task in the tasklist MUST follow this exact markdown format:
+
+```markdown
+- [ ] [PX.Y] Task description with file/component specifics
+```
+
+**Required elements:**
+- **Checkbox:** `- [ ]` for incomplete tasks, `- [x]` for completed tasks
+- **Task ID:** `[PX.Y]` format where P = Phase, X = phase number, Y = task number
+- **Description:** Clear, file-specific action statement
+
+**Critical:** Do NOT use markdown headings (`###`) for tasks. Tasks must be checkboxes for tracking.
+
+**Example:**
+```markdown
+## Phase 1: Foundation
+
+- [ ] [P1.1] Create query/ directory and __init__.py
+- [ ] [P1.2] Create QueryModel class with Pydantic in models.py
+- [x] [P1.3] Add field validation to QueryModel (required fields, type checks)
+```
+
+---
+
 ## Phase Structure
 
 Every phase should follow this standard structure:
@@ -107,6 +133,8 @@ Every phase should follow this standard structure:
 ---
 
 ## Task Granularity Guidelines
+
+> **CRITICAL**: All tasks must use checkbox format (`- [ ]` or `- [x]`). Never use markdown headings (`###`) for tasks.
 
 Tasks should aim to meet these criteria:
 
@@ -188,7 +216,9 @@ Tasks that depend on others come AFTER.
 
 ## Task ID Format
 
-**Structure:** `[PX.Y]`
+**Structure:** `[PX.Y]` where tasks MUST use checkbox format
+
+**ID Components:**
 - **P:** Prefix indicating "Phase"
 - **X:** Phase number (0, 1, 2, 3...)
 - **Y:** Task number within phase (1, 2, 3...)
@@ -198,13 +228,15 @@ Tasks that depend on others come AFTER.
 - Sequential numbering within phases (no gaps)
 - Never reuse or skip IDs
 
-**Checkbox Format:**
+**Required Checkbox Format:**
 ```markdown
-- [ ] [P2.3] Incomplete task description
-- [x] [P2.3] Completed task description
+- [ ] [PX.Y] Task description for incomplete task
+- [x] [PX.Y] Task description for completed task
 ```
 
-**Example Sequence:**
+> **CRITICAL**: Tasks must use checkboxes (`- [ ]` or `- [x]`). Never use markdown headings (`###`) for tasks.
+
+**Example:**
 ```markdown
 ## Phase 1: Foundation
 - [x] [P1.1] Create query/ directory and __init__.py
@@ -246,43 +278,69 @@ Every phase ends with a checkpoint describing system state.
 Before finalizing your tasklist document, validate against these criteria:
 
 ### Document Header
-✅ **YAML frontmatter present** with all required fields.
+✅ **YAML frontmatter present** with all required fields
 
-✅ **Usage header present** after title with required fields.
+✅ **Usage header present** after title with required fields
+
+### Required Syntax (CRITICAL)
+✅ **Every task uses checkbox format:** `- [ ]` or `- [x]`
+
+✅ **NO markdown headings for tasks:** Never use `###` for tasks
+
+✅ **Task IDs in brackets:** Every task has `[PX.Y]` format ID
+
+✅ **Proper indentation:** Task details (if any) indented 2 spaces under checkbox
 
 ### Phase Structure (all phases)
 ✅ **Header format:** `## Phase X: Descriptive Name`
+
 ✅ **Goal:** One-sentence description
+
 ✅ **Deliverable:** Concrete outcome statement
-✅ **Tasks:** List of `[PX.Y]` format tasks
+
+✅ **Tasks:** Checkbox list of `[PX.Y]` format tasks
+
 ✅ **Checkpoint:** System state after completion
 
 ### Task IDs
 ✅ **Pattern:** `[PX.Y]` where P = Phase prefix
+
 ✅ **Phase number (X):** 0, 1, 2, 3...
+
 ✅ **Task number (Y):** Starts at 1, NOT 0
+
 ✅ **Sequential within phase:** No gaps in numbering
+
 ✅ **Examples:** `[P1.1]`, `[P1.2]`, `[P2.1]`
 
 ### Task Granularity
-✅ **Time:** 15-30 minutes each
+✅ **Time:** 5-10 minutes each
+
 ✅ **Atomic:** Complete in one go
+
 ✅ **Testable:** Can verify completion
+
 ✅ **File-specific:** References concrete files or components
 
 ### Task Ordering
 ✅ **Dependencies come first**
+
 ✅ **Common flow:** Setup → Implementation → Testing → Validation
+
 ✅ **Logical flow within phase**
 
 ### Checkpoint Quality
 ✅ **1-2 sentences**
+
 ✅ **Describes system capabilities and state**
+
 ✅ **Not just list of tasks completed**
 
 ### Content Focus
 ✅ **Contains execution steps** (WHEN/HOW)
+
 ✅ **Does NOT contain architectural rationale**
+
 ✅ **Does NOT contain design alternatives or lengthy context**
 
 
@@ -290,25 +348,87 @@ Before finalizing your tasklist document, validate against these criteria:
 
 ## Common Mistakes to Avoid
 
-**❌ Mixing architectural rationale into tasklist**
-- Tasklist should say WHAT to do and WHEN, not WHY
+### ❌ Using Headings Instead of Checkboxes
+
+**Bad - Using markdown headings:**
+```markdown
+### Task 1.1: Create output_utils.py module
+
+**ID**: `sim-out-1.1`
+
+**Description**: Create new module...
+```
+
+**Good - Using checkbox format:**
+```markdown
+- [ ] [P1.1] Create output_utils.py module with utility functions
+```
+
+> **CRITICAL**: Tasks must use checkbox format (`- [ ]`), NOT markdown headings (`###`). Checkboxes enable progress tracking.
+
+### ❌ Missing Task IDs
+
+**Bad - No task ID:**
+```markdown
+- [ ] Create utilities module
+- [ ] Add validation
+```
+
+**Good - Task IDs present:**
+```markdown
+- [ ] [P1.1] Create utilities module in utils.py
+- [ ] [P1.2] Add field validation to QueryModel in models.py
+```
+
+### ❌ Mixing architectural rationale into tasklist
+
+**Bad:**
+- Tasklist contains WHY decisions were made
+- Long explanations of alternatives considered
+
+**Good:**
+- Tasklist says WHAT to do and WHEN
 - Move rationale to plan document
 
-**❌ Tasks without file/component specificity**
-- Don't say "Add validation"
-- Say "Add field validation to QueryModel in models.py"
+### ❌ Tasks without file/component specificity
 
-**❌ Tasks too large (>30 minutes)**
-- Break down into smaller atomic tasks
-- Each task should be completable in one sitting
+**Bad:**
+- "Add validation"
+- "Set up module"
 
-**❌ Missing checkpoints**
-- Every phase must end with a checkpoint
-- Checkpoint describes system state, not task list
+**Good:**
+- "Add field validation to QueryModel in models.py"
+- "Create query/ directory and __init__.py"
 
-**❌ Vague task descriptions**
+### ❌ Tasks too large (>10 minutes)
+
+**Bad:**
+- Tasks that take 30+ minutes
+- Multiple unrelated actions in one task
+
+**Good:**
+- Break down into 5-10 minute atomic tasks
+- Each task completable in one sitting
+
+### ❌ Missing checkpoints
+
+**Bad:**
+- Phase ends without checkpoint
+- Checkpoint just lists completed tasks
+
+**Good:**
+- Every phase ends with checkpoint
+- Checkpoint describes system state and capabilities
+
+### ❌ Vague task descriptions
+
+**Bad:**
 - "Set up module" → Too vague
-- "Create query/ directory and __init__.py" → Specific and clear
+- "Add stuff" → No specifics
+
+**Good:**
+- "Create query/ directory and __init__.py" → Clear and specific
+- "Add field validation to QueryModel (required fields, type checks)" → Detailed scope
 
 ---
 

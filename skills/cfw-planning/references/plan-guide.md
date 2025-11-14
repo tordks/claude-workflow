@@ -63,6 +63,8 @@ After the frontmatter and title, include a usage blockquote:
 
 ---
 
+> **CRITICAL**: Every plan document MUST start with YAML frontmatter and usage header (see "Document Header Structure" above) before any content sections.
+
 ## Core Plan Sections
 
 Every plan should include these sections, adapting the level of detail to feature complexity. Simple features may have brief sections; complex features need more depth.

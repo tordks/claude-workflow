@@ -77,6 +77,8 @@ After the frontmatter and title, include a usage blockquote:
 
 ---
 
+> **CRITICAL**: Every tasklist document MUST start with YAML frontmatter and usage header (see "Document Header Structure" above) before any phases or tasks.
+
 ## Required Syntax
 
 Every task in the tasklist MUST follow this exact markdown format:

@@ -32,6 +32,13 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 
 ## Instructions
 
+> **CRITICAL Document Structure Requirements:**
+>
+> Both plan and tasklist documents MUST include:
+> 1. **YAML frontmatter** at the very start with required fields (feature, plan_file, tasklist_file, dates)
+> 2. **Usage header** as blockquote after the title explaining how to use the document
+>
+> See plan-guide.md and tasklist-guide.md "Document Header Structure" sections for exact templates.
 
 ### 1. Analyze conversation history and create plan and tasklist documents
 Review the conversation history from plan mode and create two documents in the `plans/` directory.
@@ -49,7 +56,7 @@ Write the planning documents.
 
 ### 2. Per document Validation
 
-Validate the written plan and tasklist against plan-guide.md and tasklist-guide.md validation checklists.
+First ensure both documents have required headers (YAML frontmatter and usage header), then validate the written plan and tasklist against plan-guide.md and tasklist-guide.md validation checklists.
 
 ### 3. Cross-Document Coherence Validation
 

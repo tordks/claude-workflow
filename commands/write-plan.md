@@ -14,8 +14,8 @@ Formalize the planning discussion from plan mode into structured documentation.
 
 **Key references from cfw-planning:**
 - `conventions.md` - Feature name format validation
-- `plan-guide.md` - Complete plan document guide with structure and validation
-- `tasklist-guide.md` - Complete tasklist document guide with structure and validation
+- `plan-spec.md` - Plan document specification with structure and validation requirements
+- `tasklist-spec.md` - Tasklist document specification with structure and validation requirements
 
 ## Context
 
@@ -38,12 +38,12 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 > 1. **YAML frontmatter** at the very start with required fields (feature, plan_file, tasklist_file, dates)
 > 2. **Usage header** as blockquote after the title explaining how to use the document
 >
-> See plan-guide.md and tasklist-guide.md "Document Header Structure" sections for exact templates.
+> See plan-spec.md and tasklist-spec.md "Document Header Structure" sections for exact templates.
 
 ### 1. Analyze conversation history and create plan and tasklist documents
 Review the conversation history from plan mode and create two documents in the `plans/` directory.
 
-The plan-guide.md and tasklist-guide.md references provide complete structure requirements for both documents. See these references for detailed templates, examples, and validation criteria.
+The plan-spec.md and tasklist-spec.md references provide complete structure requirements for both documents. See these specifications for detailed templates, examples, and validation criteria.
 
 Write the planning documents.
 
@@ -56,7 +56,7 @@ Write the planning documents.
 
 ### 2. Per document Validation
 
-First ensure both documents have required headers (YAML frontmatter and usage header), then validate the written plan and tasklist against plan-guide.md and tasklist-guide.md validation checklists.
+First ensure both documents have required headers (YAML frontmatter and usage header), then validate the written plan and tasklist against plan-spec.md and tasklist-spec.md validation requirements.
 
 ### 3. Cross-Document Coherence Validation
 

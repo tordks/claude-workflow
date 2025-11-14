@@ -1,6 +1,10 @@
-# Tasklist Document Guide
+# Tasklist Document Specification
 
-Complete guide for creating high-quality tasklist documents in the CWF planning system.
+Specification for creating conformant tasklist documents in the CWF planning system.
+
+> **Note:** See `SKILL.md` for conformance levels and RFC 2119 keyword definitions.
+
+---
 
 ## What is a Tasklist Document?
 
@@ -12,7 +16,7 @@ The tasklist document provides **step-by-step execution guidance** (WHEN and HOW
 
 ## Document Header Structure
 
-Every tasklist document must start with YAML frontmatter and a usage header to make it self-contained.
+Every tasklist document MUST start with YAML frontmatter and a usage header to make it self-contained.
 
 ### YAML Frontmatter Template
 
@@ -107,7 +111,7 @@ Every task in the tasklist MUST follow this exact markdown format:
 
 ## Phase Structure
 
-Every phase should follow this standard structure:
+Every phase MUST follow this standard structure:
 
 ```markdown
 ## Phase X: Descriptive Name
@@ -136,9 +140,9 @@ Every phase should follow this standard structure:
 
 ## Task Granularity Guidelines
 
-> **CRITICAL**: All tasks must use checkbox format (`- [ ]` or `- [x]`). Never use markdown headings (`###`) for tasks.
+> **CRITICAL**: All tasks MUST use checkbox format (`- [ ]` or `- [x]`). Tasks MUST NOT use markdown headings (`###`).
 
-Tasks should aim to meet these criteria:
+Tasks SHOULD aim to meet these criteria:
 
 ### Time: 5-10 minutes to complete
 - Too small: Overhead of context switching
@@ -275,57 +279,45 @@ Every phase ends with a checkpoint describing system state.
 
 ---
 
-## Tasklist Validation Checklist
+## Validation Requirements
 
-Before finalizing your tasklist document, validate against these criteria:
+Before finalizing your tasklist document, it MUST satisfy these conformance requirements:
 
-### Document Header
-✅ **YAML frontmatter present** with all required fields
+### Level 1 Requirements (MUST)
 
-✅ **Usage header present** after title with required fields
+**Document Header:**
+- YAML frontmatter MUST be present with all REQUIRED fields
+- Usage header MUST be present after title
 
-### Required Syntax (CRITICAL)
-✅ **Every task uses checkbox format:** `- [ ]` or `- [x]`
+**Required Syntax (CRITICAL):**
+- Every task MUST use checkbox format: `- [ ]` or `- [x]`
+- Tasks MUST NOT use markdown headings (`###`) for tasks
+- Every task MUST have `[PX.Y]` format ID in brackets
+- Task details (if any) MUST be indented 2 spaces under checkbox
 
-✅ **NO markdown headings for tasks:** Never use `###` for tasks
+**Phase Structure (all phases):**
+- Header format MUST be: `## Phase X: Descriptive Name`
+- Goal MUST be present (one-sentence description)
+- Deliverable MUST be present (concrete outcome statement)
+- Tasks MUST be checkbox list with `[PX.Y]` format IDs
+- Checkpoint MUST be present (system state after completion)
 
-✅ **Task IDs in brackets:** Every task has `[PX.Y]` format ID
+**Task IDs:**
+- Pattern MUST be `[PX.Y]` where P = Phase prefix
+- Phase number (X) MUST be 0, 1, 2, 3...
+- Task number (Y) MUST start at 1 (NOT 0)
+- Numbering MUST be sequential within phase (no gaps)
 
-✅ **Proper indentation:** Task details (if any) indented 2 spaces under checkbox
+### Level 2 Requirements (SHOULD)
 
-### Phase Structure (all phases)
-✅ **Header format:** `## Phase X: Descriptive Name`
+**Task Granularity:**
+- Tasks SHOULD take 5-10 minutes each
+- Tasks SHOULD be atomic (complete in one go)
+- Tasks SHOULD be testable (can verify completion)
+- Tasks SHOULD be file-specific (reference concrete files or components)
 
-✅ **Goal:** One-sentence description
-
-✅ **Deliverable:** Concrete outcome statement
-
-✅ **Tasks:** Checkbox list of `[PX.Y]` format tasks
-
-✅ **Checkpoint:** System state after completion
-
-### Task IDs
-✅ **Pattern:** `[PX.Y]` where P = Phase prefix
-
-✅ **Phase number (X):** 0, 1, 2, 3...
-
-✅ **Task number (Y):** Starts at 1, NOT 0
-
-✅ **Sequential within phase:** No gaps in numbering
-
-✅ **Examples:** `[P1.1]`, `[P1.2]`, `[P2.1]`
-
-### Task Granularity
-✅ **Time:** 5-10 minutes each
-
-✅ **Atomic:** Complete in one go
-
-✅ **Testable:** Can verify completion
-
-✅ **File-specific:** References concrete files or components
-
-### Task Ordering
-✅ **Dependencies come first**
+**Task Ordering:**
+- Dependencies SHOULD come first
 
 ✅ **Common flow:** Setup → Implementation → Testing → Validation
 
@@ -434,21 +426,25 @@ Before finalizing your tasklist document, validate against these criteria:
 
 ---
 
-## Adapting to Feature Complexity
+## Conformance by Feature Complexity
 
-**Simple features** (bug fixes, small utilities):
-- Fewer phases (maybe 2-3 total including Phase 0)
-- Simpler tasks (may have 2-3 tasks per phase)
-- Brief checkpoints
+Features SHOULD select the appropriate conformance level based on their complexity:
 
-**Medium features** (new components):
-- Moderate phases (3-5 total including Phase 0)
-- Standard task breakdown (3-6 tasks per phase)
-- Clear checkpoints describing system state
+**Simple features** (bug fixes, small utilities) → **Level 1 (Minimal)**:
+- Fewer phases (typically 2-3 total including Phase 0)
+- MUST satisfy Level 1 syntax requirements
+- MAY have simpler tasks (2-3 tasks per phase)
+- Checkpoints MAY be brief
 
-**Complex features** (major systems):
-- More phases (5-8 total including Phase 0)
-- Detailed task breakdown (4-8 tasks per phase)
-- Comprehensive checkpoints with validation details
+**Medium features** (new components) → **Level 2 (Standard)**:
+- Moderate phases (typically 3-5 total including Phase 0)
+- MUST satisfy Level 1 requirements
+- SHOULD satisfy Level 2 requirements (task granularity, ordering)
+- SHOULD have standard task breakdown (3-6 tasks per phase)
+- Checkpoints SHOULD clearly describe system state
 
-The validation checklist represents comprehensive validation. Adapt the level of detail to your feature's complexity while maintaining the core structure.
+**Complex features** (major systems) → **Level 3 (Comprehensive)**:
+- More phases (typically 5-8 total including Phase 0)
+- MUST satisfy Level 1 and Level 2 requirements
+- SHOULD have detailed task breakdown (4-8 tasks per phase)
+- Checkpoints MUST be comprehensive with validation details

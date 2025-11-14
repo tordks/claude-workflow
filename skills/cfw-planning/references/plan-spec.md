@@ -1,6 +1,10 @@
-# Plan Document Guide
+# Plan Document Specification
 
-Complete guide for creating high-quality plan documents in the CWF workflow.
+Specification for creating conformant plan documents in the CWF workflow.
+
+> **Note:** See `SKILL.md` for conformance levels and RFC 2119 keyword definitions.
+
+---
 
 ## What is a Plan Document?
 
@@ -12,7 +16,7 @@ The plan document captures **architectural context and design rationale** (WHY a
 
 ## Document Header Structure
 
-Every plan document must start with YAML frontmatter and a usage header to make it self-contained.
+Every plan document MUST start with YAML frontmatter and a usage header to make it self-contained.
 
 ### YAML Frontmatter Template
 
@@ -67,7 +71,7 @@ After the frontmatter and title, include a usage blockquote:
 
 ## Core Plan Sections
 
-Every plan should include these sections, adapting the level of detail to feature complexity. Simple features may have brief sections; complex features need more depth.
+Every plan document MUST include these sections. The level of detail SHALL be adapted based on feature complexity and conformance level (see Conformance Levels above).
 
 ### Section 1: Overview
 
@@ -79,13 +83,12 @@ Every plan should include these sections, adapting the level of detail to featur
 - Scope (what's included and what's explicitly out of scope)
 - Success criteria (how will we know this is complete and working?)
 
-**Guidelines:**
-- All items are recommended but adapt to feature complexity
-- Simple features may combine problem/purpose into one statement
-- For small changes, success criteria might be brief (e.g., "Tests pass, documentation updated")
-- Complex features should thoroughly document all four items
+**Requirements:**
+- Level 1 (Minimal): Problem and purpose MUST be present; scope and success criteria MAY be brief
+- Level 2 (Standard): All four items SHOULD be present with appropriate detail
+- Level 3 (Comprehensive): All four items MUST be thoroughly documented
 
-**Example:**
+**Example (Informative):**
 ```markdown
 ## Overview
 
@@ -282,37 +285,52 @@ This ensures architectural context is captured with clear reasoning for future r
 
 ---
 
-## Plan Validation Checklist
+## Validation Requirements
 
-Before finalizing your plan document, validate against these criteria:
+Before finalizing your plan document, it MUST satisfy these conformance requirements:
 
-### Document Header
-✅ **YAML frontmatter present** with all required fields.
+### Level 1 Requirements (MUST)
 
-✅ **Usage header present** after title with required fields.
+**Document Header:**
+- YAML frontmatter MUST be present with all REQUIRED fields
+- Usage header MUST be present after title
 
-### Core Sections
-✅ **All sections present** (adapt depth to feature complexity):
-1. Overview (Problem, Purpose, Scope, Success Criteria)
-2. Architecture & Design (Components, Structure, Decisions, Data Flow)
-3. Technical Approach (Dependencies, Integration, Error Handling)
-4. Implementation Strategy (Phase Breakdown, Testing Approach)
-5. Risks & Considerations (Relevant categories only)
+**Core Sections:**
+- All five core sections MUST be present:
+  1. Overview (Problem and Purpose REQUIRED; Scope and Success Criteria OPTIONAL)
+  2. Architecture & Design (Components and Structure REQUIRED)
+  3. Technical Approach (Dependencies REQUIRED)
+  4. Implementation Strategy (Phase Breakdown REQUIRED)
+  5. Risks & Considerations (MAY be brief)
 
-### File Tree Format
-✅ **Markers used correctly:**
-- `[CREATE]` for new files
-- `[MODIFY]` for changed files
-- `[REMOVE]` for removed files
-- No marker for existing unchanged files
+**File Tree Format:**
+- File operation markers MUST be used correctly:
+  - `[CREATE]` for new files
+  - `[MODIFY]` for changed files
+  - `[REMOVE]` for removed files
+  - No marker for existing unchanged files
 
-### Design Decisions
-✅ **Include WHY rationale** (not just WHAT)
-✅ **Document alternatives considered**
-✅ **Explain trade-offs** (pros and cons)
+### Level 2 Requirements (SHOULD)
 
-### Content Focus
-✅ **Contains architectural context** (WHY/WHAT)
+**Core Sections:**
+- Overview SHOULD include all four items (Problem, Purpose, Scope, Success Criteria)
+- Architecture & Design SHOULD include Data Flow
+- Technical Approach SHOULD include Integration points and Error Handling
+
+**Design Decisions:**
+- Design decisions SHOULD include WHY rationale (not just WHAT)
+- Alternatives considered SHOULD be documented
+- Trade-offs SHOULD be explained (pros and cons)
+
+### Level 3 Requirements (MAY)
+
+**Content Enhancement:**
+- Data flow diagrams MAY be included
+- Performance considerations MAY be documented
+- Extended examples MAY be provided
+
+### Content Focus (All Levels)
+- Plan MUST contain architectural context (WHY/WHAT)
 ✅ **Does NOT contain step-by-step execution instructions**
 ✅ **Does NOT contain task checklists**
 
@@ -342,22 +360,27 @@ Before finalizing your plan document, validate against these criteria:
 
 ---
 
-## Adapting to Feature Complexity
+## Conformance by Feature Complexity
 
-**Simple features** (bug fixes, small utilities):
+Features SHOULD select the appropriate conformance level based on their complexity:
+
+**Simple features** (bug fixes, small utilities) → **Level 1 (Minimal)**:
 - Brief sections (1-2 paragraphs each)
-- May skip some subsections (e.g., Data Flow, Security Concerns)
+- MUST satisfy Level 1 requirements only
+- MAY omit optional subsections (e.g., Data Flow, Security Concerns)
 - Focus on core information needed for implementation
 
-**Medium features** (new components):
+**Medium features** (new components) → **Level 2 (Standard)**:
 - Moderate detail in all sections
-- Include most subsections
-- Document key design decisions thoroughly
+- MUST satisfy Level 1 requirements
+- SHOULD satisfy Level 2 requirements
+- SHOULD include most subsections
+- SHOULD document key design decisions thoroughly
 
-**Complex features** (major systems):
+**Complex features** (major systems) → **Level 3 (Comprehensive)**:
 - Comprehensive detail in all sections
-- Include all subsections
-- Extensive design decision documentation
-- Multiple risks and mitigations
-
-The validation checklist represents comprehensive validation. Not every item is mandatory for every feature type - adapt to your needs.
+- MUST satisfy Level 1 and Level 2 requirements
+- SHOULD satisfy Level 3 requirements where applicable
+- SHOULD include all subsections
+- MUST provide extensive design decision documentation
+- SHOULD document multiple risks and mitigations

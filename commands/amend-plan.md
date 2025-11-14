@@ -13,8 +13,8 @@ Update an existing plan and tasklist based on conversation context.
 3. Wait for both to complete, then proceed with instructions below.
 
 **Key references from cfw-planning:**
-- `plan-guide.md` - Complete plan document guide with structure and validation
-- `tasklist-guide.md` - Complete tasklist document guide with structure and validation
+- `plan-spec.md` - Plan document specification with structure and validation requirements
+- `tasklist-spec.md` - Tasklist document specification with structure and validation requirements
 - `amendment.md` - Complete amendment safety rules
 - `conventions.md` - Feature name format and file discovery patterns
 

@@ -2,7 +2,7 @@
 
 Specification for creating conformant tasklist documents in the CWF planning system.
 
-> **Note:** See `SKILL.md` for conformance levels and RFC 2119 keyword definitions.
+> **Note (Informative):** See `SKILL.md` for conformance levels and RFC 2119 keyword definitions.
 
 ---
 
@@ -39,7 +39,7 @@ last_updated: YYYY-MM-DD
 
 ### Usage Header Template
 
-After the frontmatter and title, include a usage blockquote:
+After the frontmatter and title, implementations MUST include a usage blockquote:
 
 ```markdown
 # {Feature Name} - Implementation Tasklist
@@ -57,7 +57,7 @@ After the frontmatter and title, include a usage blockquote:
 > - Execute tasks in order: implement → test → mark `[x]` → next
 > - Stop at phase boundaries (all phase tasks complete) for review
 > - **Refer back to plan** when tasks need clarification
-> - Code must be runnable after each phase
+> - Code MUST be runnable after each phase
 >
 > **Task unclear?**
 > 1. Check relevant sections in the plan document first
@@ -73,7 +73,7 @@ After the frontmatter and title, include a usage blockquote:
 > - **Plan:** `plans/{feature-name}-plan.md` - Architectural context (WHY/WHAT)
 ```
 
-**Why this header?**
+**Rationale (Informative):**
 - Makes tasklist self-documenting - readable without running `/implement-plan` command
 - Provides clear cross-reference to plan document
 - Explains escalation path when tasks are unclear
@@ -96,9 +96,9 @@ Every task in the tasklist MUST follow this exact markdown format:
 - **Task ID:** `[PX.Y]` format where P = Phase, X = phase number, Y = task number
 - **Description:** Clear, file-specific action statement
 
-**Critical:** Do NOT use markdown headings (`###`) for tasks. Tasks must be checkboxes for tracking.
+**Critical:** Tasks MUST NOT use markdown headings (`###`). Tasks MUST be checkboxes for tracking.
 
-**Example:**
+**Example (Informative):**
 ```markdown
 ## Phase 1: Foundation
 
@@ -130,11 +130,13 @@ Every phase MUST follow this standard structure:
 ```
 
 **Required Components:**
+
+Each phase MUST include:
 - **Header:** `## Phase X: Descriptive Name`
-- **Goal:** One-sentence description
-- **Deliverable:** Concrete outcome
-- **Tasks:** List of `[PX.Y]` tasks
-- **Checkpoint:** System state after completion
+- **Goal:** One-sentence description of what this phase accomplishes
+- **Deliverable:** Concrete outcome statement
+- **Tasks:** List of tasks with `[PX.Y]` format IDs
+- **Checkpoint:** Description of system state after completion
 
 ---
 
@@ -142,30 +144,27 @@ Every phase MUST follow this standard structure:
 
 > **CRITICAL**: All tasks MUST use checkbox format (`- [ ]` or `- [x]`). Tasks MUST NOT use markdown headings (`###`).
 
-Tasks SHOULD aim to meet these criteria:
+### Requirements
 
-### Time: 5-10 minutes to complete
-- Too small: Overhead of context switching
-- Too large: Hard to track progress, risky to complete
+Tasks SHOULD meet these quality criteria:
 
-### Atomic: Complete in one go without interruption
-- Can be done start to finish
-- Natural unit of work
-- Single logical change
+- **Time:** Tasks SHOULD take 5-10 minutes to complete
+- **Atomic:** Tasks SHOULD be completable in one go without interruption (single logical change)
+- **Testable:** Tasks SHOULD have clear done criteria (observable output or verifiable behavior)
+- **File-specific:** Tasks SHOULD reference concrete files or components
 
-### Testable: Can verify completion
-- Has clear done criteria
-- Observable output or behavior
-- Can be tested/validated
+**Note (Informative):** These are guidelines for effective task breakdown. Real-world tasks MAY occasionally deviate based on feature complexity and context.
 
-### File-specific: References concrete files or components
-- Mentions specific file names (e.g., "in parser.py")
-- Identifies specific components (e.g., "QueryParser class")
-- Clear scope boundaries
+### Rationale (Informative)
 
-**Note:** These are guidelines for effective task breakdown. Real-world tasks may occasionally deviate based on feature complexity and context.
+Why these criteria matter:
 
-### Examples
+- **Time (5-10 min):** Tasks that are too small create context-switching overhead. Tasks that are too large are hard to track progress and risky to complete without interruption.
+- **Atomic:** Natural units of work that can be done start to finish create clear progress markers and reduce the risk of partially-complete states.
+- **Testable:** Clear done criteria enable validation and ensure tasks have measurable completion states.
+- **File-specific:** Mentioning specific files (e.g., "in parser.py") or components (e.g., "QueryParser class") provides clear scope boundaries and makes tasks actionable.
+
+### Examples (Informative)
 
 ✅ **Good tasks:**
 - `[P1.1] Create query/ directory and __init__.py`
@@ -188,20 +187,22 @@ Tasks SHOULD aim to meet these criteria:
 
 ## Task Ordering Principles
 
-**Common task flow within a phase:**
+### Requirements
+
+Tasks that depend on others MUST be ordered after their dependencies.
+
+### Typical Task Flow (Informative)
+
+This is a common pattern for task ordering, though teams MAY adapt based on their approach:
 
 1. **Setup** - Create files, directories, boilerplate
 2. **Implementation** - Write core functionality
 3. **Testing** - Write tests for implemented code
 4. **Validation** - Verify tests pass, run quality checks
 
-**Note:** This is a typical pattern. Adapt for your approach (e.g., TDD reverses implementation and testing, some teams validate continuously, tracer bullets write one functional solution and then inrcemental improvements). The key is logical dependency ordering.
+**Note (Informative):** Adapt for your approach (e.g., TDD reverses implementation and testing, some teams validate continuously, tracer bullets write one functional solution and then incremental improvements). The key is logical dependency ordering.
 
-### Dependency Rule
-
-Tasks that depend on others come AFTER.
-
-**Example of good ordering:**
+**Example of good ordering (Informative):**
 ```markdown
 - [ ] [P2.1] Create ranker.py with RankerClass stub
 - [ ] [P2.2] Implement TF-IDF scoring in RankerClass.score()
@@ -211,7 +212,7 @@ Tasks that depend on others come AFTER.
 - [ ] [P2.6] Verify all tests pass: pytest tests/query/test_ranker.py
 ```
 
-**Why this order:**
+**Why this order (Informative):**
 - P2.1 creates file (dependency for P2.2, P2.3)
 - P2.2 implements scoring (dependency for P2.3)
 - P2.3 uses scoring (dependency for P2.4, P2.5)
@@ -230,9 +231,9 @@ Tasks that depend on others come AFTER.
 - **Y:** Task number within phase (1, 2, 3...)
 
 **Rules:**
-- Task numbering starts at 1 within each phase
-- Sequential numbering within phases (no gaps)
-- Never reuse or skip IDs
+- Task numbering MUST start at 1 within each phase
+- Numbering MUST be sequential within phases (no gaps)
+- IDs MUST NOT be reused or skipped
 
 **Required Checkbox Format:**
 ```markdown
@@ -240,9 +241,9 @@ Tasks that depend on others come AFTER.
 - [x] [PX.Y] Task description for completed task
 ```
 
-> **CRITICAL**: Tasks must use checkboxes (`- [ ]` or `- [x]`). Never use markdown headings (`###`) for tasks.
+> **CRITICAL**: Tasks MUST use checkboxes (`- [ ]` or `- [x]`). Tasks MUST NOT use markdown headings (`###`).
 
-**Example:**
+**Example (Informative):**
 ```markdown
 ## Phase 1: Foundation
 - [x] [P1.1] Create query/ directory and __init__.py
@@ -255,14 +256,16 @@ Tasks that depend on others come AFTER.
 
 ## Checkpoint Format
 
-Every phase ends with a checkpoint describing system state.
+### Requirements
 
-**Format:** 1-2 sentences answering:
+Every phase MUST end with a checkpoint describing system state.
+
+Checkpoints SHOULD be 1-2 sentences answering:
 - What capabilities now exist?
 - What's ready for the next phase?
 - What validation has been completed?
 
-### Examples
+### Examples (Informative)
 
 ✅ **Good checkpoints:**
 - "Core data models validated, ready for parser implementation"
@@ -307,6 +310,8 @@ Before finalizing your tasklist document, it MUST satisfy these conformance requ
 - Phase number (X) MUST be 0, 1, 2, 3...
 - Task number (Y) MUST start at 1 (NOT 0)
 - Numbering MUST be sequential within phase (no gaps)
+- Task IDs MUST NOT skip numbers within a phase
+- Task IDs MUST NOT be reused after completion
 
 ### Level 2 Requirements (SHOULD)
 
@@ -319,28 +324,44 @@ Before finalizing your tasklist document, it MUST satisfy these conformance requ
 **Task Ordering:**
 - Dependencies SHOULD come first
 
-✅ **Common flow:** Setup → Implementation → Testing → Validation
-
-✅ **Logical flow within phase**
+**Typical flow (Informative):** Setup → Implementation → Testing → Validation
 
 ### Checkpoint Quality
-✅ **1-2 sentences**
-
-✅ **Describes system capabilities and state**
-
-✅ **Not just list of tasks completed**
+Checkpoints SHOULD be 1-2 sentences that describe system capabilities and state, not just a list of tasks completed.
 
 ### Content Focus
-✅ **Contains execution steps** (WHEN/HOW)
+Tasklists MUST contain execution steps (WHEN/HOW).
 
-✅ **Does NOT contain architectural rationale**
+Tasklists MUST NOT contain architectural rationale.
 
-✅ **Does NOT contain design alternatives or lengthy context**
+Tasklists MUST NOT contain design alternatives or lengthy context.
+
+### Prohibited Patterns
+
+The following patterns MUST NOT appear in conformant tasklist documents:
+
+**Task Format Violations:**
+- Tasks MUST NOT use markdown headings (`###`) instead of checkboxes
+- Tasks MUST NOT omit task IDs in `[PX.Y]` format
+- Task IDs MUST NOT skip numbers within a phase
+- Task IDs MUST NOT be reused after completion
+
+**Content Violations:**
+- Tasklists MUST NOT contain architectural rationale (belongs in plan)
+- Tasklists MUST NOT contain design alternatives (belongs in plan)
+- Tasklists MUST NOT contain lengthy contextual explanations (belongs in plan)
+- Tasks MUST NOT be vague without file/component specificity
+
+**Structure Violations:**
+- Phases MUST NOT omit required components (Goal, Deliverable, Tasks, Checkpoint)
+- Checkpoints MUST NOT simply list completed tasks without describing system state
 
 
 ---
 
 ## Common Mistakes to Avoid
+
+**The following best practices (Informative) help avoid common mistakes:**
 
 ### ❌ Using Headings Instead of Checkboxes
 
@@ -358,7 +379,7 @@ Before finalizing your tasklist document, it MUST satisfy these conformance requ
 - [ ] [P1.1] Create output_utils.py module with utility functions
 ```
 
-> **CRITICAL**: Tasks must use checkbox format (`- [ ]`), NOT markdown headings (`###`). Checkboxes enable progress tracking.
+> **CRITICAL**: Tasks MUST use checkbox format (`- [ ]`), NOT markdown headings (`###`). Checkboxes enable progress tracking.
 
 ### ❌ Missing Task IDs
 

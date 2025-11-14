@@ -39,7 +39,7 @@ last_updated: YYYY-MM-DD
 
 ### Usage Header Template
 
-After the frontmatter and title, include a usage blockquote:
+After the frontmatter and title, implementations MUST include a usage blockquote:
 
 ```markdown
 # {Feature Name} - Implementation Plan
@@ -77,16 +77,16 @@ Every plan document MUST include these sections. The level of detail SHALL be ad
 
 **Purpose:** High-level summary of the feature
 
-**Contains:**
+**Typical Content (Informative):**
 - Problem statement (what user need does this solve?)
 - Feature purpose (what does this feature do?)
 - Scope (what's included and what's explicitly out of scope)
 - Success criteria (how will we know this is complete and working?)
 
-**Requirements:**
+**Conformance Requirements:**
 - Level 1 (Minimal): Problem and purpose MUST be present; scope and success criteria MAY be brief
-- Level 2 (Standard): All four items SHOULD be present with appropriate detail
-- Level 3 (Comprehensive): All four items MUST be thoroughly documented
+- Level 2 (Standard): All four items SHOULD be present with sufficient detail to guide implementation
+- Level 3 (Comprehensive): All four items MUST be documented with specific examples and detailed justification
 
 **Example (Informative):**
 ```markdown
@@ -113,20 +113,20 @@ Every plan document MUST include these sections. The level of detail SHALL be ad
 
 **Purpose:** Component structure and design decisions with rationale
 
-**Contains:**
+**Typical Content (Informative):**
 - Component overview (what pieces make up this feature)
 - Project structure (file tree showing where code lives)
 - Design decisions (what choices were made and WHY)
 - Data flow (how information moves through the system)
 
 **File Tree Format:**
-Use markers to show file operations:
+Implementations MUST use markers to show file operations:
 - `[CREATE]` for new files
 - `[MODIFY]` for changed files
 - `[REMOVE]` for removed files
 - No marker for existing unchanged files
 
-**Example:**
+**Example (Informative):**
 ````markdown
 ## Architecture & Design
 
@@ -170,13 +170,13 @@ src/
 
 **Purpose:** Implementation details and dependencies
 
-**Contains:**
+**Typical Content (Informative):**
 - Dependencies (libraries, services, APIs)
 - Integration points (how this connects to existing code)
 - Error handling approach
 - Configuration needs
 
-**Example:**
+**Example (Informative):**
 ```markdown
 ## Technical Approach
 
@@ -203,7 +203,7 @@ src/
 
 **Purpose:** How implementation will proceed and what the strategy for implementation is.
 
-**Contains:**
+**Typical Content (Informative):**
 - Phase breakdown (summary of tasklist phases)
 - Feature appropriate testing approach (unit, integration, e2e)
 
@@ -214,21 +214,21 @@ src/
 
 **Purpose:** Potential issues and mitigation strategies
 
-**Contains:**
+**Typical Content (Informative):**
 Identify and document risks relevant to your feature. Common categories include:
 - **Technical challenges:** Implementation difficulties, edge cases, complexity
 - **Performance implications:** Speed, memory, scalability, cost impacts
 - **Security concerns:** Vulnerabilities, data exposure, authentication/authorization
 - **Technical debt:** Shortcuts taken, future refactoring needs, limitations
 
-**Guidelines:**
+**Guidelines (Implementations SHOULD):**
 - Include only categories relevant to your feature
 - For each risk, provide specific mitigation strategy
 - If no risks in a category, omit that subsection entirely
 - Add other risk categories if needed (e.g., "Data Migration Risks", "Dependency Risks")
 - Be specific about impact and likelihood
 
-**Example:**
+**Example (Informative):**
 ```markdown
 ## Risks & Considerations
 
@@ -268,7 +268,7 @@ Identify and document risks relevant to your feature. Common categories include:
 
 ## Design Decision Template
 
-When documenting design decisions, use this structure:
+When documenting design decisions, implementations SHOULD use this structure:
 
 ```markdown
 **Decision:** [What was chosen]
@@ -330,33 +330,35 @@ Before finalizing your plan document, it MUST satisfy these conformance requirem
 - Extended examples MAY be provided
 
 ### Content Focus (All Levels)
-- Plan MUST contain architectural context (WHY/WHAT)
-✅ **Does NOT contain step-by-step execution instructions**
-✅ **Does NOT contain task checklists**
+- Plan documents MUST contain architectural context (WHY/WHAT)
+- Plan documents MUST NOT contain step-by-step execution instructions
+- Plan documents MUST NOT contain task checklists
 
-### File Naming
-✅ **Plan filename:** `plans/{feature-name}-plan.md`
-✅ **Examples:** `query-command-plan.md`, `user-auth-plan.md`, `data-export-plan.md`
+### File Naming (All Levels)
+- Plan filenames MUST follow the pattern: `plans/{feature-name}-plan.md`
+- Examples (Informative): `query-command-plan.md`, `user-auth-plan.md`, `data-export-plan.md`
 
 ---
 
 ## Common Mistakes to Avoid
 
+These practices help create effective plan documents:
+
 **❌ Mixing execution steps into plan**
-- Plan should explain WHY and WHAT, not HOW step-by-step
-- Move execution details to tasklist
+- **Best Practice:** Plans explain WHY and WHAT, not HOW step-by-step
+- **Tip:** Move execution details to tasklist
 
 **❌ Missing WHY rationale in design decisions**
-- Don't just say "Use Redis for caching"
-- Explain: "Use Redis for caching because it provides sub-millisecond latency and persistence, crucial for our high-traffic API. Considered Memcached (faster but no persistence) and in-memory (simpler but doesn't survive restarts)."
+- **Tip:** Don't just say "Use Redis for caching"
+- **Best Practice:** Explain: "Use Redis for caching because it provides sub-millisecond latency and persistence, crucial for our high-traffic API. Considered Memcached (faster but no persistence) and in-memory (simpler but doesn't survive restarts)."
 
 **❌ File tree without markers**
-- Always use `[CREATE]` and `[MODIFY]` markers
-- Helps implementers know what files to create vs modify
+- **Best Practice:** Always use `[CREATE]` and `[MODIFY]` markers
+- **Rationale:** Helps implementers know what files to create vs modify
 
 **❌ Vague success criteria**
-- Don't say "Feature works correctly"
-- Say "Search returns results in <100ms, handles 1000+ documents"
+- **Tip:** Don't say "Feature works correctly"
+- **Best Practice:** Say "Search returns results in <100ms, handles 1000+ documents"
 
 ---
 
@@ -375,7 +377,7 @@ Features SHOULD select the appropriate conformance level based on their complexi
 - MUST satisfy Level 1 requirements
 - SHOULD satisfy Level 2 requirements
 - SHOULD include most subsections
-- SHOULD document key design decisions thoroughly
+- SHOULD document key design decisions with rationale and alternatives considered
 
 **Complex features** (major systems) → **Level 3 (Comprehensive)**:
 - Comprehensive detail in all sections

@@ -2,8 +2,6 @@
 
 Specification for creating conformant plan documents in the CWF workflow.
 
-> **Note:** See `SKILL.md` for conformance levels and RFC 2119 keyword definitions.
-
 ---
 
 ## What is a Plan Document?
@@ -14,79 +12,31 @@ The plan document captures **architectural context and design rationale** (WHY a
 
 ---
 
-## Document Header Structure
+## Conformance
 
-Every plan document MUST start with YAML frontmatter and a usage header to make it self-contained.
-
-### YAML Frontmatter Template
-
-```yaml
----
-feature: {feature-name}
-plan_file: plans/{feature-name}-plan.md
-tasklist_file: plans/{feature-name}-tasklist.md
-created: YYYY-MM-DD
-last_updated: YYYY-MM-DD
----
-```
-
-**Field descriptions:**
-- `feature`: The feature name (e.g., `query-command`)
-- `plan_file`: Path to this plan document
-- `tasklist_file`: Path to companion tasklist document
-- `created`: Date when plan was created (YYYY-MM-DD format)
-- `last_updated`: Date of last amendment (same as created initially)
-
-### Usage Header Template
-
-After the frontmatter and title, implementations MUST include a usage blockquote:
-
-```markdown
-# {Feature Name} - Implementation Plan
-
-> **How to Use This Plan**
->
-> **Purpose:** This plan provides architectural context (WHY/WHAT) for the `{feature-name}` feature.
-> It explains design decisions, rationale, and how components fit together.
->
-> **When to read:**
-> 1. **Before implementation:** Read in full to understand the overall architecture
-> 2. **During implementation:** Refer back when tasks are unclear or need clarification
-> 3. **When blocked:** Check relevant sections before asking questions
->
-> **Related documents:**
-> - **Tasklist:** `plans/{feature-name}-tasklist.md` - Step-by-step execution tasks (WHEN/HOW)
->
-> **Document structure:**
-> - **Overview** - What and why we're building
-> - **Architecture & Design** - How components fit together, design decisions with rationale
-> - **Technical Approach** - Dependencies, integration points, error handling
-> - **Implementation Strategy** - Phase breakdown and testing approach
-> - **Risks & Considerations** - Potential issues and mitigations
-```
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
 ---
-
-> **CRITICAL**: Every plan document MUST start with YAML frontmatter and usage header (see "Document Header Structure" above) before any content sections.
 
 ## Core Plan Sections
 
-Every plan document MUST include these sections. The level of detail SHALL be adapted based on feature complexity and conformance level (see Conformance Levels above).
+Plan documents MUST include the four core sections defined below: Overview, Architecture & Design, Technical Approach, and Implementation Strategy.
 
 ### Section 1: Overview
 
-**Purpose:** High-level summary of the feature
+The Overview section MUST provide a high-level summary of the feature.
 
-**Typical Content (Informative):**
-- Problem statement (what user need does this solve?)
-- Feature purpose (what does this feature do?)
-- Scope (what's included and what's explicitly out of scope)
-- Success criteria (how will we know this is complete and working?)
+**Requirements:**
 
-**Conformance Requirements:**
-- Level 1 (Minimal): Problem and purpose MUST be present; scope and success criteria MAY be brief
-- Level 2 (Standard): All four items SHOULD be present with sufficient detail to guide implementation
-- Level 3 (Comprehensive): All four items MUST be documented with specific examples and detailed justification
+The Overview section MUST include:
+- A problem statement identifying the user need being addressed
+- A feature purpose describing what the feature does
+- A scope definition identifying what is included and what is explicitly excluded
+
+The Overview section SHOULD include:
+- Success criteria defining how completion and correctness will be verified
+
+Success criteria SHOULD be quantifiable or objectively verifiable to enable clear validation.
 
 **Example (Informative):**
 ```markdown
@@ -111,20 +61,40 @@ Every plan document MUST include these sections. The level of detail SHALL be ad
 
 ### Section 2: Architecture & Design
 
-**Purpose:** Component structure and design decisions with rationale
+The Architecture & Design section MUST document component structure and design decisions with rationale.
 
-**Typical Content (Informative):**
-- Component overview (what pieces make up this feature)
-- Project structure (file tree showing where code lives)
-- Design decisions (what choices were made and WHY)
-- Data flow (how information moves through the system)
+**Requirements:**
+
+The Architecture & Design section MUST include:
+- A component overview identifying the pieces that make up the feature
+- A project structure showing a file tree with operation markers
+- Design decisions documenting choices made with WHY rationale
+
+The Architecture & Design section SHOULD include:
+- Data flow descriptions showing how information moves through the system
+
+**Design Decision Format:**
+
+When documenting design decisions, Implementations SHOULD use this structure:
+
+```markdown
+**Decision:** [What was chosen]
+**Rationale:** [WHY this choice was made - primary reason]
+**Alternatives Considered:**
+- [Option 1]: [Why not chosen]
+- [Option 2]: [Why not chosen]
+**Trade-offs:**
+- Pro: [Benefits of chosen approach]
+- Con: [Limitations or downsides]
+```
 
 **File Tree Format:**
-Implementations MUST use markers to show file operations:
-- `[CREATE]` for new files
-- `[MODIFY]` for changed files
-- `[REMOVE]` for removed files
-- No marker for existing unchanged files
+
+File trees MUST use markers to indicate file operations:
+- New files MUST be marked with `[CREATE]`
+- Modified files MUST be marked with `[MODIFY]`
+- Removed files MUST be marked with `[REMOVE]`
+- Existing unchanged files MUST NOT include markers
 
 **Example (Informative):**
 ````markdown
@@ -168,13 +138,17 @@ src/
 
 ### Section 3: Technical Approach
 
-**Purpose:** Implementation details and dependencies
+The Technical Approach section MUST document implementation details and dependencies.
 
-**Typical Content (Informative):**
-- Dependencies (libraries, services, APIs)
-- Integration points (how this connects to existing code)
-- Error handling approach
-- Configuration needs
+**Requirements:**
+
+The Technical Approach section MUST include:
+- Dependencies identifying required libraries, services, or APIs
+- Integration points describing how the feature connects to existing code
+
+The Technical Approach section SHOULD include:
+- Error handling approach describing how failures will be managed
+- Configuration needs identifying runtime or deployment configuration
 
 **Example (Informative):**
 ```markdown
@@ -201,132 +175,32 @@ src/
 
 ### Section 4: Implementation Strategy
 
-**Purpose:** How implementation will proceed and what the strategy for implementation is.
+The Implementation Strategy section MUST describe how implementation will proceed.
 
-**Typical Content (Informative):**
-- Phase breakdown (summary of tasklist phases)
-- Feature appropriate testing approach (unit, integration, e2e)
+**Requirements:**
 
+The Implementation Strategy section MUST include:
+- A phase breakdown providing a summary of the tasklist phases
 
----
+**Phase Alignment:** The phase breakdown MUST align with the phases defined in the corresponding tasklist document. Phase names and sequence SHOULD match to maintain consistency between documents.
 
-## Design Decision Template
+The Implementation Strategy section SHOULD include:
+- A testing approach describing the testing strategy (unit, integration, e2e)
 
-When documenting design decisions, implementations SHOULD use this structure:
-
-```markdown
-**Decision:** [What was chosen]
-**Rationale:** [WHY this choice was made - primary reason]
-**Alternatives Considered:**
-- [Option 1]: [Why not chosen]
-- [Option 2]: [Why not chosen]
-**Trade-offs:**
-- Pro: [Benefits of chosen approach]
-- Con: [Limitations or downsides]
-```
-
-This ensures architectural context is captured with clear reasoning for future reference.
+The Implementation Strategy section MUST NOT include step-by-step execution instructions or task checklists. These belong in the tasklist document, not the plan.
 
 ---
 
-## Validation Requirements
+## Context Independence
 
-Before finalizing your plan document, it MUST satisfy these conformance requirements:
-
-### Level 1 Requirements (MUST)
-
-**Document Header:**
-- YAML frontmatter MUST be present with all REQUIRED fields
-- Usage header MUST be present after title
-
-**Core Sections:**
-- All five core sections MUST be present:
-  1. Overview (Problem and Purpose REQUIRED; Scope and Success Criteria OPTIONAL)
-  2. Architecture & Design (Components and Structure REQUIRED)
-  3. Technical Approach (Dependencies REQUIRED)
-  4. Implementation Strategy (Phase Breakdown REQUIRED)
-  5. Risks & Considerations (MAY be brief)
-
-**File Tree Format:**
-- File operation markers MUST be used correctly:
-  - `[CREATE]` for new files
-  - `[MODIFY]` for changed files
-  - `[REMOVE]` for removed files
-  - No marker for existing unchanged files
-
-### Level 2 Requirements (SHOULD)
-
-**Core Sections:**
-- Overview SHOULD include all four items (Problem, Purpose, Scope, Success Criteria)
-- Architecture & Design SHOULD include Data Flow
-- Technical Approach SHOULD include Integration points and Error Handling
-
-**Design Decisions:**
-- Design decisions SHOULD include WHY rationale (not just WHAT)
-- Alternatives considered SHOULD be documented
-- Trade-offs SHOULD be explained (pros and cons)
-
-### Level 3 Requirements (MAY)
-
-**Content Enhancement:**
-- Data flow diagrams MAY be included
-- Performance considerations MAY be documented
-- Extended examples MAY be provided
-
-### Content Focus (All Levels)
-- Plan documents MUST contain architectural context (WHY/WHAT)
-- Plan documents MUST NOT contain step-by-step execution instructions
-- Plan documents MUST NOT contain task checklists
-
-### File Naming (All Levels)
-- Plan filenames MUST follow the pattern: `plans/{feature-name}-plan.md`
-- Examples (Informative): `query-command-plan.md`, `user-auth-plan.md`, `data-export-plan.md`
+Plans MUST NOT assume the implementer has access to planning conversation context. Implementation may occur in fresh sessions after context has been cleared. All architectural decisions and rationale must be self-contained within the plan document.
 
 ---
 
-## Common Mistakes to Avoid
+## Validation Checklist
 
-These practices help create effective plan documents:
-
-**❌ Mixing execution steps into plan**
-- **Best Practice:** Plans explain WHY and WHAT, not HOW step-by-step
-- **Tip:** Move execution details to tasklist
-
-**❌ Missing WHY rationale in design decisions**
-- **Tip:** Don't just say "Use Redis for caching"
-- **Best Practice:** Explain: "Use Redis for caching because it provides sub-millisecond latency and persistence, crucial for our high-traffic API. Considered Memcached (faster but no persistence) and in-memory (simpler but doesn't survive restarts)."
-
-**❌ File tree without markers**
-- **Best Practice:** Always use `[CREATE]` and `[MODIFY]` markers
-- **Rationale:** Helps implementers know what files to create vs modify
-
-**❌ Vague success criteria**
-- **Tip:** Don't say "Feature works correctly"
-- **Best Practice:** Say "Search returns results in <100ms, handles 1000+ documents"
-
----
-
-## Conformance by Feature Complexity
-
-Features SHOULD select the appropriate conformance level based on their complexity:
-
-**Simple features** (bug fixes, small utilities) → **Level 1 (Minimal)**:
-- Brief sections (1-2 paragraphs each)
-- MUST satisfy Level 1 requirements only
-- MAY omit optional subsections (e.g., Data Flow, Security Concerns)
-- Focus on core information needed for implementation
-
-**Medium features** (new components) → **Level 2 (Standard)**:
-- Moderate detail in all sections
-- MUST satisfy Level 1 requirements
-- SHOULD satisfy Level 2 requirements
-- SHOULD include most subsections
-- SHOULD document key design decisions with rationale and alternatives considered
-
-**Complex features** (major systems) → **Level 3 (Comprehensive)**:
-- Comprehensive detail in all sections
-- MUST satisfy Level 1 and Level 2 requirements
-- SHOULD satisfy Level 3 requirements where applicable
-- SHOULD include all subsections
-- MUST provide extensive design decision documentation
-- SHOULD document multiple risks and mitigations
+- [ ] All four core sections present with required content
+- [ ] File trees present and uses [CREATE]/[MODIFY]/[REMOVE]
+- [ ] Design decisions include WHY rationale
+- [ ] Plan is self-contained (no assumed conversation context)
+- [ ] No step-by-step execution instructions or task checklists

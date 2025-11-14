@@ -41,11 +41,21 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 > See plan-spec.md and tasklist-spec.md "Document Header Structure" sections for exact templates.
 
 ### 1. Analyze conversation history and create plan and tasklist documents
+
 Review the conversation history from plan mode and create two documents in the `plans/` directory.
 
-The plan-spec.md and tasklist-spec.md references provide complete structure requirements for both documents. See these specifications for detailed templates, examples, and validation criteria.
+The plan-spec.md and tasklist-spec.md references provide complete structure requirements for both documents. All plans and tasklists MUST follow the same structural requirements defined in the specs.
 
-Write the planning documents.
+**Assessing Feature Complexity:**
+
+As you analyze the planning discussion, assess the feature's scope and complexity:
+- **Simple features** (bug fixes, single-file changes, small utilities): Brief sections in plan; focused phase breakdown
+- **Medium features** (new components, API endpoints, moderate refactoring): Moderate detail in all plan sections; clear phase progression
+- **Complex features** (architectural changes, multi-component systems): Comprehensive plan detail with subsections; detailed phase breakdown
+
+Apply consistent detail level across both plan and tasklist. Let the feature's actual scope (components, files, integration points) guide documentation depth.
+
+Write the planning documents following the spec requirements.
 
 **Requirements:**
 
@@ -53,6 +63,7 @@ Write the planning documents.
 - Ensure tasks reflect the implementation approach from the discussion
 - Make sure completing each phase leaves the codebase in a stable state
 - Use clear, concise language
+- Apply documentation detail appropriate to feature complexity
 
 ### 2. Per document Validation
 
@@ -67,5 +78,6 @@ Validate the written plan and tasklist for coherency.
 2. **Files align** - Files in plan's file tree (`[CREATE]`/`[MODIFY]`) appear in tasklist tasks
 3. **Tests covered** - Testing approach in plan matches test tasks in tasklist
 4. **Deliverables align** - Phase deliverables match plan's Implementation Strategy phase breakdown
+5. **Detail consistency** - Both documents use similar documentation depth (avoid over-detailed plan with sparse tasklist or vice versa)
 
 If misalignment found, revise the incoherent document to align before finalizing.

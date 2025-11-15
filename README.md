@@ -25,7 +25,7 @@ Claude Code has different modes for different types of work. CWF is a workflow f
 - Single-session work
 - Quick fixes or simple features
 - No architectural decisions needed
-- Brainstorming
+- Informal exploration
 
 **Use plan mode when:**
 - Starting more complex features
@@ -52,7 +52,9 @@ Install as plugin in claude code:
 ## The Workflow
 
 ```
-  Planning Discussion
+  /brainstorm (optional)
+         ↓
+  Design Summary
          ↓
      /write-plan
          ↓
@@ -62,7 +64,7 @@ Install as plugin in claude code:
          ↓
   Phase 1 → Checkpoints → Review → ✓ → /clear
          ↓
- Phase 2 → Checkpoints → Review → ✓ → /clear          
+ Phase 2 → Checkpoints → Review → ✓ → /clear
   [Changes?] → /amend-plan ──┐
          ↓                   │
   Continue development ←─────┘
@@ -80,7 +82,12 @@ CWF preserves context across sessions by storing planning and progress in struct
 
 ### Planning
 
-Describe the feature to be implemented, either by providing a written specification file or through discussion with the agent.
+Start by exploring the feature requirements and design. You can either:
+- Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
+- Have an informal planning discussion with the agent
+- Provide a written specification file
+
+The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that serves as input for `/write-plan`. It's particularly helpful for complex features where you want to ensure all aspects are considered.
 
 After solidifying the specification, run `/write-plan` to create the planning documents:
 
@@ -97,7 +104,8 @@ The plan divides work into phases that each produce runnable code. Each phase en
 These checkpoints provide quality control, catching issues early before they accumulate. After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
 **TIP:**
-- If planning over multiple sessions or if you need to clear or compact context, ask the agent to save the discussion to file and load it when starting a new session.
+- Use `/brainstorm` for structured exploration with systematic questioning and alternatives analysis
+- If planning over multiple sessions or if you need to clear or compact context, ask the agent to save the discussion to file and load it when starting a new session
 - A plan made in plan-mode can be a great starting point before calling `/write-plan`
 - You can add description or instructions when writing the plan: `/write-plan user-auth write a plan for phase 1 in my-complex-auth-plan.md`
 
@@ -132,6 +140,7 @@ The constitution ensures agents apply consistent conventions and make consistent
 
 | Command | When to Use | Inputs | What It Does |
 |---------|-------------|--------|--------------|
+| `/brainstorm` | Before planning (optional) | Feature name (optional) | Structured exploration with guided questions, alternatives analysis, produces design summary |
 | `/write-plan` | After planning discussion | Feature name | Creates plan.md + tasklist.md in plans/ |
 | `/implement-plan` | Ready to code or resuming | Feature name | Executes tasks phase-by-phase with checkpoints |
 | `/amend-plan` | Requirements changed | Feature name | Updates plan/tasklist safely |

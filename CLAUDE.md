@@ -22,7 +22,7 @@ Your role depends on the user's intent:
 
 For complete user documentation, see README.md. In summary, CWF provides:
 - The **Claude Workflow**: Plan-driven development with preserved context across sessions
-- **Commands** for orchestrating the workflow: /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
+- **Commands** for orchestrating the workflow: /brainstorm, /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
 - **Skills** for distributing knowledge of CWF: cfw-planning (workflow knowledge), read-constitution (coding standards)
 
 ## CWF Workflow (Quick Reference)
@@ -31,7 +31,7 @@ For detailed workflow stages and responsibilities, see:
 - README.md (user perspective and usage instructions)
 - skills/cfw-planning/SKILL.md (agent perspective and execution details)
 
-Brief overview: Planning discussion → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
+Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
 
 ## Repository Structure
 
@@ -148,6 +148,7 @@ The claude-workflow repository consists of:
 **Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `cfw-planning`), it only sees files under that skill's directory (`skills/cfw-planning/`). This is why `cfw-planning` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
 
 ### Commands
+- `commands/brainstorm.md` - Feature exploration workflow
 - `commands/write-plan.md` - Plan creation workflow
 - `commands/implement-plan.md` - Implementation workflow
 - `commands/amend-plan.md` - Plan amendment workflow

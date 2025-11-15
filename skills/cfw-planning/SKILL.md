@@ -94,7 +94,9 @@ Human review occurs after checkpoints complete, when "Phase X Complete" is signa
 The CWF planning workflow follows this command-driven flow:
 
 ```
-  Planning Discussion [Human ↔ Agent]
+  /brainstorm (optional) [Human runs]
+         ↓
+  Design Summary [Agent writes]
          ↓
      /write-plan [Human runs]
          ↓
@@ -114,10 +116,15 @@ The CWF planning workflow follows this command-driven flow:
 
 ### Stage Breakdown
 
-**1. Planning Discussion**
-- **Human:** Describes feature requirements and constraints
-- **Agent:** Discusses approach, architecture, and design decisions
-- **Outcome:** Shared understanding of what needs to be built and why
+**1. `/brainstorm` Command (Optional)**
+- **Human:** Runs `/brainstorm` command (optional step for structured exploration)
+- **Agent:**
+  - Systematically extracts requirements through guided questions
+  - Explores 2-3 alternative approaches with trade-offs
+  - Incrementally builds design with validation checkpoints
+  - Produces design summary document in `docs/brainstorms/`
+- **Outcome:** Complete design context ready for `/write-plan`
+- **Note:** Can be skipped in favor of informal planning discussion or written specification
 
 **2. `/write-plan` Command**
 - **Human:** Runs `/write-plan` command

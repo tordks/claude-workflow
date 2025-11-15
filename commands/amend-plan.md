@@ -36,6 +36,14 @@ Read the existing planning documents:
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
 
+**If either file is missing:**
+- Inform user: "Cannot find plan files for '{feature-name}'"
+- Suggest: "Run `/write-plan {feature-name}` to create new plan, or verify feature name"
+- STOP - do not proceed
+
+When both documents loaded successfully, proceed to Section 2.
+
+---
 
 ### 2. Analyze Conversation for Amendment Intent
 
@@ -54,6 +62,10 @@ Extract specific details:
 - Section updates in the plan document
 - Any clarifications or examples to add
 
+When conversation analysis complete, proceed to Section 3.
+
+---
+
 ### 3. Identify Current State
 
 Examine the tasklist to determine:
@@ -62,6 +74,10 @@ Examine the tasklist to determine:
 - Which phases are in progress (some tasks marked `[x]`)
 - Which phases are not started (no tasks marked `[x]`)
 - The highest task number in each phase (for ID allocation)
+
+When current state identified, proceed to Section 4.
+
+---
 
 ### 4. Propose Amendments Interactively
 
@@ -90,15 +106,50 @@ Is this understanding correct? Should I proceed with these amendments?
 
 **Wait for user confirmation** before proceeding. Use the AskUserQuestion tool if needed to clarify ambiguous requirements.
 
+**If user rejects proposal:**
+1. Ask for specific concerns or required changes
+2. Revise proposal based on feedback
+3. Re-present updated proposal (return to beginning of Section 4)
+4. Repeat until user approves
+
+When user approves, proceed to Section 5.
+
+---
+
 ### 5. Apply Amendments Safely
 
-Once confirmed, apply the changes following amendment safety rules from cfw-planning skill's amendment.md reference.
+After receiving user confirmation in Section 4, apply amendments following these steps:
 
-**Document Structure:** When editing documents:
-- Preserve existing document structure and formatting
-- Maintain consistency with plan-spec.md and tasklist-spec.md requirements
-- Follow amendment safety rules (completed work is immutable)
+1. Read amendment.md from cfw-planning skill for safety rules
+2. For each proposed change:
+   - Verify it's an allowed operation (amendment.md defines allowed/blocked operations)
+   - Apply using Edit tool
+   - Mark change as applied
+3. Verify no blocked operations attempted (e.g., modifying completed tasks)
 
+When all changes applied, proceed to Section 5.5.
+
+---
+
+### 5.5 Validate Amended Documents
+
+After applying amendments, verify conformance:
+
+1. Check plan document against plan-spec.md validation checklist
+2. Check tasklist document against tasklist-spec.md validation checklist
+3. Verify task IDs remain sequential within phases
+4. Verify checkbox formatting preserved (`- [ ]` and `- [x]`)
+5. Verify no completed tasks were modified
+
+If ANY validation fails:
+- Identify the issue
+- Fix the affected document
+- Re-run validation for that document
+- Repeat until all validations pass
+
+When all validations pass, proceed to Section 6.
+
+---
 
 ### 6. Confirm Completion
 
@@ -124,17 +175,15 @@ The amended plan is ready. You can:
 
 ## Requirements
 
-- **Conversation analysis**: Thoroughly review recent messages to understand intent
-- **Interactive confirmation**: ALWAYS confirm understanding before making changes
-- **Safety first**: NEVER modify completed work - block and explain
-- **Preserve structure**: Maintain all formatting, task IDs, and organizational structure
-- **Clear communication**: Show exactly what will change and why
-- **Inline changes**: Make direct updates to files without separate "amendment" sections (unless context requires it)
-- **Consistent formatting**: Match the existing document style precisely
 
-## Amendment Safety
+All amendments MUST follow safety rules from amendment.md.
 
-For complete amendment rules, allowed/blocked operations, and when blocked guidance, see cfw-planning skill's amendment.md reference.
+Command-specific requirements:
+- **Conversation analysis:** Thoroughly review conversation to understand amendment intent
+- **Interactive confirmation:** ALWAYS confirm understanding before making changes
+- **Clear communication:** Show exactly what will change and why
+- **Inline changes:** Make direct updates to files, no separate "amendment" sections
+
 
 ## Example Flow
 
@@ -167,6 +216,13 @@ Proceed? [User confirms]
 Applying...
 ✅ Updated plans/query-command-plan.md (added Caching Strategy section)
 ✅ Updated plans/query-command-tasklist.md (added P3.6-P3.8, new Phase 4)
+
+Validating amendments...
+✓ Plan structure conforms to plan-spec.md
+✓ Tasklist structure conforms to tasklist-spec.md
+✓ Task IDs sequential (P3.6, P3.7, P3.8, P4.1, P4.2, P4.3, P4.4)
+✓ Checkboxes preserved
+✓ No completed tasks modified
 
 Done! Resume with `/implement query-command`.
 ```

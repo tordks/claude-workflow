@@ -34,15 +34,19 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
 
 3. **Execute phase-by-phase and task-by-task:**
-   - Implement each task following plan and constitution
-   - Mark complete: edit tasklist changing `- [ ]` to `- [x]`
-   - After ALL phase tasks complete:
-     - Apply checkpoint instructions
-     - present summary with ✅
-     - suggest conventional commit format (`<type>: <description>\n\n<body with WHY/HOW>`)
-     - STOP for approval
 
-**Task workflow:** Read task → implement → test → mark task complete → next task. After last task in phase: stop and wait for approval before next phase.
+   **Task workflow:**
+   - Read task → implement → test → mark complete (`- [ ]` to `- [x]`) → next task
+
+   **After ALL phase tasks complete:**
+   - Execute each checkpoint sequentially, marking complete as you go
+   - If checkpoint fails: fix issue and retry until passing
+   - When all checkpoints pass:
+     - Output "Phase X Complete" summary with ✅
+     - Suggest conventional commit format
+     - **STOP for human review** (DO NOT proceed to next phase)
+
+   **Between phases:** Human reviews, runs `/clear`, then runs `/implement-plan` to continue.
 
 
 ## Example Workflow
@@ -65,6 +69,17 @@ Working on [P1.2]: Create core data models
 ✓ Marked [P1.2] as complete
 
 # Phase completion
+All Phase 1 tasks complete. Executing checkpoints...
+
+Checkpoint: Self-review implementation against phase deliverable
+✓ Marked checkpoint complete
+
+Checkpoint: Code quality - ruff check src/
+✓ Passed. Marked checkpoint complete
+
+Checkpoint: Code complexity - radon cc src/
+✓ Passed. Marked checkpoint complete
+
 Phase 1 Complete! ✅
 
 Summary of changes:
@@ -72,7 +87,7 @@ Summary of changes:
 ✅ Implemented core data models with Pydantic validation
 ✅ Added type hints and proper __init__.py exports
 
-Phase 1 Checkpoint: Foundation layer complete following constitution principles. All code type-safe and passes quality checks.
+All checkpoints passed. Foundation layer complete following constitution principles.
 
 Suggested commit:
 feat: establish foundational architecture

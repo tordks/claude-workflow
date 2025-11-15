@@ -32,45 +32,139 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
 
 ## Instructions
 
+### 1. Extract Planning Context
 
-### 1. Analyze conversation history and create plan and tasklist documents
+**Step 1: Read conversation history**
 
-Review the conversation history from plan mode and create two documents in the `plans/` directory.
+Extract from the planning discussion:
+- Requirements and scope boundaries (what's IN and OUT)
+- Design decisions with rationale (WHY specific approaches chosen)
+- Alternatives considered and rejected (what was ruled out and why)
+- Technical constraints and dependencies (external systems, libraries, APIs)
+- File and component structure discussed
 
-The plan-spec.md and tasklist-spec.md references provide complete structure requirements for both documents. All plans and tasklists MUST follow the same structural requirements defined in the specs.
+**Step 2: Assess feature complexity**
 
-**Assessing Feature Complexity:**
+Classify the feature complexity using conformance level criteria from SKILL.md (Simple/Medium/Complex → L1/L2/L3). Consider affected components, files, and integration points.
 
-As you analyze the planning discussion, assess the feature's scope and complexity:
-- **Simple features** (bug fixes, single-file changes, small utilities): Brief sections in plan; focused phase breakdown
-- **Medium features** (new components, API endpoints, moderate refactoring): Moderate detail in all plan sections; clear phase progression
-- **Complex features** (architectural changes, multi-component systems): Comprehensive plan detail with subsections; detailed phase breakdown
+**Step 3: Select conformance level**
 
-Apply consistent detail level across both plan and tasklist. Let the feature's actual scope (components, files, integration points) guide documentation depth.
+Map assessed complexity to conformance level:
+- Simple → Level 1 conformance
+- Medium → Level 2 conformance
+- Complex → Level 3 conformance
 
-Write the planning documents following the spec requirements.
+The selected level will be applied to BOTH plan.md and tasklist.md.
 
-**Requirements:**
+**Step 4: Read specifications**
 
+- Read plan-spec.md, focusing on requirements for your selected conformance level
+- Read tasklist-spec.md, focusing on requirements for your selected conformance level
+
+When context is extracted and conformance level selected, proceed to Section 2.
+
+---
+
+### 2. Create Planning Documents
+
+**Step 1: Draft plan document**
+
+Create `plans/{feature-name}-plan.md`:
+- Follow plan-spec.md structure requirements for your conformance level
+- Use the extracted context from Section 1
+
+**Step 2: Draft tasklist document**
+
+Create `plans/{feature-name}-tasklist.md`:
+- Follow tasklist-spec.md structure requirements for your conformance level
+- Break down into phases aligned with plan's Implementation Strategy
+- Include checkpoints following SKILL.md guidance
+
+**Requirements to apply during drafting:**
 - Stay faithful to what was discussed and agreed upon in plan mode
 - Ensure tasks reflect the implementation approach from the discussion
-- Make sure completing each phase leaves the codebase in a stable state
+- Follow task granularity guidelines from tasklist-spec.md
 - Use clear, concise language
-- Apply documentation detail appropriate to feature complexity
 
-### 2. Per document Validation
+When both documents are drafted, proceed to Section 3.
 
-Validate the written plan and tasklist against the validation requirements defined in plan-spec.md and tasklist-spec.md.
+---
 
-### 3. Cross-Document Coherence Validation
+### 3. Validate Individual Documents
 
-Validate the written plan and tasklist for coherency.
+**Step 1: Validate plan document**
 
-**Quick coherence checks:**
-1. **Phases match plan** - Each tasklist phase implements components/features described in plan
-2. **Files align** - Files in plan's file tree (`[CREATE]`/`[MODIFY]`) appear in tasklist tasks
-3. **Tests covered** - Testing approach in plan matches test tasks in tasklist
-4. **Deliverables align** - Phase deliverables match plan's Implementation Strategy phase breakdown
-5. **Detail consistency** - Both documents use similar documentation depth (avoid over-detailed plan with sparse tasklist or vice versa)
+1. Read the validation checklist from plan-spec.md
+2. Check each item against `plans/{feature-name}-plan.md`
+3. Note any failing items
 
-If misalignment found, revise the incoherent document to align before finalizing.
+**Step 2: Validate tasklist document**
+
+1. Read the validation checklist from tasklist-spec.md
+2. Check each item against `plans/{feature-name}-tasklist.md`
+3. Note any failing items
+
+**Step 3: Revise if needed**
+
+If ANY checklist items fail:
+1. Revise the affected document(s) to address failures
+2. Re-run validation for revised document(s)
+3. Repeat until all checklist items pass
+
+When all individual document validations pass, proceed to Section 4.
+
+---
+
+### 4. Validate Cross-Document Coherence
+
+**Step 1: Run coherence checks**
+
+Verify each of the following:
+
+1. ✓ **Phases match plan** - Each tasklist phase implements components/features described in plan's Implementation Strategy
+2. ✓ **Files align** - Files in plan's file tree (`[CREATE]`/`[MODIFY]`) appear in tasklist tasks
+3. ✓ **Tests covered** - Testing approach in plan matches test tasks in tasklist
+4. ✓ **Deliverables align** - Phase deliverables match plan's Implementation Strategy phase breakdown
+5. ✓ **Detail consistency** - Both documents use similar documentation depth
+
+**Step 2: Revise if misalignment found**
+
+If ANY check fails:
+1. Identify which document contains the inconsistency
+2. Revise that document to align with the other
+3. Re-run the failing coherence check(s)
+4. Repeat until all coherence checks pass
+
+When all coherence checks pass, proceed to Section 5.
+
+---
+
+### 5. Finalization
+
+**Step 1: Verify artifacts created**
+
+- Confirm `plans/{feature-name}-plan.md` exists and is valid
+- Confirm `plans/{feature-name}-tasklist.md` exists and is valid
+
+**Step 2: Present summary to user**
+
+Output the following summary:
+
+```
+Planning documents created successfully! ✅
+
+Created:
+- plans/{feature-name}-plan.md
+- plans/{feature-name}-tasklist.md
+
+Conformance Level: L{X} ({Simple|Medium|Complex})
+
+Implementation Structure:
+- {N} phases defined
+- {M} total tasks
+
+Next Steps:
+Run `/implement-plan {feature-name}` to begin phase-by-phase implementation.
+```
+
+**YOU ARE NOW DONE.** Wait for user to run `/implement-plan {feature-name}`.

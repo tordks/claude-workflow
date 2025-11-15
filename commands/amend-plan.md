@@ -8,9 +8,19 @@ Update an existing plan and tasklist based on conversation context.
 
 ## Bootstrap
 
+**Check if CWF skills are already loaded in this session:**
+- Do you have access to `plan-spec.md` and `tasklist-spec.md` reference documents?
+- Do you have knowledge of CWF conformance levels and planning patterns?
+
+**If NO (skills not yet loaded):**
 1. Use the Skill tool to load: `read-constitution`
 2. Use the Skill tool to load: `cfw-planning`
-3. Wait for both to complete, then proceed with instructions below.
+3. Wait for both to complete
+
+**If YES (skills already loaded):**
+- Skip skill loading, knowledge is already available
+
+Then proceed with instructions below.
 
 **Key references from cfw-planning:**
 - `plan-spec.md` - Plan document specification with structure and validation requirements

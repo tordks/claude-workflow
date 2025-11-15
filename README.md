@@ -60,9 +60,9 @@ Install as plugin in claude code:
          ↓
    /implement-plan
          ↓
-  Phase 1 → Review → ✓ → /clear
+  Phase 1 → Checkpoints → Review → ✓ → /clear
          ↓
- Phase 2 → Review → ✓ → /clear          
+ Phase 2 → Checkpoints → Review → ✓ → /clear          
   [Changes?] → /amend-plan ──┐
          ↓                   │
   Continue development ←─────┘
@@ -91,10 +91,13 @@ After the specifications is solidified, run `/write-plan` to create the planning
 - **Plan** (`feature-plan.md`): Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** (`feature-tasklist.md`): Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 
-The plan is divided into phases that at the end should produce runnable code. By
-default implementation stops after each phase. Togheter this creates a
-checkpoint where we can review and evaluate progress. It also enables us
-to stay in control over what is implemented and catch errors early.
+The plan is divided into phases that at the end should produce runnable code. Each phase ends with **checkpoints** — validation operations that ensure code quality before proceeding:
+
+- **Self-review:** Agent reviews implementation against phase deliverable
+- **Code quality checks:** Linting, formatting, type checking (only if project uses these tools)
+- **Complexity checks:** Code complexity analysis (only if project uses these tools)
+
+These checkpoints provide quality control, catching issues early before they accumulate. After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
 **TIP:**
 - If planning over multiple sessions or if you need to clear or compact context, ask the agent to save the discussion to file and load it when starting a new session.

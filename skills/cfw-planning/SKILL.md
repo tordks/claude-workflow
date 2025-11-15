@@ -67,6 +67,30 @@ CWF specifications define three conformance levels:
 
 ---
 
+## Checkpoints
+
+Checkpoints are end-of-phase validation operations that provide quality control for AI-driven development.
+
+**Purpose:**
+- Validate code quality independent of functional testing
+- Ensure AI-generated code meets project standards
+- Catch issues early before accumulating technical debt
+
+**Checkpoint Types:**
+- **Self-review:** Agent reviews implementation against phase deliverable
+- **Code quality:** Linting, formatting, type checking (project-specific tools)
+- **Code complexity:** Complexity analysis (project-specific thresholds)
+
+Human review occurs after checkpoints complete, when "Phase X Complete" is signaled.
+
+**Where checkpoints appear:**
+- **Plan:** Checkpoint strategy explains WHY these checkpoints and WHAT tools (see `plan-spec.md` Section 4)
+- **Tasklist:** Checkpoint checklist specifies WHEN to run and HOW to execute (see `tasklist-spec.md` Checkpoint Requirements)
+
+**Key principle:** Checkpoints are validation operations performed after phase task completion but before moving to the next phase. They are distinct from functional tests, which validate feature behavior.
+
+---
+
 ## CWF Workflow
 
 The CWF planning workflow follows this command-driven flow:
@@ -80,9 +104,9 @@ The CWF planning workflow follows this command-driven flow:
          ↓
    /implement-plan [Human runs]
          ↓
-  Phase 1 [Agent implements] → Review [Human] → ✓ → /clear [Human runs]
+  Phase 1 [Agent implements] → Checkpoints [Agent runs] → Review [Human] → ✓ → /clear [Human runs]
          ↓
- Phase 2 [Agent implements] → Review [Human] → ✓ → /clear [Human runs]
+ Phase 2 [Agent implements] → Checkpoints [Agent runs] → Review [Human] → ✓ → /clear [Human runs]
   [Changes?] → /amend-plan [Human runs] ──┐
          ↓                                │
   Continue development [Agent] ←──────────┘
@@ -114,7 +138,8 @@ The implementation follows this repeating cycle:
   - Checks tasklist to identify completed tasks and current phase
   - Works through tasks for current phase sequentially
   - Marks tasks complete as work progresses
-  - Signals phase completion for review at phase boundary
+  - Executes checkpoints (code quality, complexity checks, etc)
+  - Signals phase completion for human review at phase boundary
 - **Human:**
   - Reviews phase results when agent signals completion
   - Runs `/clear` to start fresh session for next phase

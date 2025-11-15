@@ -228,7 +228,7 @@ The Implementation Strategy section describes the high-level approach that guide
 **SHOULD include:**
 - Testing approach (test-driven, integration-focused, comprehensive, etc.)
 - Risk mitigation strategy (tackle unknowns first, safe increments, prototype early, etc.)
-- Quality gates (validation requirements at phase boundaries)
+- Checkpoint strategy (quality and validation operations at phase boundaries)
 
 The strategy SHOULD explain WHY the tasklist is structured as it is.
 
@@ -256,25 +256,15 @@ Integration-focused with targeted unit tests:
 - Integration tests for component interactions
 - E2E tests for critical user flows
 
+### Checkpoint Strategy
+Each phase ends with mandatory validation before proceeding:
+- Self-review: Agent reviews implementation against phase deliverable
+- Code quality: Linting and formatting with ruff
+- Code complexity: Complexity check with Radon
 
-### Quality Gates
+These checkpoints ensure AI-generated code meets project standards before continuing to next phase.
 
-**After Core Components:**
-- [ ] Index builds for 10K documents in <10s
-- [ ] Query execution <100ms (p95)
-- [ ] Unit tests pass (>90% coverage for core logic)
-
-**After API Integration:**
-- [ ] Integration tests pass
-- [ ] End-to-end smoke tests pass
-- [ ] API response time <150ms (p95)
-- [ ] No regressions in existing functionality
-
-**Before Production:**
-- [ ] All tests pass
-- [ ] Performance tests pass
-- [ ] Error handling validated
-- [ ] Security review complete
+**Note (Informative):** Checkpoint types are project-specific. Use only the tools your project already has. If the project doesn't use linting or complexity analysis, omit those checkpoints.
 ```
 
 ---

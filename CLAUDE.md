@@ -30,12 +30,13 @@ When users install this plugin (`/plugin install cwf@claude-workflow`), they get
 The plugin provides a plan-driven workflow:
 
 1. **Planning** (plan mode discussion) → `/write-plan <feature>`
-   - Creates plan.md (WHY/WHAT: architectural decisions, design rationale)
-   - Creates tasklist.md (WHEN/HOW: phase-by-phase execution steps)
+   - Creates plan.md (WHY/WHAT: architectural decisions, design rationale, checkpoint strategy)
+   - Creates tasklist.md (WHEN/HOW: phase-by-phase execution steps with checkpoints)
 
 2. **Implementation** → `/implement-plan <feature>`
    - Works phase-by-phase through tasklist
-   - Stops at phase boundaries for review
+   - Each phase ends with checkpoints (self-review; code quality and complexity if project uses those tools)
+   - Stops at phase boundaries for human review after checkpoint validation
    - User runs `/clear` between phases to manage context
 
 3. **Amendment** → `/amend-plan <feature>` (if requirements change)

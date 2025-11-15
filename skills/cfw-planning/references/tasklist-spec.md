@@ -64,11 +64,34 @@ Every phase MUST follow this standard structure:
 - [ ] [PX.1] Specific atomic action - file/component detail
 - [ ] [PX.2] Another specific action with clear scope
 - [ ] [PX.3] Write tests for implemented functionality
-- [ ] [PX.4] Verify tests pass and code quality checks succeed
+- [ ] [PX.4] Run tests: pytest tests/module/
 
-**Phase X Checkpoint:** Brief description of system state after phase completion
+**Checkpoints:**
+- [ ] Code quality: Run `ruff check src/`
+- [ ] Code complexity: Run `ruff check src/ --select C901`
+- [ ] Review: Self review implementation and verify phase deliverable achieved
+
+**Phase X Complete:** Brief description of system state after phase completion
 ```
 
+---
+
+## Checkpoint Requirements
+
+Checkpoints are end-of-phase validation operations performed after all tasks in a phase are complete.
+
+**Requirements:**
+- Checkpoints MUST use checkbox format: `- [ ] Checkpoint description`
+- Additional checkpoints SHOULD be project-specific validation or quality  operations
+- Checkpoints MUST NOT duplicate functional test tasks (tests belong in Tasks section)
+- Checkpoint commands SHOULD be concrete and executable (e.g., `ruff check src/`)
+
+**Common Checkpoint Types:**
+- **Self-review:** Agent reviews implementation against deliverable
+- **Code quality:** Linting, formatting, type checking (e.g., ruff, black, mypy)
+- **Code complexity:** Complexity analysis (e.g., radon cc)
+
+**Note (Informative):** Checkpoints provide quality control for AI-driven development. They are validation operations independent of functionality testing.
 
 ---
 
@@ -109,11 +132,11 @@ Tasks that depend on others MUST be ordered after their dependencies.
 
 ---
 
-## Checkpoint Format
+## Phase Complete Statement
 
-Every phase MUST end with a checkpoint describing system state.
+Every phase MUST end with a "Phase X Complete" statement describing system state after phase completion.
 
-Checkpoints SHOULD be 1-3 sentences describing what capabilities now exist, what's ready for the next phase, and what validation has been completed.
+The statement SHOULD be 1-3 sentences describing what capabilities now exist, what's ready for the next phase, and what validation has been completed.
 
 **Example (Informative):**
 - "Core data models validated, ready for parser implementation"
@@ -124,10 +147,9 @@ Checkpoints SHOULD be 1-3 sentences describing what capabilities now exist, what
 
 ## Validation Checklist
 
+- [ ] Every phase contains the required elements
+- [ ] Checkpoints are quality and validation operations, not functional tests
 - [ ] Task IDs follow `[PX.Y]` pattern with checkboxes (`- [ ]` or `- [x]`)
-- [ ] No tasks use markdown headings (`###`)
-- [ ] Every phase has: Header, Goal, Deliverable, Tasks, Checkpoint
 - [ ] Tasks reference specific files/components (no vague tasks)
 - [ ] Tasks are atomic, testable, and take 5-20 minutes
-- [ ] Dependencies ordered before dependent tasks
 - [ ] No architectural rationale or design alternatives (belongs in plan)

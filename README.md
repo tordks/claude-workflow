@@ -7,13 +7,13 @@ Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code
 
 ### What Problem Does CWF Solve?
 
-Software development with AI assistants often suffers from a couple of problems:
+Software development with AI assistants often faces these challenges:
 
-1. **Lost Context:** Agents lose architectural rationale and design decisions in long contexts and between sessions. Why was this approach chosen? What alternatives were considered? The Agent is stateless and if the context is removed it "forgets".
+1. **Lost Context:** Agents lose architectural rationale and design decisions in long contexts and between sessions. Why was this approach chosen? What alternatives were considered? Agents are stateless—when you clear context, they forget.
 
-2. **Inconsistent Structure:** Without conventions, agents implement features differently every time. One session produces 50 tiny tasks, the next creates 3 giant ones. Tests get skipped. Documentation varies. The agent has no memory of what structure worked before — each implementation is a fresh start with unpredictable quality.
+2. **Inconsistent Structure:** Without conventions, agents implement features differently every time. One session produces 50 tiny tasks, the next creates 3 giant ones. Tests get skipped. Documentation varies. Each implementation is a fresh start with unpredictable quality.
 
-3. **Changing Requirements:** Plans become outdated as you discover edge cases, realize better approaches, or receive feedback. Without a safe amendment process, you either ignore the plan (losing its value) or start over (wasting effort). The plan represents the Agents knowledge of the current implementation effort. If it is outdated, erroneous implementation will occur.
+3. **Changing Requirements:** Plans become outdated as you discover edge cases, realize better approaches, or receive feedback. Without a safe amendment process, you either ignore the plan or waste effort starting over. The plan becomes the agent's source of truth for the current implementation. When outdated, implementation errors follow.
 
 4. **Loss of Control:** Agents can make dozens of changes without human interaction. Without explicit checkpoints, you're reviewing tons of work at once — finding the problem in change #47 when you should have caught it in change #3.
 
@@ -30,7 +30,7 @@ Claude Code has different modes for different types of work. CWF is a workflow f
 **Use plan mode when:**
 - Starting more complex features
 - You want to review the work to be done
-- You don't want claude to start suggesting edits (plan-mode is read only)
+- You don't want Claude to start suggesting edits (plan-mode is read only)
 
 *Plan mode lets Claude read and analyze without editing or executing. Great for careful deliberation before implementation.*
 
@@ -72,26 +72,23 @@ Install as plugin in claude code:
 
 ## How It Works
 
-CWF preserves context across sessions by storing planning and progress in structured documents, it uses two key mechanisms:
+CWF preserves context across sessions by storing planning and progress in structured documents. It uses two key mechanisms:
 
 **Skills** provide specialized knowledge to Claude as self-contained packages. The `cfw-planning` skill contains all CWF workflow knowledge (plan structure, tasklist format, amendment rules, etc.) that agents need to execute the workflow. Skills are loaded on-demand to keep context focused.
 
-**Commands** are user-facing workflows like `/write-plan`, `/implement-plan`, and `/amend-plan` that orchestrate the feature development lifecycle. Commands load relevant skills automatically.
+**Commands** are called by users to orchestrate the workflow. They provide instructions that guide agents through each stage (`/write-plan`, `/implement-plan`, `/amend-plan`) and automatically load relevant skills.
 
 ### Planning
 
-The workflow begins by describing the feature to be implemented, either by
-providing a written file with specifications, or through discussion with the
-agent.
+Describe the feature to be implemented, either by providing a written specification file or through discussion with the agent.
 
-
-After the specifications is solidified, run `/write-plan` to create the planning documents:
+After solidifying the specification, run `/write-plan` to create the planning documents:
 
 
 - **Plan** (`feature-plan.md`): Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** (`feature-tasklist.md`): Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 
-The plan is divided into phases that at the end should produce runnable code. Each phase ends with **checkpoints** — validation operations that ensure code quality before proceeding:
+The plan divides work into phases that each produce runnable code. Each phase ends with **checkpoints**—validation operations that ensure code quality before proceeding:
 
 - **Self-review:** Agent reviews implementation against phase deliverable
 - **Code quality checks:** Linting, formatting, type checking (only if project uses these tools)
@@ -106,41 +103,29 @@ These checkpoints provide quality control, catching issues early before they acc
 
 ### Implementation
 
-The `/implement-plan` command starts the implementation of the
-feature. The implementation will continue from the next task according to the
-tasklist.  This allows continuing implementation from a clear context.  `/clear`
-between each phase to not get degraded performance due to filled context.
+Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context. Use `/clear` between phases to maintain performance and avoid context degradation.
 
 **TIP:** You can add descriptions and instructions when starting or resuming implementation: `/implement-plan user-auth implement phase 1 and 2, then stop.`
 
 
-### Amending plans
+### Amending Plans
 
-If requirements change during implementation, or we discover a gap in the plan,
-we can amend the plan and tasklist. Start by clearing the context and
-describing/discussing the changes to make. When the changes are properly
-described run the `/amend-plan` command, which will update that plan and tasklist safely.
+If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely. Start by clearing context and describing the changes. When the changes are clear, run the command to apply them.
 
-**TIP:** You can add a description of changes after the feature name: `/amend-plan user-auth Add OAuth2 support alongside email/password`. If the amendment don't need a discussion this can be done without clearing context or first dicussing the amendment.
+**TIP:** You can add a description of changes after the feature name: `/amend-plan user-auth Add OAuth2 support alongside email/password`. If the amendment doesn't need discussion, this can be done without clearing context or discussing first.
 
-**WARNING:** If we change implementation details mid-development and do not amend
-the plan, the agent will not know about them. This means that it after the
-context is cleared will assume that we have made no amendments. This is a recipe for
-confusion and erroneous implementations.
+**WARNING:** If you change implementation details mid-development without amending the plan, the agent won't know about them. After clearing context, it will assume no amendments were made, leading to confusion and implementation errors.
 
 
 ### Coding Constitution
 
-CWF supports a coding constitution (`.constitution/` directory) that guides implementation quality and consistency. The constitution is automatically loaded by `/write-plan`, `/implement-plan`, `/amend-plan` and by `/read-sontitution`. Example constitution files are available separately:
+CWF supports a coding constitution (`.constitution/` directory) that guides implementation quality and consistency. The constitution is automatically loaded by `/write-plan`, `/implement-plan`, `/amend-plan`, and `/read-constitution`. Example constitution files include:
 
 - **Software Engineering Principles:** DRY, YAGNI, orthogonality, separation of concerns
 - **Testing Philosophy:** Test coverage expectations, testing patterns, when to test
 - **Language Standards:** Python-specific conventions and best practices
 
-
-Without shared standards, agents apply inconsistent conventions and make inconsistent quality decisions. The constitution ensures every implementation follows the same engineering principles.
-
-Customize the .constitution for your project's standards.
+The constitution ensures agents apply consistent conventions and make consistent quality decisions across all implementations. Customize `.constitution/` for your project's standards.
 
 
 ### Command Reference
@@ -163,12 +148,11 @@ Customize the .constitution for your project's standards.
 ### Tips for Success
 
 **During Planning:**
-- Be specific about requiremnents, components, technologies
+- Be specific about requirements, components, technologies
 - Set clear scope (what's IN and OUT)
 - Define success criteria
 
-It is all about solidifying our intent and reducing the solution space in which the agent can sample implementation details from.
-
+Good planning solidifies your intent and constrains the solution space, helping the agent make better implementation decisions.
 
 **During Implementation:**
 - Review at phase boundaries before approving
@@ -178,14 +162,10 @@ It is all about solidifying our intent and reducing the solution space in which 
 
 ## Alternatives & Resources
 
-This is just YAADW (Yet Another Agent Development Workflow) that fit my
-particular use-case. There are other more and less rigorous frameworks, that
-generate different amounts of documentation. What thay all have in common is
-that they follow some version of persisting a spec/plan to disk and then use it
-to contain context between sessions. The difference is how that is done.
+CWF is one of many agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to disk to maintain context between sessions. The key differences lie in implementation approach and workflow structure.
 
-Below are some resources, which I not necessarily recommend. They are here for
-me to reference later.
+Below are related projects and resources for comparison. Not thoroughly reviewed
+(yet).
 
 **Development Workflows:**
 
@@ -211,4 +191,4 @@ me to reference later.
 - [armchr](https://github.com/armchr/armchr) - Toolkit with Splitter and Reviewer agents for helping AI better analyze and understand code through logical commit chunking
 - [claude-code-switch](https://github.com/foreveryh/claude-code-switch) - Model switching tool supporting multiple AI providers (Claude, Deepseek, KIMI, GLM, Qwen) with intelligent fallback
 - [claude-context](https://github.com/zilliztech/claude-context) - MCP plugin that adds semantic code search to Claude Code 
-- [sourcegraph-amp](https://sourcegraph.com/amp)
+- [sourcegraph-amp](https://sourcegraph.com/amp) - Agentic coding platform with autonomous reasoning and task execution

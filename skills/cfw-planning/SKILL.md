@@ -84,8 +84,8 @@ Checkpoints are end-of-phase validation operations that provide quality control 
 Human review occurs after checkpoints complete, when "Phase X Complete" is signaled.
 
 **Where checkpoints appear:**
-- **Plan:** Checkpoint strategy explains WHY these checkpoints and WHAT tools (see `plan-spec.md` Section 4)
-- **Tasklist:** Checkpoint checklist specifies WHEN to run and HOW to execute (see `tasklist-spec.md` Checkpoint Requirements)
+- **Plan:** Checkpoint strategy explains WHY these checkpoints and WHAT tools
+- **Tasklist:** Checkpoint checklist specifies WHEN to run and HOW to execute
 
 **Key principle:** Checkpoints are validation operations performed after phase task completion but before moving to the next phase. They are distinct from functional tests, which validate feature behavior.
 

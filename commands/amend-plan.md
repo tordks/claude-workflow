@@ -94,11 +94,10 @@ Is this understanding correct? Should I proceed with these amendments?
 
 Once confirmed, apply the changes following amendment safety rules from cfw-planning skill's amendment.md reference.
 
-**YAML Frontmatter:** When editing documents:
-- Preserve all YAML frontmatter fields
-- Update the `last_updated` field to today's date (YYYY-MM-DD format)
-- Do NOT modify other frontmatter fields (`feature`, `plan_file`, `tasklist_file`, `created`)
-- Preserve usage headers - do NOT modify them during amendments
+**Document Structure:** When editing documents:
+- Preserve existing document structure and formatting
+- Maintain consistency with plan-spec.md and tasklist-spec.md requirements
+- Follow amendment safety rules (completed work is immutable)
 
 
 ### 6. Confirm Completion

@@ -29,12 +29,11 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
    - **FIRST:** Read `plans/{feature-name}-plan.md` in full
    - **SECOND:** Read `plans/{feature-name}-tasklist.md` for execution guidance
 
-   Both documents have usage instructions at the top explaining how to use them.
+   The plan provides architectural context (WHY/WHAT). The tasklist provides execution steps (WHEN/HOW).
 
 2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
 
 3. **Execute phase-by-phase and task-by-task:**
-   - Follow the workflow guidance in the tasklist header
    - Implement each task following plan and constitution
    - Mark complete: edit tasklist changing `- [ ]` to `- [x]`
    - After ALL phase tasks complete:

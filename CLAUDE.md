@@ -61,7 +61,7 @@ claude-workflow/
 │   ├── read-constitution.md → /read-constitution command
 │   └── create-claude-md.md  → /create-claude-md command
 ├── skills/                → Plugin skills (distributed)
-│   ├── cfw-planning/      → Planning workflow knowledge
+│   ├── cfw-planning/      → Planning workflow knowledge (critical for understanding specs)
 │   └── read-constitution/ → Constitution loader
 ├── .claude-plugin/        → Plugin metadata (distributed)
 │   ├── plugin.json        → Plugin manifest

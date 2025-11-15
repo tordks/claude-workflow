@@ -14,14 +14,12 @@ CWF is a plan-driven development workflow using two complementary documents that
 **Plan Document (`{feature-name}-plan.md`):**
 - Captures architectural context and design rationale
 - Documents WHY decisions were made and WHAT the solution is
-- Contains: Overview, Architecture & Design, Technical Approach, Implementation Strategy, Risks & Considerations
-- **Follows structure defined in `plan-spec.md`**
+- **Structure defined in `plan-spec.md`**
 
 **Tasklist Document (`{feature-name}-tasklist.md`):**
 - Provides step-by-step execution guidance
 - Documents WHEN to do tasks and HOW to implement them
-- Contains: Phase-by-phase tasks with IDs, goals, deliverables, and checkpoints
-- **Follows structure defined in `tasklist-spec.md`**
+- **Structure defined in `tasklist-spec.md`**
 
 **Both documents follow the conformance requirements defined below.**
 

@@ -20,28 +20,18 @@ Your role depends on the user's intent:
 
 ## What CWF Provides to Users
 
-When users install this plugin (`/plugin install cwf@claude-workflow`), they get:
-- **Commands**: /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
-- **Skills**: cfw-planning (workflow knowledge), read-constitution (coding standards)
-- **Workflow**: Plan-driven development with preserved context across sessions
+For complete user documentation, see README.md. In summary, CWF provides:
+- The **Claude Workflow**: Plan-driven development with preserved context across sessions
+- **Commands** for orchestrating the workflow: /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
+- **Skills** for distributing knowledge of CWF: cfw-planning (workflow knowledge), read-constitution (coding standards)
 
 ## CWF Workflow (Quick Reference)
 
-The plugin provides a plan-driven workflow:
+For detailed workflow stages and responsibilities, see:
+- README.md (user perspective and usage instructions)
+- skills/cfw-planning/SKILL.md (agent perspective and execution details)
 
-1. **Planning** (plan mode discussion) → `/write-plan <feature>`
-   - Creates plan.md (WHY/WHAT: architectural decisions, design rationale, checkpoint strategy)
-   - Creates tasklist.md (WHEN/HOW: phase-by-phase execution steps with checkpoints)
-
-2. **Implementation** → `/implement-plan <feature>`
-   - Works phase-by-phase through tasklist
-   - Each phase ends with checkpoints (self-review; code quality and complexity if project uses those tools)
-   - Stops at phase boundaries for human review after checkpoint validation
-   - User runs `/clear` between phases to manage context
-
-3. **Amendment** → `/amend-plan <feature>` (if requirements change)
-   - Safely updates plan and tasklist
-   - Preserves completed work
+Brief overview: Planning discussion → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
 
 ## Repository Structure
 
@@ -88,11 +78,6 @@ When users install:
 - Can load `cfw-planning` and `read-constitution` skills
 - Use CWF workflow in their own projects, not this repo
 
-**Release Process:**
-1. Make changes in this repository
-2. Test locally (update version in `.claude-plugin/plugin.json`)
-3. Commit and tag release (e.g., `v0.2.0`)
-4. Users update with `/plugin update cwf@claude-workflow`
 
 ## Design Principles
 
@@ -128,7 +113,6 @@ Understanding these principles helps you make consistent development decisions a
 
 **Anti-pattern:** Tight coupling where skill changes force command rewrites.
 
-
 ### Explicit Over Implicit
 
 **Principle:** Make relationships and dependencies clear.
@@ -160,6 +144,8 @@ The claude-workflow repository consists of:
 - `skills/cfw-planning/` - Core CWF planning knowledge repository
 - `skills/read-constitution/` - Constitution loader skill
 - `.claude/skills/writing-conformant-specs/` - RFC 2119 spec writing guidance (dev-only)
+
+**Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `cfw-planning`), it only sees files under that skill's directory (`skills/cfw-planning/`). This is why `cfw-planning` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
 
 ### Commands
 - `commands/write-plan.md` - Plan creation workflow
@@ -223,6 +209,7 @@ The claude-workflow repository consists of:
   - Intent or purpose of existing skills/commands changes
   - Workflow behavior changes
 - Implementation-only changes (no intent/workflow change) do not require documentation updates
+
 
 ## Development Workflow Pattern
 

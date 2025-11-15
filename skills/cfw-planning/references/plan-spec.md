@@ -24,54 +24,59 @@ Plan documents MUST include the four core sections defined below: Overview, Arch
 
 ### Section 1: Overview
 
-The Overview section MUST provide a high-level summary of the feature.
+The Overview section provides a high-level summary of the problem and solution (WHY build this, WHAT does it do).
 
-**Requirements:**
+**MUST include:**
+- Problem statement (current pain point or gap)
+- Feature purpose (solution being built)
+- Scope (What is IN/OUT of scope)
 
-The Overview section MUST include:
-- A problem statement identifying the user need being addressed
-- A feature purpose describing what the feature does
-- A scope definition identifying what is included and what is explicitly excluded
-
-The Overview section SHOULD include:
-- Success criteria defining how completion and correctness will be verified
-
-Success criteria SHOULD be quantifiable or objectively verifiable to enable clear validation.
+**SHOULD include:**
+- Success criteria (quantifiable completion validation)
 
 **Example (Informative):**
 ```markdown
 ## Overview
 
-**Problem:** Users need to search documentation by keywords and see relevant results.
+### Problem
+Users currently search documentation by manually scanning files or using basic text search. This is slow (10+ minutes per search) and misses relevant documents that use different terminology. Support tickets show 40% of questions are about "how to find X in the docs."
 
-**Purpose:** Add document search functionality with keyword filtering and ranking.
+### Purpose
+Add keyword-based document search with relevance ranking. Users enter search terms and receive ranked results within 1 second, improving discoverability and reducing support load.
 
-**Scope:**
-- IN: Keyword search, TF-IDF ranking, result filtering
-- OUT: Natural language queries, semantic search, advanced operators
+### Scope
+**IN scope:**
+- Keyword search with boolean AND/OR operators
+- TF-IDF relevance ranking
+- Result filtering by document type
+- Search result caching
 
-**Success Criteria:**
-- Users can search by keywords
-- Results ranked by relevance
-- Search completes in <100ms for 1000 documents
-- Test coverage >80%
+**OUT of scope:**
+- Natural language queries ("find me information about...")
+- Semantic/embedding-based search
+- Advanced operators (NEAR, wildcards, regex)
+
+### Success Criteria
+- Users can search by keywords and receive ranked results
+- Search completes in <100ms for 10,000 documents
+- Results include documents even with terminology variations
+- Test coverage >80% for core search logic
+- Zero regressions in existing functionality
 ```
 
 ---
 
 ### Section 2: Architecture & Design
 
-The Architecture & Design section MUST document component structure and design decisions with rationale.
+The Architecture & Design section documents structural composition and design rationale (WHAT are the pieces, WHY this structure).
 
-**Requirements:**
+**MUST include:**
+- Component overview (logical pieces that make up the feature and their  responsibilities)
+- Project structure (file tree with operation markers)
+- Design decisions (WHY rationale)
 
-The Architecture & Design section MUST include:
-- A component overview identifying the pieces that make up the feature
-- A project structure showing a file tree with operation markers
-- Design decisions documenting choices made with WHY rationale
-
-The Architecture & Design section SHOULD include:
-- Data flow descriptions showing how information moves through the system
+**SHOULD include:**
+- Component relationships (dependencies and communication patterns)
 
 **Design Decision Format:**
 
@@ -101,93 +106,176 @@ File trees MUST use markers to indicate file operations:
 ## Architecture & Design
 
 ### Component Overview
-- QueryParser: Parse search keywords and operators
-- QueryRanker: Rank documents by TF-IDF relevance
-- SearchIndex: In-memory document index
-- QueryAPI: HTTP endpoint for search requests
+
+**Core Components:**
+- **QueryParser:** Parses user search strings into structured queries (operators, quoted phrases)
+- **DocumentIndexer:** Builds and maintains TF-IDF index from document corpus
+- **QueryRanker:** Ranks documents against query using cosine similarity
+- **SearchCache:** LRU cache for frequent queries
+- **SearchAPI:** HTTP endpoint exposing search functionality
 
 ### Project Structure
 ```
 src/
-├── query/
+├── search/
 │   ├── __init__.py [CREATE]
 │   ├── parser.py [CREATE]
+│   ├── indexer.py [CREATE]
 │   ├── ranker.py [CREATE]
-│   └── index.py [CREATE]
+│   └── cache.py [CREATE]
 ├── api/
-│   └── search.py [MODIFY]
+│   └── search.py [CREATE]
+├── models/
+│   └── document.py [MODIFY]
 └── tests/
-    └── query/ [CREATE]
+    └── search/
         ├── test_parser.py [CREATE]
         └── test_ranker.py [CREATE]
 ```
 
 ### Design Decisions
 
-**Decision:** Use TF-IDF ranking algorithm
-**Rationale:** Simple, well-understood algorithm with good performance for keyword search. No training data required. Can upgrade to neural ranking in v2 if needed.
+**Decision:** Use TF-IDF with cosine similarity for ranking
+**Rationale:** Well-understood algorithm with predictable behavior. No training data or ML infrastructure required.
 **Alternatives Considered:**
-- BM25: More complex, marginal improvement for our use case
-- Neural ranking: Requires training data and GPU, overkill for current needs
+- BM25: Marginal improvement for our corpus size, added complexity not justified
+- Neural/embedding-based: Requires GPU, training data, model management - overkill for current needs
 **Trade-offs:**
-- Pro: Fast implementation, predictable results, no dependencies
-- Con: Doesn't understand semantics, sensitive to exact keyword matches
+- Pro: Fast to implement, predictable results, no infrastructure dependencies
+- Con: Doesn't understand semantic similarity, sensitive to exact keyword matches
+
+### Component Relationships
+- SearchAPI depends on QueryParser, SearchCache
+- QueryRanker depends on DocumentIndexer
+- SearchCache depends on QueryRanker
+- All components use shared Document model
 ````
 
 ---
 
 ### Section 3: Technical Approach
 
-The Technical Approach section MUST document implementation details and dependencies.
+The Technical Approach section documents runtime behavior and implementation details (HOW it works, WHAT makes it run).
 
-**Requirements:**
+**MUST include:**
+- Dependencies (required libraries, services, APIs)
+- Integration points (connections to existing systems)
 
-The Technical Approach section MUST include:
-- Dependencies identifying required libraries, services, or APIs
-- Integration points describing how the feature connects to existing code
-
-The Technical Approach section SHOULD include:
-- Error handling approach describing how failures will be managed
-- Configuration needs identifying runtime or deployment configuration
+**SHOULD include:**
+- Runtime behavior (algorithms, execution flow, state management)
+- Error handling (failure detection and management)
+- Configuration needs (runtime or deployment settings)
 
 **Example (Informative):**
-```markdown
+````markdown
 ## Technical Approach
 
 ### Dependencies
-- scikit-learn 1.3+ (for TF-IDF vectorization)
-- FastAPI 0.100+ (existing, for API endpoints)
-- pytest 7.4+ (existing, for testing)
+
+**New:**
+- scikit-learn 1.3+ (TF-IDF vectorization, cosine similarity)
+- nltk 3.8+ (text preprocessing, stopword removal)
+
+**Existing:**
+- FastAPI 0.100+ (API framework)
+- SQLAlchemy 2.0+ (document retrieval)
+- pytest 7.4+ (testing)
 
 ### Integration Points
-- Reads from existing DocumentStore
-- Exposes new /api/search endpoint
-- Uses existing authentication middleware
+- **Inbound:** Exposes `/api/v1/search` endpoint, uses existing FastAPI middleware
+- **Outbound:** Reads from `documents` table, listens to `document_updated` events
+
+### Runtime Behavior
+1. Parse query → structured query (operators, phrases)
+2. Check cache (LRU, 1000 entries)
+3. On cache miss: vectorize query, compute cosine similarity, rank results
+4. Return paginated results (25 per page)
+
 
 ### Error Handling
-- Invalid query syntax → 400 error with helpful message
-- No results found → 200 with empty list
-- Index not ready → 503 with retry-after header
-- Timeout (>5s) → 408 with partial results
+
+**Invalid Input:**
+- Empty query → 400 "Query cannot be empty"
+- Invalid operators → 400 "Invalid syntax: [specific error]"
+- Query too long (>500 chars) → 400 "Query exceeds maximum length"
+
+**Runtime Errors:**
+- Index not ready → 503 "Search index is building, retry in [X] seconds"
+- Timeout (>5s) → 408 "Query timeout, try simplifying search terms"
+- No results found → 200 with empty list (not an error)
+
+**System Errors:**
+- Database unavailable → 500, log error, alert on-call
+- Index corruption → Rebuild from database, log incident
+
+### Configuration
+```python
+SEARCH_INDEX_PATH = "/data/search-index.pkl"
+SEARCH_CACHE_SIZE = 1000
+SEARCH_TIMEOUT_MS = 5000
 ```
+````
 
 ---
 
 ### Section 4: Implementation Strategy
 
-The Implementation Strategy section MUST describe how implementation will proceed.
+The Implementation Strategy section describes the high-level approach that guides phase and task structure (WHEN to build what, HOW to validate).
 
-**Requirements:**
+**MUST include:**
+- Development approach (incremental, outside-in, vertical slice, bottom-up, etc.)
 
-The Implementation Strategy section MUST include:
-- A phase breakdown providing a summary of the tasklist phases
+**SHOULD include:**
+- Testing approach (test-driven, integration-focused, comprehensive, etc.)
+- Risk mitigation strategy (tackle unknowns first, safe increments, prototype early, etc.)
+- Quality gates (validation requirements at phase boundaries)
 
-**Phase Alignment:** The phase breakdown MUST align with the phases defined in the corresponding tasklist document. Phase names and sequence SHOULD match to maintain consistency between documents.
+The strategy SHOULD explain WHY the tasklist is structured as it is.
 
-The Implementation Strategy section SHOULD include:
-- A testing approach describing the testing strategy (unit, integration, e2e)
+**MUST NOT include:**
+- Step-by-step execution instructions or task checklists
+- Task-level details
 
-The Implementation Strategy section MUST NOT include step-by-step execution instructions or task checklists. These belong in the tasklist document, not the plan.
+**Example (Informative):**
+```markdown
+## Implementation Strategy
+
+### Development Approach
+
+**Incremental with Safe Checkpoints**
+
+Build bottom-up with validation at each layer:
+1. **Foundation First:** Core search components (indexer, ranker) before API
+2. **Runnable Increments:** Each phase produces working, testable code
+3. **Early Validation:** Algorithm performance validated early before building around it
+
+
+### Testing Approach
+Integration-focused with targeted unit tests:
+- Unit tests for complex logic (parsing, scoring)
+- Integration tests for component interactions
+- E2E tests for critical user flows
+
+
+### Quality Gates
+
+**After Core Components:**
+- [ ] Index builds for 10K documents in <10s
+- [ ] Query execution <100ms (p95)
+- [ ] Unit tests pass (>90% coverage for core logic)
+
+**After API Integration:**
+- [ ] Integration tests pass
+- [ ] End-to-end smoke tests pass
+- [ ] API response time <150ms (p95)
+- [ ] No regressions in existing functionality
+
+**Before Production:**
+- [ ] All tests pass
+- [ ] Performance tests pass
+- [ ] Error handling validated
+- [ ] Security review complete
+```
 
 ---
 

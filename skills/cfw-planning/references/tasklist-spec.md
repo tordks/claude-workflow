@@ -6,7 +6,7 @@ Specification for creating conformant tasklist documents in CWF.
 
 ## What is a Tasklist Document?
 
-The tasklist document provides **step-by-step execution guidance** (WHEN and HOW). It breaks down the feature into phases and concrete, actionable tasks that implementers can execute sequentially.
+Tasklist documents provide **step-by-step execution guidance**. They break features into phases and concrete, actionable tasks that implementers execute sequentially.
 
 Plan = WHY/WHAT | **Tasklist = WHEN/HOW**
 
@@ -16,7 +16,7 @@ Plan = WHY/WHAT | **Tasklist = WHEN/HOW**
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
-> **Note:** See `SKILL.md` for RFC 2119 keyword explanations and guidance on tailoring documentation depth.
+> **Note:** See `SKILL.md` for conformance levels (1-3) tailoring documentation depth.
 
 ---
 
@@ -82,7 +82,7 @@ Checkpoints are end-of-phase validation operations performed after all tasks in 
 
 **Requirements:**
 - Checkpoints MUST use checkbox format: `- [ ] Checkpoint description`
-- Additional checkpoints SHOULD be project-specific validation or quality  operations
+- Additional checkpoints SHOULD be project-specific validation or quality operations
 - Checkpoints MUST NOT duplicate functional test tasks (tests belong in Tasks section)
 - Checkpoint commands SHOULD be concrete and executable (e.g., `ruff check src/`)
 
@@ -91,7 +91,7 @@ Checkpoints are end-of-phase validation operations performed after all tasks in 
 - **Code quality:** Linting, formatting, type checking (e.g., ruff, black, mypy)
 - **Code complexity:** Complexity analysis (e.g., radon cc)
 
-**Note (Informative):** Checkpoints provide quality control for AI-driven development. They are validation operations independent of functionality testing.
+**Note (Informative):** Use only tools your project already has. Checkpoints provide quality control for AI-driven development.
 
 ---
 
@@ -99,12 +99,10 @@ Checkpoints are end-of-phase validation operations performed after all tasks in 
 
 Tasks SHOULD meet these quality criteria:
 
-- **Time:** Tasks SHOULD take 5-20 minutes to complete
-- **Atomic:** Tasks SHOULD be completable in one go without interruption (single logical change)
-- **Testable:** Tasks SHOULD have clear done criteria (observable output or verifiable behavior)
-- **File-specific:** Tasks SHOULD reference concrete files or components
-
-**Note (Informative):** These are guidelines for effective task breakdown. Real-world tasks MAY occasionally deviate based on feature complexity and context.
+- **Time:** 5-20 minutes to complete
+- **Atomic:** Completable in one go without interruption (single logical change)
+- **Testable:** Clear done criteria (observable output or verifiable behavior)
+- **File-specific:** Reference concrete files or components
 
 **Example (Informative):**
 ```markdown
@@ -145,11 +143,12 @@ The statement SHOULD be 1-3 sentences describing what capabilities now exist, wh
 
 ---
 
-## Validation Checklist
+## Validation
 
-- [ ] Every phase contains the required elements
-- [ ] Checkpoints are quality and validation operations, not functional tests
-- [ ] Task IDs follow `[PX.Y]` pattern with checkboxes (`- [ ]` or `- [x]`)
-- [ ] Tasks reference specific files/components (no vague tasks)
-- [ ] Tasks are atomic, testable, and take 5-20 minutes
-- [ ] No architectural rationale or design alternatives (belongs in plan)
+Tasklists are conformant when they:
+- Include required elements in every phase (Goal, Deliverable, Tasks, Checkpoints, Phase Complete)
+- Use correct task ID format `[PX.Y]` with checkboxes
+- Specify concrete files/components in task descriptions
+- Order tasks after their dependencies
+- Use checkpoints for quality/validation (not functional tests)
+- Contain no architectural rationale or design alternatives (belongs in plan)

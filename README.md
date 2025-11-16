@@ -7,13 +7,13 @@ Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code
 
 ### What Problem Does CWF Solve?
 
-Software development with AI assistants often faces these challenges:
+AI-assisted development often faces these challenges:
 
-1. **Lost Context:** Agents lose architectural rationale and design decisions in long contexts and between sessions. Why was this approach chosen? What alternatives were considered? Agents are stateless—when you clear context, they forget.
+1. **Lost Context:** When context clears, agents forget what you're building and why. Feature scope, architectural decisions, and design rationale all vanish.
 
-2. **Inconsistent Structure:** Without conventions, agents implement features differently every time. One session produces 50 tiny tasks, the next creates 3 giant ones. Tests get skipped. Documentation varies. Each implementation is a fresh start with unpredictable quality.
+2. **Inconsistent Structure:** Without conventions, agents implement inconsistently. Quality and structure vary unpredictably.
 
-3. **Changing Requirements:** Plans become outdated as you discover edge cases, realize better approaches, or receive feedback. Without a safe amendment process, you either ignore the plan or waste effort starting over. The plan becomes the agent's source of truth for the current implementation. When outdated, implementation errors follow.
+3. **Changing Requirements:** AI agents often work with underspecified plans that evolve as you discover edge cases. Without safe updates, changes vanish when context clears and the agent implements the outdated plan.
 
 4. **Loss of Control:** Agents can make dozens of changes without human interaction. Without explicit checkpoints, you're reviewing tons of work at once — finding the problem in change #47 when you should have caught it in change #3.
 
@@ -29,17 +29,17 @@ Claude Code has different modes for different types of work. CWF is a workflow f
 
 **Use plan mode when:**
 - Starting more complex features
-- You want to review the work to be done
-- You don't want Claude to start suggesting edits (plan-mode is read only)
+- You want to review the work before implementation starts
 
-*Plan mode lets Claude read and analyze without editing or executing. Great for careful deliberation before implementation.*
+Plan mode lets Claude read and analyze without editing or executing. Great for careful deliberation before implementation.
 
 
 **Use CWF when:**
 - Work spans multiple sessions
-- Implementation plan might need amendment
+- Need to adjust plans during implementation
 - Need reviewable checkpoints with runnable code
-- Building features that require commits during implementation
+
+CWF adds persistent plan documents you can review and safely modify during implementation. In plan mode, evolving requirements and discovered gaps remain implicit and it can be hard to know that the agent applies amendments as intended.
 
 
 ## Installation
@@ -107,9 +107,9 @@ These checkpoints provide quality control, catching issues early before they acc
 - Set clear scope (what's IN and OUT of this feature)
 - Define success criteria
 - For multi-session planning, save discussion to file and reload when resuming
-- Provide written specifications or brainstorming notes: `/write-plan user-auth  path-to-spec-or-discussion.md`
-- Use plan-mode for careful deliberation before `/write-plan`
-- Focus on specific parts of discussion: `/write-plan user-auth plan only the authentication layer`
+- You can provide written specifications or brainstorming notes: `/write-plan user-auth  path-to-spec-or-discussion.md`
+- A plan made in plan-mode can be used as input to `/write-plan`
+- You can focus on specific parts of a discussion: `/write-plan user-auth plan only the authentication layer`
 - Create `.constitution/` files for project-specific coding standards when claude.md grows large.
 
 ### Implementation
@@ -122,7 +122,7 @@ Run `/implement-plan` to start implementing the feature. The agent continues fro
 - If context allows, write "continue to next phase" instead of clearing to speed up development
 - Address checkpoint failures before proceeding
 - Use `/amend-plan` when requirements change (don't work around the plan)
-- Add instructions to `/implement-plan`: `/implement-plan user-auth phase 1 and 2, then stop`
+- You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1 and 2, then stop`
 
 
 ### Amending Plans

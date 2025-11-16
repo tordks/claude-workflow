@@ -2,138 +2,59 @@
 
 ## Feature-Based Directory Organization
 
-**What:** Organize plan documents in feature-specific subdirectories instead of flat `plans/` directory
+Organize plans in feature-specific subdirectories (`plans/feature-name/`) instead of flat `plans/` directory. This opens up for opens for adding complementary documents without increasing clutter.
 
-**Why Needed:** Plans directory becomes cluttered as project grows, making navigation difficult
-
-**Features:**
-- Create `plans/feature-name/` subdirectories
-- Store plan.md and tasklist.md in feature directory
-- Group related artifacts (diagrams, specs) with feature
-- Maintain cleaner project structure
+ Complementary files could be:
+- Architecture diagrams
+- Draft UI/wireframe mockups
+- API specifications
+- Data model schemas
 
 ---
 
-## Tracer Bullets Implementation Strategy
+## Pre-defined Implementation Strategies
 
-**What:** Optional workflow mode that creates minimal working examples before full implementation
-
-**Why Needed:** Full layer/feature implementations in Phase 1 make it hard for users to test and understand incremental progress
-
-**Features:**
-- Create end-to-end minimal working example first
-- Build incrementally on working foundation
-- Enable early testing and feedback
-- Reduce integration risk
+Introduce recognized implementation patterns (like Tracer Bullets) that agents can apply during `/write-plan`. Tracer Bullets creates minimal end-to-end working examples before full layer implementations, enabling early testing and reducing integration risk.
 
 ---
-
 
 ## Amendment Enhancements
 
-**What:** Changelog tracking and strikethrough formatting for amended content
-
-**Why Needed:** Maintain historical record of changes and why they were made
-
-**Features:**
-- Changelog section in amended documents
-- Strikethrough for replaced content
-- Amendment timestamps
-- Rationale documentation
-
+Add changelog section to amended plans tracking what changed, when, and why. Amended plans currently lack historical record, making it difficult to understand requirement evolution. Use strikethrough formatting for replaced content to maintain visible history.
 
 ---
 
 ## Constitution File Reorganization
 
-**What:** Move constitution files from `.constitution/` to plugin-specific location
-
-**Why Needed:** Separate CWF-specific coding standards from CWF plugin defaults
-
-**Features:**
-- Move plugin constitution to plugin directory
-- Support project-local constitution overrides
-- Clear separation of plugin vs project standards
-- Enable per-project coding conventions
-
+Move plugin's default constitution files to plugin-internal location (e.g., `.constitution-examples/`), reserving `.constitution/` exclusively for project-specific overrides. Currently `.constitution/` in plugin mixes CWF defaults with examples, creating confusion between plugin-shipped standards and project conventions.
 
 ---
 
+## Phase Checkpoint Hooks
 
-## Ambiguity Detection
-
-**What:** Automated detection of ambiguous requirements in planning discussions
-
-**Why Needed:** Help identify unclear specifications before implementation begins
-
-**Features:**
-- Scan conversation for vague terms
-- Flag missing technical details
-- Prompt for clarification
-- Suggest specific questions
-
+Implement CWF-specific event hooks (cwf:pre-phase, cwf:post-phase, cwf:pre-checkpoint, cwf:post-checkpoint) integrated with Claude Code's hook system. Automate quality checks, linting, and complexity analysis at phase boundaries instead of relying on agent. This will also potentially save token usage. 
 
 ---
 
-## Hooks System for Event-Driven Automation
+## Code Quality Analysis Skill
 
-**What:** Event hooks for automated actions during workflow
-
-**Why Needed:** Automate repetitive tasks and enforce policies
-
-**Features:**
-- Pre-plan hooks (validate naming, check dependencies)
-- Post-plan hooks (create issues, notify team)
-- Pre-phase hooks (setup environment, run checks)
-- Post-phase hooks (run tests, commit code)
-
-
----
-
-## Refactor Skill with Ruff/Radon
-
-**What:** Dedicated skill for code quality analysis and refactoring guidance
-
-**Why Needed:** Systematic approach to improving existing code
-
-**Features:**
-- Integrate Ruff for linting
-- Integrate Radon for complexity analysis
-- Provide refactoring recommendations
-- Generate refactoring tasks
-
+Dedicated skills integrating Ruff (linting) and Radon (complexity/maintainability metrics) for systematic code quality analysis.
 
 ---
 
 ## PM-Subagent Coordination Mode
 
-**What:** Project manager agent that coordinates multiple implementation agents
-
-**Why Needed:** Handle complex features requiring parallel work streams
-
-**Features:**
-- Coordinate multiple agents
-- Manage dependencies
-- Track overall progress
-- Resolve conflicts
-
+PM agent orchestrates CWF workflow by delegating task/phase implementation to subagents, enabling parallel execution while maintaining plan adherence. Requires mechanism to identify parallel-eligible tasks/phases (either during plan generation or post-plan analysis). Preserves current workflow by reusing skills in both commands and subagents.
 
 ---
 
 ## Constitution Frontmatter and Selective Loading
 
-**What:** Add YAML frontmatter to constitution files for metadata and context-based selective loading
+Add YAML frontmatter with tags to constitution files for context-based selective loading. Loading all constitution files wastes tokens on irrelevant standards (e.g., Python conventions during planning). Commands load only relevant files based on context.
 
-**Why Needed:** Not all constitution files are relevant for every command. Loading all files wastes tokens on irrelevant standards.
+Strongly consider replacig constitution reading with skill loading, that already is loaded dynamically.
 
-**Features:**
-- Add frontmatter to each constitution file with description and tags
-- Create script/subagent to select relevant files based on context
-- `/write-plan`, `/amend-plan` and `/implement-plan` loads only dev and planning-related constitution files
-- `/read-constitution` accepts arguments to specify which files to load
-- Optional: Constitution-reader subagent with read-constitution skill for retrieval without bloating context
-
-**Example frontmatter:**
+Example frontmatter:
 ```yaml
 ---
 tags: [planning, architecture]
@@ -145,57 +66,12 @@ description: Architectural design principles
 
 ## Beads Integration for Task Management
 
-**What:** Explore integrating Beads (git-backed graph issue tracker) with CWF for enhanced task tracking and dynamic discovery
+Explore integrating Beads (git-backed graph issue tracker) to replace markdown tasklists with queryable task graphs. Markdown tasklists are "write-only memory" for agents - dependencies exist only in prose, making it hard to query for ready work or dynamically file discovered issues during implementation. Beads provides graph-based dependencies, ready-work detection (`bd ready --json`), and dynamic task discovery where agents can file new issues mid-implementation.
 
-**IMPORTANT LIMITATION:** Beads is an issue tracker for tasks, NOT a planning system. It cannot replace plan.md (architectural rationale, design decisions, scope definition) - only tasklist.md (task tracking). plan.md remains essential for capturing the "WHY" behind implementation choices.
+Beads does have a concept of Epic, Story, Feature and Task, which could represent both the plan and tasklist.
 
-**Why Needed:** Markdown TODOs are "write-only memory" for agents. Dependencies exist only in prose, making it impossible to query for ready work. Agents can't dynamically track discovered bugs/TODOs during implementation without breaking out of the tasklist structure.
+**Potential integration approaches:**
+1. Beads replaces tasklist while plan.md remains living document with phase context. One Feature, Phase->Epic, Task->Task
+2. plan.md initializes Beads then gets archived with all context migrated to Beads. Uncertain how well the plan document can be represented.
 
-**What Beads Provides (Task-Level Only):**
-- Git-backed database (`.beads/issues.jsonl`) with local SQLite cache for fast queries
-- Graph-based dependencies (blocks, related, parent-child, discovered-from)
-- Agent-optimized JSON output and hash-based IDs
-- Ready-work detection (`bd ready --json` finds tasks with no open blockers)
-- Dynamic task discovery: Agents file new issues mid-implementation, linking to parent work
-- Multi-session memory without re-reading prose
-- Audit trail: Every change logged with timestamps and authorship
-- Hierarchical task structure: Parent epics with child tasks (bd-a3f8.1, bd-a3f8.2)
-
-**What Beads DOESN'T Provide Natively:**
-- No human-friendly planning document format
-- Architectural rationale must be populated from plan.md into issue descriptions
-- Design context stored in Feature/Epic descriptions, not separate document
-- In Option 2: plan.md provides the initial "WHY", which gets loaded into Beads descriptions
-
-**Integration Options:**
-
-**Option 1: Beads Replaces Tasklist**
-- **plan.md**: Architectural rationale, defines phases and their context (Same as now)
-- **Beads**: Phases as epics, tasks as children of epics
-- **tasklist.md**: Optional - can generate reviewable view from Beads if needed
-- Agent works from Beads (`bd ready --json`), user reviews plan.md + generated tasklist
-- Workflow: `/write-plan` creates plan.md + Beads structure and tasklist generation
-
-**Option 2: Full Beads Integration**
-- **plan.md**: Initialization document with architectural rationale and phase structure
-  - Defines phases with context/goals (like current CWF plan.md)
-  - Does NOT define detailed tasks (added during beads initialization)
-  - Used once to initialize Beads, then archived
-- **Beads**: Plan (feature) → Phases (epics) → Tasks (Task)
-- **tasklist.md**: Generated view from Beads for human review if needed
-- Workflow: `/write-plan` creates plan.md → user review plan → initializes Beads → plan.md archived 
-
-**Key Difference:** Option 1 keeps phase context in plan.md as a living document. Option 2 uses plan.md to initialize beads and then the plan is not used again.
-
-**Type Conventions:**
-
-- **Feature** → CWF feature (Option 2 only - top-level parent for phases)
-- **Epic** → CWF Phase (child of feature in Option 2, standalone in Option 1)
-- **Task** → Individual tasklist items (child of phase epic)
-- **Bug** → Discovered issues (filed with `--discovered-from`)
-- **Chore** → Setup, cleanup, documentation tasks
-
-**Open Questions:**
-- How to handle amendments with beads and make them transparent?
-- How well can we represent a plan in beads Features and Epics?
 

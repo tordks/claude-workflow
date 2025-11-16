@@ -83,14 +83,13 @@ CWF preserves context across sessions by storing planning and progress in struct
 ### Planning
 
 Start by exploring the feature requirements and design. You can either:
-- Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
 - Have an informal planning discussion with the agent
+- Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
 - Provide a written specification file
 
-The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that serves as input for `/write-plan`. It's particularly helpful for complex features where you want to ensure all aspects are considered.
+The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that can serve as input for `/write-plan`.
 
 After solidifying the specification, run `/write-plan` to create the planning documents:
-
 
 - **Plan** (`feature-plan.md`): Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** (`feature-tasklist.md`): Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
@@ -103,26 +102,38 @@ The plan divides work into phases that each produce runnable code. Each phase en
 
 These checkpoints provide quality control, catching issues early before they accumulate. After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
-**TIP:**
-- Use `/brainstorm` for structured exploration with systematic questioning and alternatives analysis
-- If planning over multiple sessions or if you need to clear or compact context, ask the agent to save the discussion to file and load it when starting a new session
-- A plan made in plan-mode can be a great starting point before calling `/write-plan`
-- You can add description or instructions when writing the plan: `/write-plan user-auth write a plan for phase 1 in my-complex-auth-plan.md`
+**Tips:**
+- Be specific about requirements, components, and technologies
+- Set clear scope (what's IN and OUT of this feature)
+- Define success criteria
+- For multi-session planning, save discussion to file and reload when resuming
+- Provide written specifications or brainstorming notes: `/write-plan user-auth  path-to-spec-or-discussion.md`
+- Use plan-mode for careful deliberation before `/write-plan`
+- Focus on specific parts of discussion: `/write-plan user-auth plan only the authentication layer`
+- Create `.constitution/` files for project-specific coding standards when claude.md grows large.
 
 ### Implementation
 
-Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context. Use `/clear` between phases to maintain performance and avoid context degradation.
+Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context.
 
-**TIP:** You can add descriptions and instructions when starting or resuming implementation: `/implement-plan user-auth implement phase 1 and 2, then stop.`
+**Tips:**
+- Review at phase boundaries before approving
+- Run `/clear` often to maintain fresh context
+- If context allows, write "continue to next phase" instead of clearing to speed up development
+- Address checkpoint failures before proceeding
+- Use `/amend-plan` when requirements change (don't work around the plan)
+- Add instructions to `/implement-plan`: `/implement-plan user-auth phase 1 and 2, then stop`
 
 
 ### Amending Plans
 
-If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely. Start by clearing context and describing the changes. When the changes are clear, run the command to apply them.
+If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely.
 
-**TIP:** You can add a description of changes after the feature name: `/amend-plan user-auth Add OAuth2 support alongside email/password`. If the amendment doesn't need discussion, this can be done without clearing context or discussing first.
-
-**WARNING:** If you change implementation details mid-development without amending the plan, the agent won't know about them. After clearing context, it will assume no amendments were made, leading to confusion and implementation errors.
+**Tips:**
+- For complex amendments, `/clear` and discuss changes first
+- Add change description for amendments that might not need discussion: `/amend-plan user-auth Add OAuth2 support`
+- Keep the plan accurate—it's the agent's source of truth
+- **Warning:** Changing implementation without amending the plan causes confusion after `/clear`
 
 
 ### Coding Constitution
@@ -153,21 +164,6 @@ The constitution ensures agents apply consistent conventions and make consistent
 |-------|----------|---------------|
 | `cfw-planning` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
 | `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Manually at the start of a planning session or by cwf commands automatically|
-
-### Tips for Success
-
-**During Planning:**
-- Be specific about requirements, components, technologies
-- Set clear scope (what's IN and OUT)
-- Define success criteria
-
-Good planning solidifies your intent and constrains the solution space, helping the agent make better implementation decisions.
-
-**During Implementation:**
-- Review at phase boundaries before approving
-- Use `/amend-plan` when requirements change
-- `/clear` between each phase
-
 
 ## Alternatives & Resources
 

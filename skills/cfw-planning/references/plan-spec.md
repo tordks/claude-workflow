@@ -6,7 +6,7 @@ Specification for creating conformant plan documents in the CWF workflow.
 
 ## What is a Plan Document?
 
-The plan document captures **architectural context and design rationale** (WHY and WHAT). It provides the foundation for implementation by documenting decisions, alternatives, and reasoning.
+Plan documents capture **architectural context and design rationale**. They preserve WHY decisions were made and WHAT the solution is, enabling implementation across sessions after context has been cleared.
 
 **Plan = WHY/WHAT** | Tasklist = WHEN/HOW
 
@@ -16,17 +16,17 @@ The plan document captures **architectural context and design rationale** (WHY a
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
-> **Note:** See `SKILL.md` for RFC 2119 keyword explanations and guidance on tailoring documentation depth.
+> **Note:** See `SKILL.md` for conformance levels (1-3) tailoring documentation depth.
 
 ---
 
 ## Core Plan Sections
 
-Plan documents MUST include the three core sections defined below: Overview, Solution Design, and Implementation Strategy.
+Plan documents MUST include three core sections: Overview, Solution Design, and Implementation Strategy.
 
 ### Section 1: Overview
 
-The Overview section provides a high-level summary of the problem and solution (WHY build this, WHAT does it do).
+Provides high-level summary of problem and solution.
 
 **MUST include:**
 - Problem statement (current pain point or gap)
@@ -70,65 +70,27 @@ Add keyword-based document search with relevance ranking. Users enter search ter
 
 ### Section 2: Solution Design
 
-The Solution Design section documents the complete solution (WHAT is being built and WHY it's designed this way).
+Documents the complete solution architecture and technical approach.
 
 #### 2.1 System Architecture
-
-System Architecture describes the structural composition of the solution (WHAT are the pieces and HOW they relate).
 
 **MUST include:**
 - Component overview (logical pieces and their responsibilities)
 - Project structure (file tree with operation markers)
 
 **SHOULD include:**
-- Component relationships (dependencies and communication patterns between new components)
-- Relationship to existing codebase (where the feature fits architecturally, which existing modules are used/extended)
+- Component relationships (dependencies and communication patterns)
+- Relationship to existing codebase (where feature fits, what it extends/uses)
 
 **File Tree Format:**
-
-File trees MUST use markers to indicate file operations:
-- New files MUST be marked with `[CREATE]`
-- Modified files MUST be marked with `[MODIFY]`
-- Removed files MUST be marked with `[REMOVE]`
-- Existing unchanged files MUST NOT include markers
-
----
-
-#### 2.2 Design Rationale
-
-Design Rationale documents the reasoning behind structural and technical choices (WHY this design).
-
-**MUST include:**
-- Rationale for key design choices (WHY decisions were made)
-
-**SHOULD include:**
-- Alternatives considered and why they were not chosen
-- Trade-offs accepted by the chosen approach
-
-**MAY include:**
-- Constraints that influenced decisions
-- Principles or patterns applied
-
-**Tip (Informative):** Format flexibly - inline rationale, comparison tables, or structured decision records all work. Focus on capturing WHY, not following a template.
-
----
-
-#### 2.3 Technical Specification
-
-Technical Specification describes runtime behavior and operational requirements (WHAT the system needs to run and HOW it behaves).
-
-**MUST include:**
-- Dependencies (required libraries and external systems)
-
-**SHOULD include:**
-- Runtime behavior (algorithms, execution flow, state management)
-- Error handling (failure detection and recovery strategies)
-- Configuration needs (runtime or deployment settings)
+File trees MUST use operation markers:
+- `[CREATE]` for new files
+- `[MODIFY]` for modified files
+- `[REMOVE]` for removed files
+- No marker for existing unchanged files
 
 **Example (Informative):**
 ````markdown
-## Solution Design
-
 ### System Architecture
 
 **Core Components:**
@@ -170,7 +132,29 @@ src/
 - Uses: Existing `AuthMiddleware` for authentication
 - Uses: Application `CacheManager` for result caching
 - Follows: Repository's service-oriented architecture and dependency injection patterns
+````
 
+---
+
+#### 2.2 Design Rationale
+
+Documents reasoning behind structural and technical choices.
+
+**MUST include:**
+- Rationale for key design choices
+
+**SHOULD include:**
+- Alternatives considered and why not chosen
+- Trade-offs accepted
+
+**MAY include:**
+- Constraints influencing decisions
+- Principles or patterns applied
+
+**Tip (Informative):** Format flexibly - inline rationale, comparison tables, or structured decision records all work. Focus on capturing WHY, not following a template.
+
+**Example (Informative):**
+```markdown
 ### Design Rationale
 
 **Use TF-IDF with cosine similarity for ranking**
@@ -184,7 +168,24 @@ Alternatives considered:
 Trade-offs accepted:
 - Pro: Fast to implement, predictable results, no infrastructure dependencies
 - Con: Doesn't understand semantic similarity, sensitive to exact keyword matches
+```
 
+---
+
+#### 2.3 Technical Specification
+
+Describes runtime behavior and operational requirements.
+
+**MUST include:**
+- Dependencies (libraries, external systems)
+- Runtime behavior (algorithms, execution flow, state management)
+
+**MAY include:**
+- Error handling (failure detection and recovery)
+- Configuration needs (runtime or deployment settings)
+
+**Example (Informative):**
+````markdown
 ### Technical Specification
 
 **Dependencies:**
@@ -237,7 +238,7 @@ SEARCH_TIMEOUT_MS = 5000
 
 ### Section 3: Implementation Strategy
 
-The Implementation Strategy section describes the high-level approach that guides phase and task structure (WHEN to build what, HOW to validate).
+Describes high-level approach guiding phase and task structure.
 
 **MUST include:**
 - Development approach (incremental, outside-in, vertical slice, bottom-up, etc.)
@@ -251,7 +252,6 @@ The strategy SHOULD explain WHY the tasklist is structured as it is.
 
 **MUST NOT include:**
 - Step-by-step execution instructions or task checklists
-- Task-level details
 
 **Example (Informative):**
 ```markdown
@@ -266,7 +266,6 @@ Build bottom-up with validation at each layer:
 2. **Runnable Increments:** Each phase produces working, testable code
 3. **Early Validation:** Algorithm performance validated early before building around it
 
-
 ### Testing Approach
 Integration-focused with targeted unit tests:
 - Unit tests for complex logic (parsing, scoring)
@@ -280,23 +279,24 @@ Each phase ends with mandatory validation before proceeding:
 - Code complexity: Complexity check with Radon
 
 These checkpoints ensure AI-generated code meets project standards before continuing to next phase.
-
-**Note (Informative):** Checkpoint types are project-specific. Use only the tools your project already has. If the project doesn't use linting or complexity analysis, omit those checkpoints.
 ```
+
+**Note (Informative):** Checkpoint types are project-specific. Use only tools your project already has. If the project doesn't use linting or complexity analysis, omit those checkpoints.
 
 ---
 
 ## Context Independence
 
-Plans MUST NOT assume the implementer has access to planning conversation context. Implementation may occur in fresh sessions after context has been cleared. All architectural decisions and rationale must be self-contained within the plan document.
+Plans MUST be self-contained. Implementation may occur in fresh sessions after context has been cleared. All architectural decisions and rationale must be in the plan document.
 
 ---
 
-## Validation Checklist
+## Validation
 
-- [ ] All three core sections present with required content
-- [ ] Solution Design includes all three subsections (System Architecture, Design Rationale, Technical Specification)
-- [ ] File trees present and use [CREATE]/[MODIFY]/[REMOVE] markers
-- [ ] Design rationale includes WHY decisions were made
-- [ ] Plan is self-contained (no assumed conversation context)
-- [ ] No step-by-step execution instructions or task checklists
+Plans are conformant when they:
+- Include all three core sections with required content
+- Contain all three Solution Design subsections
+- Use file tree markers correctly
+- Document WHY for design decisions
+- Are self-contained (no assumed conversation context)
+- Contain no step-by-step execution instructions

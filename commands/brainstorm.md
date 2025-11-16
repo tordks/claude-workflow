@@ -6,39 +6,9 @@ description: Quick feature exploration before creating plan
 
 Guide conversational exploration of feature requirements and design before formalizing with /write-plan.
 
-## Bootstrap
-
-**Check if CWF skills are already loaded in this session:**
-- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
-
-**If NO (skills not yet loaded):**
-1. Use the Skill tool to load: `read-constitution`
-2. Use the Skill tool to load: `cfw-planning`
-3. Wait for both to complete
-
-**If YES (skills already loaded):**
-- Skip skill loading, knowledge is already available
-
-## Required References
-
-**Check if required references are already loaded in this session:**
-- Do you have access to plan-spec.md content (plan document structure and context requirements)?
-
-**If NO (not yet loaded):**
-- Use the Read tool to load: `references/plan-spec.md`
-
-**If YES (already loaded):**
-- Skip loading, reference knowledge is already available
-
-**Then gain quick repository understanding:**
-- Scan project structure (directories, modules, organization)
-- Identify architecture patterns (how things are currently built)
-- Note key dependencies and constraints (libraries, APIs, integrations)
-- Survey existing features (what's already implemented)
-
 ## Context
 
-This command is run BEFORE /write-plan to quickly explore feature requirements and design through natural conversation. The agent first understands the repository context, then asks essential questions to uncover just enough context for /write-plan to create comprehensive planning documents.
+This command is run BEFORE writing planning documents to quickly explore feature requirements and design through natural conversation. The agent first understands the repository context, then asks essential questions to uncover just enough context to create comprehensive planning documents.
 
 
 ## Arguments
@@ -47,71 +17,40 @@ This command is run BEFORE /write-plan to quickly explore feature requirements a
 
 If arguments are provided, they contain context or initial direction for the brainstorming session. Use this context to inform your questions and exploration.
 
-## Brainstorming Process
+## Brainstorm workflow
 
-Ask questions to uncover just enough context for /write-plan. Adapt questions based on user responses. Stop when sufficient context exists.
+1. If skill `read-constitution` not loaded, load it
+2. If skill `cfw-planning` not loaded, load it
 
-### Essential Questions
+Read the following if not already loaded:
+- `references/plan-spec.md`
 
-Adapt these questions based on responses. Ask only what's needed to give /write-plan enough context.
+**Gain quick repository understanding:**
+- Scan project structure (directories, modules, organization)
+- Identify architecture patterns (how things are currently built)
+- Note key dependencies and constraints (libraries, APIs, integrations)
+- Survey existing features (what's already implemented)
 
-**Approach:** Use targeted exploration during questioning. When asking about components, architecture, or approach, explore relevant code to provide informed suggestions and identify integration points.
+Ask questions one at a time to uncover context for /write-plan. Adapt based on responses. Explore relevant code when discussing components/architecture.
 
-**What does this feature do?**
-- Understand the core functionality
-- If unclear, help clarify with examples or options
+**Essential questions** (adapt as needed):
+- What does this feature do? (core functionality)
+- Why this approach? (reasoning, alternatives, apply YAGNI)
+- What components involved? (create vs modify, integration)
+- How should it be built? (strategy, phases, risks, priorities)
+- How tested? (strategy, coverage)
+- Other context? (dependencies, constraints, performance, security)
 
-**Why this approach?**
-- Understand the reasoning or constraints
-- If user hasn't considered alternatives, briefly suggest 1-2 options
-- Apply YAGNI - challenge unnecessary complexity
-
-**What components are involved?**
-- Understand the architecture/structure
-- What needs to be created vs modified
-- How it integrates with existing code
-
-**How should this be built?**
-- Understand implementation strategy
-- Incremental approach? Phases?
-- What unknowns or risks exist?
-- What to tackle first?
-
-**How will it be tested?**
-- Understand testing strategy
-- Coverage expectations
-
-**Any other important context?**
-- Dependencies, constraints, risks
-- Performance, security, compatibility requirements
-- Anything else needed for /write-plan
-
-### When to Stop
-
-Stop asking questions when you have enough context for /write-plan to create:
-- Clear problem statement and solution overview
-- Basic architecture understanding
+**Stop when you have:**
+- Clear problem/solution
+- Architecture understanding
 - Key design decisions and rationale
 - Implementation strategy
 - Testing approach
 
-### Transition to /write-plan
+**Transition:** When sufficient context gathered, ask: "Ready to run /write-plan?" If yes, confirm they should run `/write-plan [feature-name]`.
 
-When sufficient context is gathered:
-
-```
-This gives us enough to work with. Ready to run /write-plan?
-```
-
-If user says yes, confirm they should run `/write-plan [feature-name]`.
-
-If user wants to explore more, continue conversation.
-
-## Guidelines
-
-- **One question at a time:** Don't overwhelm with multiple questions
-- **Natural conversation:** Adapt to user's style, not a rigid checklist
-- **YAGNI enforcement:** Challenge complexity, prefer simple solutions
-- **Software best practices:** Apply DRY, YAGNI, orthogonality principles
-- **Flexibility:** Let user guide depth - some need quick exploration, others want thorough discussion
-- **No documentation:** No formal brainstorm document needed - conversation provides context for /write-plan
+**Guidelines:**
+- 1-3 question at a time, natural conversation
+- Challenge complexity (YAGNI, DRY, orthogonality)
+- Adapt to user's preferred depth

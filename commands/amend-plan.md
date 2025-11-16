@@ -6,34 +6,6 @@ description: Update existing plan and tasklist based on conversation
 
 Update an existing plan and tasklist based on conversation context.
 
-## Bootstrap
-
-**Check if CWF skills are already loaded in this session:**
-- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
-
-**If NO (skills not yet loaded):**
-1. Use the Skill tool to load: `read-constitution`
-2. Use the Skill tool to load: `cfw-planning`
-3. Wait for both to complete
-
-**If YES (skills already loaded):**
-- Skip skill loading, knowledge is already available
-
-## Required References
-
-**Check if required references are already loaded in this session:**
-- Do you have access to amendment.md content (amendment safety rules for what operations are allowed)?
-
-**If NO (not yet loaded):**
-- Use the Read tool to load: `references/amendment.md`
-
-**If YES (already loaded):**
-- Skip loading, reference knowledge is already available
-
-Then proceed with instructions below.
-
-**Note:** Plan and tasklist structure will be inferred from the existing documents rather than reading specs, reducing context overhead.
-
 ## Context
 
 This command is used when amendments, changes, or extensions to an existing plan have been discussed. Your job is to understand those changes from the conversation and apply them safely.
@@ -60,162 +32,97 @@ This command is used when amendments, changes, or extensions to an existing plan
 
 ## Instructions
 
-### 1. Load Existing Documents
+### 1. Load and Analyze
 
-Read the existing planning documents:
+1. If skill `read-constitution` not loaded, load it
+2. If skill `cfw-planning` not loaded, load it
+
+Read the following if not already loaded:
+- `references/amendment.md`
+
+Read existing documents:
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
 
-**If either file is missing:**
-- Inform user: "Cannot find plan files for '{feature-name}'"
-- Suggest: "Run `/write-plan {feature-name}` to create new plan, or verify feature name"
-- STOP - do not proceed
+If either missing: inform user and suggest running `/write-plan` or verifying feature name. STOP.
 
-When both documents loaded successfully, proceed to Section 2.
+Analyze recent conversation history (last 10-20 messages before this command) to extract:
+- Specific changes discussed
+- New tasks/phases to add
+- Plan sections to modify
+- Where insertions should occur
 
----
-
-### 2. Analyze Conversation for Amendment Intent
-
-Review recent conversation messages (approximately last 10-20 messages) to understand:
-
-- What specific changes were discussed
-- Which sections need to be amended
-- What new tasks or phases need to be added
-- What modifications to plan sections are needed
-- Why the amendments are being made
-
-Extract specific details:
-
-- New task descriptions and where they should be inserted
-- New phase descriptions and goals
-- Section updates in the plan document
-- Any clarifications or examples to add
-
-When conversation analysis complete, proceed to Section 3.
+Identify current state from tasklist:
+- Which phases complete/in-progress/not-started
+- Highest task number in each phase
 
 ---
 
-### 3. Identify Current State
+### 2. Propose Amendments Interactively
 
-Examine the tasklist to determine:
-
-- Which phases are complete (all tasks marked `[x]`)
-- Which phases are in progress (some tasks marked `[x]`)
-- Which phases are not started (no tasks marked `[x]`)
-- The highest task number in each phase (for ID allocation)
-
-When current state identified, proceed to Section 4.
-
----
-
-### 4. Propose Amendments Interactively
-
-**STOP and present a clear summary** of proposed changes to the user:
+**STOP and present proposal** to user:
 
 ```markdown
 ## Proposed Amendments to {feature-name} Plan
 
-Based on the conversation, I understand you want to make the following changes:
-
 ### Changes to Plan Document (plans/{feature-name}-plan.md)
-- [List specific sections to add/modify, e.g., "Add new subsection 'Caching Strategy' to Architecture section"]
-- [Show brief preview of new content]
+- [List sections to add/modify with brief preview]
 
 ### Changes to Tasklist (plans/{feature-name}-tasklist.md)
-- [List specific tasks to add, e.g., "Add tasks P3.4-P3.6 to Phase 3: [descriptions]"]
-- [OR: "Add new Phase 4: [goal and tasks]"]
-- [Show where tasks will be inserted]
+- [List tasks to add with IDs and descriptions]
+- [OR: New phases with goals]
 
 ### Safety Check
 - ✅ No modifications to completed tasks
-- ⚠️ [Any warnings about edge cases or potential issues]
+- ⚠️ [Any warnings]
 
-Is this understanding correct? Should I proceed with these amendments?
+Is this correct? Should I proceed?
 ```
 
-**Wait for user confirmation** before proceeding. Use the AskUserQuestion tool if needed to clarify ambiguous requirements.
+Wait for confirmation. Use AskUserQuestion if needed to clarify.
 
-**If user rejects proposal:**
-1. Ask for specific concerns or required changes
-2. Revise proposal based on feedback
-3. Re-present updated proposal (return to beginning of Section 4)
-4. Repeat until user approves
-
-When user approves, proceed to Section 5.
+If user rejects: ask for concerns, revise proposal, re-present. Repeat until approved.
 
 ---
 
-### 5. Apply Amendments Safely
+### 3. Apply and Validate
 
-After receiving user confirmation in Section 4, apply amendments following these steps:
-
-1. Read amendment.md from cfw-planning skill for safety rules
-2. For each proposed change:
-   - Verify it's an allowed operation (amendment.md defines allowed/blocked operations)
-   - Apply using Edit tool
-   - Mark change as applied
-3. Verify no blocked operations attempted (e.g., modifying completed tasks)
-
-When all changes applied, proceed to Section 5.5.
+After confirmation, apply changes following safety rules from amendment.md (loaded in Section 1):
+1. For each change: verify allowed operation, apply with Edit tool
+2. Validate structural conformance:
+   - New sections use same markdown heading levels and structure as existing sections
+   - New tasks use `- [ ] [PX.Y] Description` format matching existing tasks
+   - Task IDs are sequential with no gaps (e.g., P3.5 → P3.6 → P3.7)
+   - Verify against amendment.md: no modifications to completed tasks, only additions to incomplete phases
+3. If validation fails: fix and re-validate
 
 ---
 
-### 5.5 Validate Amended Documents
+### 4. Confirm Completion
 
-After applying amendments, verify structural conformance:
-
-**Structural validation:**
-1. New sections match existing section structure and style
-2. Markdown formatting consistent with existing content
-2. New tasks match existing task format
-3. New phases match existing phase structure
-
-**Amendment Safety Validation:**
-1. Only allowed operations performed
-
-If ANY validation fails:
-- Identify the issue
-- Fix the affected document
-- Re-run validation for that document
-- Repeat until all validations pass
-
-When all validations pass, proceed to Section 6.
-
----
-
-### 6. Confirm Completion
-
-After applying amendments, provide a summary:
+Present summary:
 
 ```markdown
 ## Amendments Applied ✅
 
 ### Updated Files
-- plans/{feature-name}-plan.md - [brief description of changes]
-- plans/{feature-name}-tasklist.md - [brief description of changes]
+- plans/{feature-name}-plan.md - [changes]
+- plans/{feature-name}-tasklist.md - [changes]
 
-### Summary of Changes
-- [List what was added/modified]
-- [Show new task IDs if applicable]
+### Summary
+- [What was added/modified]
+- [New task IDs if applicable]
 
 ### Next Steps
-The amended plan is ready. You can:
-- Continue iterating with `/amend-plan {feature-name}` for further changes
-- Start/resume implementation with `/implement {feature-name}`
-- Review the updated files to verify changes
+- Continue amendment
+- Resume implementation
 ```
 
 ## Requirements
 
-
-All amendments MUST follow safety rules from amendment.md.
-
-Command-specific requirements:
-- **Conversation analysis:** Thoroughly review conversation to understand amendment intent
-- **Interactive confirmation:** ALWAYS confirm understanding before making changes
-- **Clear communication:** Show exactly what will change and why
-- **Inline changes:** Make direct updates to files, no separate "amendment" sections
+- Follow safety rules from amendment.md
+- ALWAYS confirm understanding before changes
+- Make inline updates, no separate amendment sections
 
 
 ## Example Flow

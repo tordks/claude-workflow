@@ -6,20 +6,6 @@ description: Execute plan phase-by-phase following tasklist
 
 Implement a feature by following the plan and tasklist documents.
 
-## Bootstrap
-
-**Check if CWF skills are already loaded in this session:**
-- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
-
-**If NO (skills not yet loaded):**
-1. Use the Skill tool to load: `read-constitution`
-2. Use the Skill tool to load: `cfw-planning`
-3. Wait for both to complete
-
-**If YES (skills already loaded):**
-- Skip skill loading, knowledge is already available
-
-
 ## Arguments
 
 **Input**: `$ARGUMENTS`
@@ -43,28 +29,24 @@ Implement a feature by following the plan and tasklist documents.
 
 ## Implementation workflow
 
-1. **Load documents:**
-   - **FIRST:** Read `plans/{feature-name}-plan.md` in full
-   - **SECOND:** Read `plans/{feature-name}-tasklist.md` for execution guidance
+1. If skill `read-constitution` not loaded, load it
+2. If skill `cfw-planning` not loaded, load it
 
-   The plan provides architectural context (WHY/WHAT). The tasklist provides execution steps (WHEN/HOW).
+3. **Read documents** if they are not already loaded 
+   - `plans/{feature-name}-plan.md` (WHY/WHAT)
+   - `plans/{feature-name}-tasklist.md` (WHEN/HOW)
 
-2. **Check progress:** Review tasklist to find first incomplete task in first incomplete phase. Communicate clearly where resuming from.
+4. **Check progress** - Find first incomplete task in first incomplete phase
 
-3. **Execute phase-by-phase and task-by-task:**
+5. **Execute tasks** - For each task: read → implement → test → mark complete (`- [ ]` to `- [x]`)
 
-   **Task workflow:**
-   - Read task → implement → test → mark complete (`- [ ]` to `- [x]`) → next task
+6. **After phase tasks complete**:
+   - Execute checkpoints sequentially, marking complete
+   - If checkpoint fails: fix and retry until passing
+   - When all pass: Output "Phase X Complete ✅" summary, suggest commit
+   - **STOP for human review** (do NOT proceed to next phase)
 
-   **After ALL phase tasks complete:**
-   - Execute each checkpoint sequentially, marking complete as you go
-   - If checkpoint fails: fix issue and retry until passing
-   - When all checkpoints pass:
-     - Output "Phase X Complete" summary with ✅
-     - Suggest conventional commit format
-     - **STOP for human review** (DO NOT proceed to next phase)
-
-   **Between phases:** Human reviews, optionally runs `/clear` and if so runs this command again.
+7. **Between phases** - Human reviews, optionally runs `/clear`, then continue implementation.
 
 
 ## Example Workflow

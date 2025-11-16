@@ -9,8 +9,7 @@ Formalize the planning discussion from plan mode into structured documentation.
 ## Bootstrap
 
 **Check if CWF skills are already loaded in this session:**
-- Do you have access to `plan-spec.md` and `tasklist-spec.md` reference documents?
-- Do you have knowledge of CWF conformance levels and planning patterns?
+- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
 
 **If NO (skills not yet loaded):**
 1. Use the Skill tool to load: `read-constitution`
@@ -20,12 +19,21 @@ Formalize the planning discussion from plan mode into structured documentation.
 **If YES (skills already loaded):**
 - Skip skill loading, knowledge is already available
 
-Then proceed with instructions below.
+## Required References
 
-**Key references from cfw-planning:**
-- `conventions.md` - Feature name format validation
-- `plan-spec.md` - Plan document specification with structure and validation requirements
-- `tasklist-spec.md` - Tasklist document specification with structure and validation requirements
+**Check if required references are already loaded in this session:**
+- Do you have access to plan-spec.md (plan document specification)?
+- Do you have access to tasklist-spec.md (tasklist document specification)?
+
+**If NO (not yet loaded):**
+Use the Read tool to load any missing references:
+- `references/plan-spec.md` - Plan document specification with structure and validation requirements
+- `references/tasklist-spec.md` - Tasklist document specification with structure and validation requirements
+
+**If YES (all already loaded):**
+- Skip loading, reference knowledge is already available
+
+Then proceed with instructions below.
 
 ## Context
 
@@ -37,7 +45,27 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 
 **Input**: `$ARGUMENTS`
 
-Parse input arguments using the standard parsing pattern from the cfw-planning skill's `parsing-arguments.md` reference.
+**Expected format**: `/write-plan {feature-name} [planning context]`
+
+**Parsing:**
+- First token: feature name
+- Remaining tokens: optional planning guidance or focus areas
+  - Example: `user-auth focus on OAuth2 and session management`
+
+**Feature name requirements:**
+- Format: kebab-case (lowercase with hyphens)
+- Length: 1-3 words, concise and descriptive
+- Characters: lowercase letters, numbers, hyphens only
+- Examples: `query-command`, `user-auth`, `auth`, `export`
+- Avoid: special characters, uppercase, underscores
+
+**If no feature name provided:**
+- Analyze conversation to suggest an appropriate feature name based on discussion
+- Present suggestion: "Based on our discussion, I suggest the feature name: '{suggested-name}'"
+- Ask user to confirm before creating files
+
+**Feature name usage:**
+- Creates: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
 
 
 ## Instructions
@@ -55,23 +83,20 @@ Extract from the planning discussion:
 
 **Step 2: Assess feature complexity**
 
-Classify the feature complexity using conformance level criteria from SKILL.md (Simple/Medium/Complex → L1/L2/L3). Consider affected components, files, and integration points.
+Assess the feature complexity (Simple/Medium/Complex) to guide documentation depth. Consider:
+- Affected components, files, and integration points
+- Architectural impact and integration complexity
+- Number of stakeholders and systems involved
 
-**Step 3: Select conformance level**
+Use this assessment to determine which SHOULD and MAY requirements from the specifications will add value.
 
-Map assessed complexity to conformance level:
-- Simple → Level 1 conformance
-- Medium → Level 2 conformance
-- Complex → Level 3 conformance
+**Step 3: Read specifications**
 
-The selected level will be applied to BOTH plan.md and tasklist.md.
+- Read references/plan-spec.md to understand plan structure and requirements
+- Read references/tasklist-spec.md to understand tasklist structure and requirements
+- Review the tailoring guidance in SKILL.md to understand how to adapt depth to feature complexity
 
-**Step 4: Read specifications**
-
-- Read plan-spec.md, focusing on requirements for your selected conformance level
-- Read tasklist-spec.md, focusing on requirements for your selected conformance level
-
-When context is extracted and conformance level selected, proceed to Section 2.
+When context is extracted and complexity assessed, proceed to Section 2.
 
 ---
 
@@ -80,13 +105,13 @@ When context is extracted and conformance level selected, proceed to Section 2.
 **Step 1: Draft plan document**
 
 Create `plans/{feature-name}-plan.md`:
-- Follow plan-spec.md structure requirements for your conformance level
+- Follow plan-spec.md structure requirements, tailoring depth to feature complexity
 - Use the extracted context from Section 1
 
 **Step 2: Draft tasklist document**
 
 Create `plans/{feature-name}-tasklist.md`:
-- Follow tasklist-spec.md structure requirements for your conformance level
+- Follow tasklist-spec.md structure requirements, tailoring depth to feature complexity
 - Break down into phases aligned with plan's Implementation Strategy
 - Include checkpoints following SKILL.md guidance
 
@@ -166,8 +191,6 @@ Planning documents created successfully! ✅
 Created:
 - plans/{feature-name}-plan.md
 - plans/{feature-name}-tasklist.md
-
-Conformance Level: L{X} ({Simple|Medium|Complex})
 
 Implementation Structure:
 - {N} phases defined

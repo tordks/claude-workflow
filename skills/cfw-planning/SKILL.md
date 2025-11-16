@@ -25,43 +25,17 @@ CWF is a plan-driven development workflow using two complementary documents that
 
 ---
 
-## Conformance Requirements
+## Conformance and Tailoring
 
-**All CWF planning documents (plans and tasklists) use these conformance definitions.**
+**All CWF planning documents (plans and tasklists) use RFC 2119 keywords to define requirements.**
 
-The specifications in `plan-spec.md` and `tasklist-spec.md` use RFC 2119 keywords to define requirements:
+The specifications in `plan-spec.md` and `tasklist-spec.md` use these keywords as described in RFC 2119.
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
-
-### Conformance Levels
-
-CWF specifications define three conformance levels:
-
-| Level | Requirements | Suitable For |
-|-------|--------------|--------------|
-| **Level 1 (Minimal)** | MUST requirements only | Simple features, bug fixes, small utilities |
-| **Level 2 (Standard)** | MUST + SHOULD requirements | Most features, new components, medium complexity |
-| **Level 3 (Comprehensive)** | MUST + SHOULD + MAY requirements | Complex features, major systems, architectural changes |
-
-### Selecting the Right Level
-
-- Simple features (bug fixes, utilities) → Level 1
-- Medium features (components, modules) → Level 2
-- Complex features (systems, frameworks) → Level 3
-
-### How Conformance Applies
-
-**For Plan Documents** (see `plan-spec.md` for details):
-- **Level 1**: Core sections present with minimal detail
-- **Level 2**: All sections with adequate design decision rationale
-- **Level 3**: Comprehensive sections with extensive documentation
-
-**For Tasklist Documents** (see `tasklist-spec.md` for details):
-- **Level 1**: Basic task structure and phase organization
-- **Level 2**: Detailed tasks with proper granularity and ordering
-- **Level 3**: Comprehensive tasks with extensive checkpoints
-
-**Important:** Both plan and tasklist for a feature SHOULD use the same conformance level
+- **MUST** / **REQUIRED** / **SHALL** - Mandatory requirements for all plans
+- **SHOULD** / **RECOMMENDED** - Strongly recommended; include unless there's good reason not to
+- **MAY** / **OPTIONAL** - Optional enhancements; include when they add value
+- **MUST NOT** / **SHALL NOT** - Absolute prohibitions
+- **SHOULD NOT** - Generally inadvisable; avoid unless there's good reason
 
 ---
 
@@ -169,8 +143,8 @@ The implementation follows this repeating cycle:
 
 | Need to understand... | Read This Reference | Contains |
 |----------------------|---------------------|----------|
-| **Plan document specification** | `references/plan-spec.md` | Plan structure requirements (uses conformance levels above) |
-| **Tasklist document specification** | `references/tasklist-spec.md` | Tasklist structure requirements (uses conformance levels above) |
+| **Plan document specification** | `references/plan-spec.md` | Plan structure requirements with RFC 2119 keywords |
+| **Tasklist document specification** | `references/tasklist-spec.md` | Tasklist structure requirements with RFC 2119 keywords |
 | **Amendment rules and safety** | `references/amendment.md` | Rules for safely modifying plans and tasklists |
 | **Argument parsing for commands** | `references/parsing-arguments.md` | Command argument parsing logic and discovery patterns |
 | **Feature naming and file structure** | `references/conventions.md` | Feature naming and file structure standards |

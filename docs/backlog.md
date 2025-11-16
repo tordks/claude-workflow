@@ -1,19 +1,5 @@
 # CWF Backlog
 
-## Optimize implement-plan Context Loading
-
-**What:** Reduce context consumption by making implement-plan infer structure from planning documents rather than loading full cfw-planning skill
-
-**Why Needed:** Currently implement-plan loads extensive skill documentation. Plans should be as self-contained as possible with needed context embedded.
-
-**Features:**
-- Write-plan embeds essential structure info into plan document
-- Implement-plan reads structure from plan itself
-- Reduces token usage during implementation
-- Makes plans more portable and self-documenting
-
----
-
 ## Feature-Based Directory Organization
 
 **What:** Organize plan documents in feature-specific subdirectories instead of flat `plans/` directory
@@ -25,24 +11,6 @@
 - Store plan.md and tasklist.md in feature directory
 - Group related artifacts (diagrams, specs) with feature
 - Maintain cleaner project structure
-
----
-
-## Checkpoint Validation System
-
-**What:** Automated validation and quality checks at phase boundaries
-
-**Why Needed:** Ensure code quality, completeness, and architectural integrity before proceeding to next phase
-
-**Features:**
-- Post-phase validation: verify all tasks complete
-- Code quality checks: linting, formatting
-- Complexity analysis: detect refactoring needs using Radon
-- Dynamic checkpoint adjustment based on complexity metrics
-
-- Split complex phases, combine simple ones
-- Balance implementation effort
-
 
 ---
 
@@ -73,23 +41,6 @@
 - Amendment timestamps
 - Rationale documentation
 
----
-
-## Plan Settings / Front Matter
-
-**What:** YAML front matter in plan documents for configuration
-
-**Why Needed:** Allow plans to specify preferences like testing framework, language version, architectural style
-
-**Example:**
-```yaml
----
-testing_framework: pytest
-python_version: "3.11"
-architecture: layered
-implementation-strategy: tracer bullet
----
-```
 
 ---
 
@@ -97,7 +48,7 @@ implementation-strategy: tracer bullet
 
 **What:** Move constitution files from `.constitution/` to plugin-specific location
 
-**Why Needed:** Separate project-specific coding standards from CWF plugin defaults
+**Why Needed:** Separate CWF-specific coding standards from CWF plugin defaults
 
 **Features:**
 - Move plugin constitution to plugin directory
@@ -109,7 +60,7 @@ implementation-strategy: tracer bullet
 ---
 
 
-## Ambiguity Detection System
+## Ambiguity Detection
 
 **What:** Automated detection of ambiguous requirements in planning discussions
 
@@ -169,19 +120,6 @@ implementation-strategy: tracer bullet
 
 ---
 
-## Split cfw-planning into Separate Plugin
-
-**What:** Extract cfw-planning skill into its own independent plugin
-
-**Why Needed:** Better skill information hit-rate and independent versioning
-
-**Features:**
-- Separate cfw-planning plugin
-- Independent updates and releases
-- Improved discoverability
-- Reduced main plugin complexity
-
-
 ## Constitution Frontmatter and Selective Loading
 
 **What:** Add YAML frontmatter to constitution files for metadata and context-based selective loading
@@ -202,6 +140,8 @@ tags: [planning, architecture]
 description: Architectural design principles
 ---
 ```
+
+---
 
 ## Beads Integration for Task Management
 

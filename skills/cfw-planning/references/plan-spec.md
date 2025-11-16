@@ -16,7 +16,7 @@ The plan document captures **architectural context and design rationale** (WHY a
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
-> **Note:** See `SKILL.md` for conformance level definitions and RFC 2119 keyword explanations.
+> **Note:** See `SKILL.md` for RFC 2119 keyword explanations and guidance on tailoring documentation depth.
 
 ---
 

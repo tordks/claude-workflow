@@ -9,8 +9,7 @@ Guide conversational exploration of feature requirements and design before forma
 ## Bootstrap
 
 **Check if CWF skills are already loaded in this session:**
-- Do you have access to `plan-spec.md` and `tasklist-spec.md` reference documents?
-- Do you have knowledge of CWF conformance levels and planning patterns?
+- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
 
 **If NO (skills not yet loaded):**
 1. Use the Skill tool to load: `read-constitution`
@@ -20,14 +19,22 @@ Guide conversational exploration of feature requirements and design before forma
 **If YES (skills already loaded):**
 - Skip skill loading, knowledge is already available
 
+## Required References
+
+**Check if required references are already loaded in this session:**
+- Do you have access to plan-spec.md content (plan document structure and context requirements)?
+
+**If NO (not yet loaded):**
+- Use the Read tool to load: `references/plan-spec.md`
+
+**If YES (already loaded):**
+- Skip loading, reference knowledge is already available
+
 **Then gain quick repository understanding:**
 - Scan project structure (directories, modules, organization)
 - Identify architecture patterns (how things are currently built)
 - Note key dependencies and constraints (libraries, APIs, integrations)
 - Survey existing features (what's already implemented)
-
-**Key reference from cfw-planning:**
-- `plan-spec.md` - Understand what context is needed for plan documents
 
 ## Context
 

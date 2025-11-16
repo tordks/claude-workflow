@@ -9,8 +9,7 @@ Update an existing plan and tasklist based on conversation context.
 ## Bootstrap
 
 **Check if CWF skills are already loaded in this session:**
-- Do you have access to `plan-spec.md` and `tasklist-spec.md` reference documents?
-- Do you have knowledge of CWF conformance levels and planning patterns?
+- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
 
 **If NO (skills not yet loaded):**
 1. Use the Skill tool to load: `read-constitution`
@@ -20,13 +19,20 @@ Update an existing plan and tasklist based on conversation context.
 **If YES (skills already loaded):**
 - Skip skill loading, knowledge is already available
 
+## Required References
+
+**Check if required references are already loaded in this session:**
+- Do you have access to amendment.md content (amendment safety rules for what operations are allowed)?
+
+**If NO (not yet loaded):**
+- Use the Read tool to load: `references/amendment.md`
+
+**If YES (already loaded):**
+- Skip loading, reference knowledge is already available
+
 Then proceed with instructions below.
 
-**Key references from cfw-planning:**
-- `plan-spec.md` - Plan document specification with structure and validation requirements
-- `tasklist-spec.md` - Tasklist document specification with structure and validation requirements
-- `amendment.md` - Complete amendment safety rules
-- `conventions.md` - Feature name format and file discovery patterns
+**Note:** Plan and tasklist structure will be inferred from the existing documents rather than reading specs, reducing context overhead.
 
 ## Context
 
@@ -36,7 +42,21 @@ This command is used when amendments, changes, or extensions to an existing plan
 
 **Input**: `$ARGUMENTS`
 
-Parse arguments using the standard parsing pattern from the cfw-planning skill's `parsing-arguments.md`.
+**Expected format**: `/amend-plan {feature-name} [amendment description]`
+
+**Parsing:**
+- First token: feature name (must match existing plan)
+- Remaining tokens: optional description of changes
+  - Example: `query-command Add caching to Phase 3`
+
+**If no feature name provided:**
+1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
+2. If exactly 1 plan found: use automatically and inform user
+3. If multiple plans found: use AskUserQuestion to present list and ask user to select
+4. If 0 plans found: inform user and suggest running `/write-plan` first
+
+**Feature name usage:**
+- Loads: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
 
 ## Instructions
 
@@ -143,13 +163,16 @@ When all changes applied, proceed to Section 5.5.
 
 ### 5.5 Validate Amended Documents
 
-After applying amendments, verify conformance:
+After applying amendments, verify structural conformance:
 
-1. Check plan document against plan-spec.md validation checklist
-2. Check tasklist document against tasklist-spec.md validation checklist
-3. Verify task IDs remain sequential within phases
-4. Verify checkbox formatting preserved (`- [ ]` and `- [x]`)
-5. Verify no completed tasks were modified
+**Structural validation:**
+1. New sections match existing section structure and style
+2. Markdown formatting consistent with existing content
+2. New tasks match existing task format
+3. New phases match existing phase structure
+
+**Amendment Safety Validation:**
+1. Only allowed operations performed
 
 If ANY validation fails:
 - Identify the issue
@@ -228,8 +251,9 @@ Applying...
 ✅ Updated plans/query-command-tasklist.md (added P3.6-P3.8, new Phase 4)
 
 Validating amendments...
-✓ Plan structure conforms to plan-spec.md
-✓ Tasklist structure conforms to tasklist-spec.md
+✓ Plan sections match existing structure and style
+✓ Tasklist tasks match existing format
+✓ Phase 4 structure matches existing phases
 ✓ Task IDs sequential (P3.6, P3.7, P3.8, P4.1, P4.2, P4.3, P4.4)
 ✓ Checkboxes preserved
 ✓ No completed tasks modified

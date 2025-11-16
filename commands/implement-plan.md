@@ -9,8 +9,7 @@ Implement a feature by following the plan and tasklist documents.
 ## Bootstrap
 
 **Check if CWF skills are already loaded in this session:**
-- Do you have access to `plan-spec.md` and `tasklist-spec.md` reference documents?
-- Do you have knowledge of CWF conformance levels and planning patterns?
+- Do you have the cfw-planning skill loaded with access to reference documents (plan-spec.md, tasklist-spec.md)?
 
 **If NO (skills not yet loaded):**
 1. Use the Skill tool to load: `read-constitution`
@@ -20,17 +19,26 @@ Implement a feature by following the plan and tasklist documents.
 **If YES (skills already loaded):**
 - Skip skill loading, knowledge is already available
 
-Then proceed with instructions below.
-
-## Context
-
-This command is called in a fresh chat session to implement a planned feature. After bootstrapping, read the planning documents for the feature and execute tasks phase by phase.
 
 ## Arguments
 
 **Input**: `$ARGUMENTS`
 
-Parse input arguments using the standard parsing pattern from the cfw-planning skill's `parsing-arguments.md` reference.
+**Expected format**: `/implement-plan {feature-name} [implementation instructions]`
+
+**Parsing:**
+- First token: feature name (must match existing plan)
+- Remaining tokens: optional implementation scope or behavior
+  - Example: `query-command implement phase 1 and 2, then stop`
+
+**If no feature name provided:**
+1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
+2. If exactly 1 plan found: use automatically and inform user
+3. If multiple plans found: present list (optionally with progress status), use AskUserQuestion to ask user to select
+4. If 0 plans found: inform user and suggest running `/write-plan` first
+
+**Feature name usage:**
+- Loads: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
 
 
 ## Implementation workflow
@@ -56,7 +64,7 @@ Parse input arguments using the standard parsing pattern from the cfw-planning s
      - Suggest conventional commit format
      - **STOP for human review** (DO NOT proceed to next phase)
 
-   **Between phases:** Human reviews, runs `/clear`, then runs `/implement-plan` to continue.
+   **Between phases:** Human reviews, optionally runs `/clear` and if so runs this command again.
 
 
 ## Example Workflow

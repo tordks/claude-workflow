@@ -82,7 +82,9 @@ CWF preserves context across sessions by storing planning and progress in struct
 
 ### Planning
 
-Start by exploring the feature requirements and design. You can either:
+Start by exploring the feature requirements and design, then write the plan using `/write-plan`.
+
+You can either:
 - Have an informal planning discussion with the agent
 - Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
 - Provide a written specification file
@@ -155,7 +157,7 @@ The constitution ensures agents apply consistent conventions and make consistent
 | `/write-plan` | After planning discussion | Feature name | Creates plan.md + tasklist.md in plans/ |
 | `/implement-plan` | Ready to code or resuming | Feature name | Executes tasks phase-by-phase with checkpoints |
 | `/amend-plan` | Requirements changed | Feature name | Updates plan/tasklist safely |
-| `/read-constitution` | Need coding principles | None | Loads software engineering standards |
+| `/read-constitution` | Need coding principles | None | Loads  cosntitution files into context |
 
 
 ### Skill Reference
@@ -167,14 +169,13 @@ The constitution ensures agents apply consistent conventions and make consistent
 
 ## Alternatives & Resources
 
-CWF is one of many agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to disk to maintain context between sessions. The key differences lie in implementation approach and workflow structure.
+CWF is my personal exploration of agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between session.
 
-Below are related projects and resources for comparison. Not thoroughly reviewed
-(yet).
+Below are related projects and resources. Not thoroughly reviewed.
 
 **Development Workflows:**
 
-- [superpowers](https://github.com/obra/superpowers) - Comprehensive skills library with proven techniques and patterns that auto-activate through Claude Code's plugin system
+- [superpowers](https://github.com/obra/superpowers) - Comprehensive skills library with techniques and patterns that auto-activate through Claude Code's plugin system
 - [spec-kit](https://github.com/github/spec-kit) - Spec-Driven Development toolkit where detailed specifications become executable artifacts that directly generate implementations
 - [superclaude](https://github.com/SuperClaude-Org/SuperClaude_Framework) - Meta-programming framework with 16 specialized agents and 7 behavioral modes for systematic workflow automation
 - [BMAD-method](https://github.com/bmad-code-org/BMAD-METHOD) - Human-AI collaboration framework with 19+ specialized agents for software development, creativity, and problem-solving

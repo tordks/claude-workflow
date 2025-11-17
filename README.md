@@ -116,8 +116,8 @@ The `/brainstorm` command systematically extracts requirements, explores alterna
 
 After solidifying the specification, run `/write-plan` to create the planning documents:
 
-- **Plan** (`{feature.name}-plan.md`): Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
-- **Tasklist** (`{feature-name}-tasklist.md`): Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
+- **Plan** `{feature.name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
+- **Tasklist** `{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 
 The plan divides work into phases that each produce runnable code. Each phase ends with **checkpoints**—validation operations that ensure code quality before proceeding:
 
@@ -133,7 +133,7 @@ These checkpoints provide quality control, catching issues early before they acc
 - Define success criteria
 - For multi-session planning, save discussion to file and reload when resuming
 - Use plan mode to get an initial plan draft that can be fed into `/write-plan`
-- You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth plan only make a plan for the authentication layer described in my-spec-file.md`
+- You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`
 - Create `.constitution/` files for project-specific coding standards when claude.md grows large.
 
 ### Implementation

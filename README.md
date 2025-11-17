@@ -5,17 +5,19 @@
 
 Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code with phase-based implementation.
 
+CWF is my personal exploration of agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between session. See links to other resources below.
+
 ### What Problem Does CWF Solve?
 
 AI-assisted development often faces these challenges:
 
-1. **Lost Context:** When context clears, agents forget what you're building and why. Feature scope, architectural decisions, and design rationale all vanish.
+1. **Lost Implementation Context:** When context clears, gets compacted, or sessions end, implementation details vanish. Architectural decisions, component relationships, and technical rationale all disappear, forcing agents to re-derive or guess.
 
-2. **Inconsistent Structure:** Without conventions, agents implement inconsistently. Quality and structure vary unpredictably.
+2. **Inconsistent Quality:** Without documented standards or quality control, implementation quality varies unpredictably. One session produces well-structured code with proper error handling; the next produces a 500-line function that mixes concerns.
 
-3. **Changing Requirements:** AI agents often work with underspecified plans that evolve as you discover edge cases. Without safe updates, changes vanish when context clears and the agent implements the outdated plan.
+3. **Plan Evolution Lost:** When implementation reveals gaps and needed changes, amended requirements remain buried in conversation. New sessions start with the original flawed plan, repeating the same discovery process.
 
-4. **Loss of Control:** Agents can make dozens of changes without human interaction. Without explicit checkpoints, you're reviewing tons of work at once — finding the problem in change #47 when you should have caught it in change #3.
+4. **Loss of Control:** Agents can make dozens of changes at once, and without oversight mechanisms, developers lose control of what is being built. Instructions are often underspecified, so agents guess at developer intent and implementations quickly go off the rails—either building the wrong thing entirely or taking opaque approaches that require investigation to understand. Without checkpoints for human review and quality control, problems compound before they're caught.
 
 ## When to use CWF
 
@@ -168,8 +170,6 @@ The constitution ensures agents apply consistent conventions and make consistent
 | `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Manually at the start of a planning session or by cwf commands automatically|
 
 ## Alternatives & Resources
-
-CWF is my personal exploration of agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between session.
 
 Below are related projects and resources. Not thoroughly reviewed.
 

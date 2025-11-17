@@ -1,5 +1,11 @@
 # CWF Backlog
 
+## PM-Subagent Coordination Mode
+
+PM agent orchestrates CWF workflow by delegating task/phase implementation to subagents, enabling parallel execution while maintaining plan adherence. Requires mechanism to identify parallel-eligible tasks/phases (either during plan generation or post-plan analysis). Preserves current workflow by reusing skills in both commands and subagents.
+
+---
+
 ## Feature-Based Directory Organization
 
 Organize plans in feature-specific subdirectories (`plans/feature-name/`) instead of flat `plans/` directory. This opens up for opens for adding complementary documents without increasing clutter.
@@ -15,6 +21,13 @@ Organize plans in feature-specific subdirectories (`plans/feature-name/`) instea
 ## Pre-defined Implementation Strategies
 
 Introduce recognized implementation patterns (like Tracer Bullets) that agents can apply during `/write-plan`. Tracer Bullets creates minimal end-to-end working examples before full layer implementations, enabling early testing and reducing integration risk.
+
+---
+
+## Split into multiple plugins
+
+Allow CWF to be a standalone plugin, with supproting langauge specific plugins. ie. a python plugin providing python specific principles and tooling.
+
 
 ---
 
@@ -42,11 +55,6 @@ Dedicated skills integrating Ruff (linting) and Radon (complexity/maintainabilit
 
 ---
 
-## PM-Subagent Coordination Mode
-
-PM agent orchestrates CWF workflow by delegating task/phase implementation to subagents, enabling parallel execution while maintaining plan adherence. Requires mechanism to identify parallel-eligible tasks/phases (either during plan generation or post-plan analysis). Preserves current workflow by reusing skills in both commands and subagents.
-
----
 
 ## Constitution Frontmatter and Selective Loading
 

@@ -24,7 +24,11 @@ Implement a feature by following the plan and tasklist documents.
 4. If 0 plans found: inform user and suggest running `/write-plan` first
 
 **Feature name usage:**
-- Loads: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
+`{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
+
+Example file paths:
+- `plans/{feature-name}-plan.md`
+- `plans/{feature-name}-tasklist.md`
 
 
 ## Implementation workflow
@@ -38,10 +42,14 @@ Implement a feature by following the plan and tasklist documents.
 
 4. **Check progress** - Find first incomplete task in first incomplete phase
 
-5. **Execute tasks** - For each task: read → implement → test → mark complete (`- [ ]` to `- [x]`)
+5. **Execute tasks** - For each task: 
+   1. read the task
+   2. implement the task
+   3. test the task (according to project standards)
+   4. mark task as complete in `plans/{feature-name}-tasklist.md` (`- [ ]` to `- [x]`)
 
 6. **After phase tasks complete**:
-   - Execute checkpoints sequentially, marking complete
+   - Execute checkpoints sequentially, marking as complete when done
    - If checkpoint fails: fix and retry until passing
    - When all pass: Output "Phase X Complete ✅" summary, suggest commit
    - **STOP for human review** (do NOT proceed to next phase)
@@ -91,15 +99,17 @@ All checkpoints passed. Foundation layer complete following constitution princip
 
 Suggested commit:
 feat: establish foundational architecture
-```
 
 Enables modular development with core models, strict type validation,
 and clear module boundaries.
-```
+
 
 Stopping for review. Please approve before proceeding to Phase 2.
+```
 
-# If resuming mid-feature
+If resuming mid-feature:
+
+```
 Progress check:
 ✓ Phase 1: Complete (2/2 tasks)
 ✓ Phase 2: Complete (4/4 tasks)

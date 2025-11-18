@@ -36,7 +36,11 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 - Ask user to confirm before creating files
 
 **Feature name usage:**
-- Creates: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
+`{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
+
+Example file paths:
+- `plans/{feature-name}-plan.md`
+- `plans/{feature-name}-tasklist.md`
 
 
 ## Instructions

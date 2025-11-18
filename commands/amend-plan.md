@@ -28,7 +28,11 @@ This command is used when amendments, changes, or extensions to an existing plan
 4. If 0 plans found: inform user and suggest running `/write-plan` first
 
 **Feature name usage:**
-- Loads: `plans/{feature-name}-plan.md` and `plans/{feature-name}-tasklist.md`
+`{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
+
+Example file paths:
+- `plans/{feature-name}-plan.md`
+- `plans/{feature-name}-tasklist.md`
 
 ## Instructions
 

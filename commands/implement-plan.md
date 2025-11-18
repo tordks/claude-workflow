@@ -31,30 +31,67 @@ Example file paths:
 - `plans/{feature-name}-tasklist.md`
 
 
-## Implementation workflow
+## Instructions
+
+### 1. Load Context
 
 1. If skill `read-constitution` not loaded, load it
 2. If skill `cfw-planning` not loaded, load it
 
-3. **Read documents** if they are not already loaded 
-   - `plans/{feature-name}-plan.md` (WHY/WHAT)
-   - `plans/{feature-name}-tasklist.md` (WHEN/HOW)
+---
 
-4. **Check progress** - Find first incomplete task in first incomplete phase
+### 2. Read Planning Documents
 
-5. **Execute tasks** - For each task: 
-   1. read the task
-   2. implement the task
-   3. test the task (according to project standards)
-   4. mark task as complete in `plans/{feature-name}-tasklist.md` (`- [ ]` to `- [x]`)
+Read the following if they are not already loaded:
+- `plans/{feature-name}-plan.md` (WHY/WHAT - architectural context)
+- `plans/{feature-name}-tasklist.md` (WHEN/HOW - sequential tasks)
 
-6. **After phase tasks complete**:
-   - Execute checkpoints sequentially, marking as complete when done
-   - If checkpoint fails: fix and retry until passing
-   - When all pass: Output "Phase X Complete ✅" summary, suggest commit
-   - **STOP for human review** (do NOT proceed to next phase)
+---
 
-7. **Between phases** - Human reviews, optionally runs `/clear`, then continue implementation.
+### 3. Identify Next Work
+
+Find the first incomplete task in the first incomplete phase:
+- Scan tasklist for unchecked tasks: `- [ ] [PX.Y] Task description`
+- Identify current phase and task number
+- If all tasks complete: inform user feature is complete
+
+---
+
+### 4. Execute Tasks
+
+For each task in the current phase:
+
+1. **Read** the task description from tasklist
+2. **Implement** the task following plan guidance
+3. **Test** the task according to project standards
+4. **Mark complete** in `plans/{feature-name}-tasklist.md`:
+   - Change `- [ ] [PX.Y]` to `- [x] [PX.Y]`
+
+Repeat until all tasks in current phase are complete.
+
+---
+
+### 5. Run Phase Checkpoints
+
+After all phase tasks are marked complete:
+
+1. Execute checkpoints sequentially (defined in tasklist)
+2. Mark each checkpoint complete as it passes
+3. If checkpoint fails: fix the issue is minor and retry until passing, else alert user.
+4. Continue until all checkpoints pass
+
+---
+
+### 6. Complete Phase and Stop
+
+When all checkpoints pass:
+
+1. Output "Phase X Complete ✅" summary
+2. Summarize what was accomplished
+3. Suggest commit message if appropriate
+4. **STOP for human review** - do NOT proceed to next phase
+
+**Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement-plan {feature-name}` to resume.
 
 
 ## Example Workflow

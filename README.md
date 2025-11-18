@@ -184,6 +184,7 @@ Below are related projects and resources. Not thoroughly reviewed.
 - [BMAD-method](https://github.com/bmad-code-org/BMAD-METHOD) - Human-AI collaboration framework with 19+ specialized agents for software development, creativity, and problem-solving
 - [claude-orchestration](https://github.com/mbruhler/claude-orchestration) - Multi-agent workflow orchestration enabling sequential, parallel, and conditional chaining of AI agents with manual checkpoints
 - [VibeCoder (VC)](https://github.com/steveyegge/vc) - VC orchestrates multiple coding agents (Amp, Claude Code, etc.) to work on small, well-defined tasks, guided by AI supervision
+- [moai-adk](https://github.com/modu-ai/moai-adk/tree/main/) - SPEC-First framework with 19 specialized agents for requirements, TDD, and documentation automation
 
 **Resources:**
 

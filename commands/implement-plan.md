@@ -157,8 +157,34 @@ Resuming from Phase 3, Task [P3.2]...
 
 
 ## When Tasks Are Unclear
-1. Check relevant sections in the plan document first
-2. Still unclear? Use AskUserQuestion tool with task ID, what's unclear, which plan sections checked, and recommended approach
+
+Assess task clarity using these criteria:
+
+**Clear (✅ - proceed with implementation):**
+- Task goal is explicit
+- Acceptance criteria defined or obvious
+- Required files/components identified
+- Approach is straightforward or documented in plan
+
+**Minor ambiguity (⚠️ - make reasonable assumption):**
+- Task goal is clear but approach has 2-3 valid options
+- Some details missing but not critical to core functionality
+- Can infer intent from context and plan
+- Document assumption in code comments
+
+**Major ambiguity (❌ - stop and ask):**
+- Task goal is vague or has multiple interpretations
+- Missing critical information (which component, what data structure, etc.)
+- Approach unclear and not documented in plan
+- Decision affects architecture or future phases
+
+**Process:**
+1. Read task description carefully
+2. Check relevant plan sections for context
+3. Assess clarity level using criteria above
+4. If Major ambiguity: Use AskUserQuestion with task ID, what's unclear, which plan sections checked, and recommended approach
+5. If Minor ambiguity: Proceed with documented assumption
+6. If Clear: Proceed with implementation
 
 ## When Issues Arise
 - Document the issue clearly

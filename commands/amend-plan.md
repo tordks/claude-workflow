@@ -77,8 +77,29 @@ Identify current state from tasklist:
 - [OR: New phases with goals]
 
 ### Safety Check
-- ✅ No modifications to completed tasks
-- ⚠️ [Any warnings]
+
+Assess amendment risk level:
+
+**Safe amendments (✅):**
+- Adding tasks to incomplete phases only
+- Creating new phases for future work
+- Adding new plan sections (no modifications)
+- No changes to completed tasks
+
+**Risky amendments (⚠️ - requires extra care):**
+- Modifying incomplete tasks in current phase
+- Changing phase structure or dependencies
+- Removing tasks or phases
+- Significant scope changes
+
+**Blocked amendments (❌ - reject and explain):**
+- Modifying or removing completed tasks
+- Modifying or removing completed phases
+- Changing task IDs of completed work
+- Retroactive changes to finished phases
+
+Assessment: [Safe/Risky/Blocked]
+Warnings: [List any concerns]
 
 Is this correct? Should I proceed?
 ```

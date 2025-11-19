@@ -61,15 +61,28 @@ Extract from recent conversation history (last 15-30 messages before this comman
 - Technical constraints and dependencies
 - File and component structure
 
-Assess feature complexity (Simple/Medium/Complex) considering:
-- Affected components and integration points
-- Architectural impact
-- Number of stakeholders/systems
+Assess feature complexity (Simple/Medium/Complex) using these criteria:
 
-This complexity assessment determines documentation depth:
-- Simple: Focus on MUST requirements from specs
-- Medium: Include MUST + SHOULD requirements
-- Complex: Include MUST + SHOULD + MAY requirements
+**Simple:**
+- 1-2 files affected
+- Single component or module
+- <5 tasks total
+- Minimal external dependencies
+- Focus on MUST requirements from specs
+
+**Medium:**
+- 3-5 files affected
+- 2-3 components involved
+- 5-15 tasks total
+- Some cross-component integration
+- Include MUST + SHOULD requirements
+
+**Complex:**
+- 6+ files affected
+- 4+ components involved
+- 15+ tasks total
+- Significant architectural changes or cross-system integration
+- Include MUST + SHOULD + MAY requirements
 
 ---
 
@@ -101,7 +114,7 @@ Create `plans/{feature-name}-tasklist.md`:
 
 **Validate coherence** between documents:
 1. ✓ Each tasklist phase implements components mentioned in plan's Implementation Strategy section
-2. ✓ Files marked [CREATE] or [MODIFY] in plan appear as tasks in tasklist (aim for >80%)
+2. ✓ Files marked [CREATE] or [MODIFY] in plan appear as tasks in tasklist
 3. ✓ Testing types mentioned in plan (unit/integration/e2e) appear as test tasks in tasklist
 4. ✓ Phase deliverables in tasklist match Implementation Strategy phase breakdown
 5. ✓ Both documents use similar detail level (both use MUST-only OR both include SHOULD/MAY)

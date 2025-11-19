@@ -109,23 +109,20 @@ Create `plans/{feature-name}-tasklist.md`:
 ### 3. Validate Documents
 
 **Validate plan**:
-1. Validate `plans/{feature-name}-plan.md` against all requirements in plan-spec.md
-2. Check each MUST/SHOULD requirement is satisfied
-3. Revise and re-validate until all items pass
+- [ ] Plan validated against all MUST/SHOULD requirements in plan-spec.md
+- [ ] If validation fails: revise plan and re-validate until all requirements pass
 
 **Validate tasklist**:
-1. Validate `plans/{feature-name}-tasklist.md` against all requirements in tasklist-spec.md
-2. Check each MUST/SHOULD requirement is satisfied
-3. Revise and re-validate until all items pass
+- [ ] Tasklist validated against all MUST/SHOULD requirements in tasklist-spec.md
+- [ ] If validation fails: revise tasklist and re-validate until all requirements pass
 
 **Validate coherence** between documents:
-1. ✓ Each tasklist phase implements components mentioned in plan's Implementation Strategy section
-2. ✓ Files marked [CREATE] or [MODIFY] in plan appear as tasks in tasklist
-3. ✓ Testing types mentioned in plan (unit/integration/e2e) appear as test tasks in tasklist
-4. ✓ Phase deliverables in tasklist match Implementation Strategy phase breakdown
-5. ✓ Both documents use similar detail level (both use MUST-only OR both include SHOULD/MAY)
-
-Revise either document if any coherence check fails, then re-validate.
+- [ ] Tasklist execution follows plan's Implementation Strategy pattern
+- [ ] Tasklist execution follows plan's Testing approach
+- [ ] Files marked [CREATE]/[MODIFY] in plan appear as tasks in tasklist
+- [ ] Consistent terminology between documentsss
+- [ ] Tasks reference only files/components defined in plan
+- [ ] If coherence fails: revise either document and re-validate until all checks pass
 
 ---
 

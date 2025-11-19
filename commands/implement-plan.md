@@ -89,10 +89,11 @@ After all phase tasks are marked complete:
 
 When all checkpoints pass:
 
-1. Output "Phase X Complete ✅" summary
-2. Summarize what was accomplished
-3. Suggest commit message if appropriate
-4. **STOP for human review** - do NOT proceed to next phase
+1. Make sure all tasks in the tasklist are marked as complete
+2. Output "Phase X Complete ✅" summary
+3. Summarize what was accomplished
+4. Suggest commit message if appropriate
+5. **STOP for human review** - do NOT proceed to next phase
 
 **Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement-plan {feature-name}` to resume.
 

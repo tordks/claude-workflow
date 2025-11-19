@@ -13,11 +13,13 @@ Implement a feature by following the plan and tasklist documents. This command e
 **Expected format**: `/implement-plan {feature-name} [implementation instructions]`
 
 **Parsing:**
+
 - First token: feature name (must match existing plan)
 - Remaining tokens: optional implementation scope or behavior
   - Example: `query-command implement phase 1 and 2, then stop`
 
 **If no feature name provided:**
+
 1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
 2. If exactly 1 plan found: use automatically and inform user
 3. If multiple plans found: present list (optionally with progress status), use AskUserQuestion to ask user to select
@@ -27,9 +29,9 @@ Implement a feature by following the plan and tasklist documents. This command e
 `{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
 
 Example file paths:
+
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
-
 
 ## Instructions
 
@@ -43,6 +45,7 @@ Example file paths:
 ### 2. Read Planning Documents
 
 Read the following if they are not already loaded:
+
 - `plans/{feature-name}-plan.md` (WHY/WHAT - architectural context)
 - `plans/{feature-name}-tasklist.md` (WHEN/HOW - sequential tasks)
 
@@ -51,6 +54,7 @@ Read the following if they are not already loaded:
 ### 3. Identify Next Work
 
 Find the first incomplete task in the first incomplete phase:
+
 - Scan tasklist for unchecked tasks: `- [ ] [PX.Y] Task description`
 - Identify current phase and task number
 - If all tasks complete: inform user feature is complete
@@ -89,19 +93,12 @@ After all phase tasks are marked complete:
 
 When all checkpoints pass:
 
-**Before signaling phase complete, verify:**
-- [ ] All tasks in phase marked complete
-- [ ] All checkpoints passed
-- [ ] Code is runnable
-- [ ] Tests pass (if applicable)
-
 1. Output "Phase X Complete ✅" summary
 2. Summarize what was accomplished
 3. Suggest commit message if appropriate
 4. **STOP for human review** - do NOT proceed to next phase
 
 **Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement-plan {feature-name}` to resume.
-
 
 ## Example Workflow
 
@@ -155,7 +152,7 @@ Stopping for review. Please approve before proceeding to Phase 2.
 
 If resuming mid-feature:
 
-```
+```text
 Progress check:
 ✓ Phase 1: Complete (2/2 tasks)
 ✓ Phase 2: Complete (4/4 tasks)
@@ -164,30 +161,33 @@ Progress check:
 Resuming from Phase 3, Task [P3.2]...
 ```
 
-
 ## When Tasks Are Unclear
 
 Assess task clarity using these criteria:
 
 **Clear (✅ - proceed with implementation):**
+
 - Task goal is explicit
 - Acceptance criteria defined or obvious
 - Required files/components identified
 - Approach is straightforward or documented in plan
 
 **Minor ambiguity (⚠️ - make reasonable assumption):**
+
 - Task goal is clear but approach has 2-3 valid options
 - Some details missing but not critical to core functionality
 - Can infer intent from context and plan
 - Document assumption in code comments
 
 **Major ambiguity (❌ - stop and ask):**
+
 - Task goal is vague or has multiple interpretations
 - Missing critical information (which component, what data structure, etc.)
 - Approach unclear and not documented in plan
 - Decision affects architecture or future phases
 
 **Process:**
+
 1. Read task description carefully
 2. Check relevant plan sections for context
 3. Assess clarity level using criteria above
@@ -196,12 +196,14 @@ Assess task clarity using these criteria:
 6. If Clear: Proceed with implementation
 
 ## When Issues Arise
+
 - Document the issue clearly
 - Use AskUserQuestion for multiple valid approaches or critical decisions
 - Continue with reasonable assumptions if minor
 - Stop and ask if significant or affects architecture
 
 ## Code Quality
+
 - Keep codebase runnable throughout
 - Run tests after implementing functionality
 - Follow constitution and project principles

@@ -29,14 +29,17 @@ Plan documents MUST include three core sections: Overview, Solution Design, and 
 Provides high-level summary of problem and solution.
 
 **MUST include:**
+
 - Problem statement (current pain point or gap)
 - Feature purpose (solution being built)
 - Scope (What is IN/OUT of scope)
 
 **SHOULD include:**
+
 - Success criteria (quantifiable completion validation)
 
 **Example (Informative):**
+
 ```markdown
 ## Overview
 
@@ -75,21 +78,25 @@ Documents the complete solution architecture and technical approach.
 #### 2.1 System Architecture
 
 **MUST include:**
+
 - Component overview (logical pieces and their responsibilities)
 - Project structure (file tree with operation markers)
 
 **SHOULD include:**
+
 - Component relationships (dependencies and communication patterns)
 - Relationship to existing codebase (where feature fits, what it extends/uses)
 
 **File Tree Format:**
 File trees MUST use operation markers:
+
 - `[CREATE]` for new files
 - `[MODIFY]` for modified files
 - `[REMOVE]` for removed files
 - No marker for existing unchanged files
 
 **Example (Informative):**
+
 ````markdown
 ### System Architecture
 
@@ -141,19 +148,23 @@ src/
 Documents reasoning behind structural and technical choices.
 
 **MUST include:**
+
 - Rationale for key design choices
 
 **SHOULD include:**
+
 - Alternatives considered and why not chosen
 - Trade-offs accepted
 
 **MAY include:**
+
 - Constraints influencing decisions
 - Principles or patterns applied
 
 **Tip (Informative):** Format flexibly - inline rationale, comparison tables, or structured decision records all work. Focus on capturing WHY, not following a template.
 
 **Example (Informative):**
+
 ```markdown
 ### Design Rationale
 
@@ -177,14 +188,17 @@ Trade-offs accepted:
 Describes runtime behavior and operational requirements.
 
 **MUST include:**
+
 - Dependencies (libraries, external systems)
 - Runtime behavior (algorithms, execution flow, state management)
 
 **MAY include:**
+
 - Error handling (failure detection and recovery)
 - Configuration needs (runtime or deployment settings)
 
 **Example (Informative):**
+
 ````markdown
 ### Technical Specification
 
@@ -241,9 +255,11 @@ SEARCH_TIMEOUT_MS = 5000
 Describes high-level approach guiding phase and task structure.
 
 **MUST include:**
+
 - Development approach (incremental, outside-in, vertical slice, bottom-up, etc.)
 
 **SHOULD include:**
+
 - Testing approach (test-driven, integration-focused, comprehensive, etc.)
 - Risk mitigation strategy (tackle unknowns first, safe increments, prototype early, etc.)
 - Checkpoint strategy (quality and validation operations at phase boundaries)
@@ -251,9 +267,11 @@ Describes high-level approach guiding phase and task structure.
 The strategy SHOULD explain WHY the tasklist is structured as it is.
 
 **MUST NOT include:**
+
 - Step-by-step execution instructions or task checklists
 
 **Example (Informative):**
+
 ```markdown
 ## Implementation Strategy
 
@@ -294,6 +312,7 @@ Plans MUST be self-contained. Implementation may occur in fresh sessions after c
 ## Validation
 
 Plans are conformant when they:
+
 - Include all three core sections with required content
 - Contain all three Solution Design subsections
 - Use file tree markers correctly

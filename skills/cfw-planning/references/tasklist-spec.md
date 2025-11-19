@@ -31,6 +31,7 @@ Every task in the tasklist MUST follow this markdown format:
 **Task ID Format:** `[PX.Y]` where P = "Phase", X = phase number, Y = task number within phase
 
 **Requirements:**
+
 - Tasks MUST use checkboxes: `- [ ]` for incomplete, `- [x]` for completed
 - Task numbering MUST start at 1 within each phase
 - Numbering MUST be sequential within phases (no gaps)
@@ -40,6 +41,7 @@ Every task in the tasklist MUST follow this markdown format:
 - Tasks MAY provide task-critical information in bulletpoints
 
 **Example (Informative):**
+
 ```markdown
 - [x] [P1.1] Create query/ directory and __init__.py
 - [x] [P1.2] Create QueryModel class with Pydantic in models.py
@@ -81,12 +83,14 @@ Every phase MUST follow this standard structure:
 Checkpoints are end-of-phase validation operations performed after all tasks in a phase are complete.
 
 **Requirements:**
+
 - Checkpoints MUST use checkbox format: `- [ ] Checkpoint description`
 - Additional checkpoints SHOULD be project-specific validation or quality operations
 - Checkpoints MUST NOT duplicate functional test tasks (tests belong in Tasks section)
 - Checkpoint commands SHOULD be concrete and executable (e.g., `ruff check src/`)
 
 **Common Checkpoint Types:**
+
 - **Self-review:** Agent reviews implementation against deliverable
 - **Code quality:** Linting, formatting, type checking (e.g., ruff, black, mypy)
 - **Code complexity:** Complexity analysis (e.g., radon cc)
@@ -105,6 +109,7 @@ Tasks SHOULD meet these quality criteria:
 - **File-specific:** Reference concrete files or components
 
 **Example (Informative):**
+
 ```markdown
 - [P1.1] Create query/ directory and __init__.py
 - [P1.2] Create QueryModel class with Pydantic in models.py
@@ -119,6 +124,7 @@ Tasks SHOULD meet these quality criteria:
 Tasks that depend on others MUST be ordered after their dependencies.
 
 **Example (Informative):**
+
 ```markdown
 - [ ] [P2.1] Create ranker.py with RankerClass stub
 - [ ] [P2.2] Implement TF-IDF scoring in RankerClass.score()
@@ -137,6 +143,7 @@ Every phase MUST end with a "Phase X Complete" statement describing system state
 The statement SHOULD be 1-3 sentences describing what capabilities now exist, what's ready for the next phase, and what validation has been completed.
 
 **Example (Informative):**
+
 - "Core data models validated, ready for parser implementation"
 - "Query parser complete with DSL support, validated against test cases"
 - "End-to-end query flow working with TF-IDF ranking, ready for optimization"
@@ -146,6 +153,7 @@ The statement SHOULD be 1-3 sentences describing what capabilities now exist, wh
 ## Validation
 
 Tasklists are conformant when they:
+
 - Include required elements in every phase (Goal, Deliverable, Tasks, Checkpoints, Phase Complete)
 - Use correct task ID format `[PX.Y]` with checkboxes
 - Specify concrete files/components in task descriptions

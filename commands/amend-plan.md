@@ -13,11 +13,13 @@ Update an existing plan and tasklist based on conversation context. This command
 **Expected format**: `/amend-plan {feature-name} [amendment description]`
 
 **Parsing:**
+
 - First token: feature name (must match existing plan)
 - Remaining tokens: optional description of changes
   - Example: `query-command Add caching to Phase 3`
 
 **If no feature name provided:**
+
 1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
 2. If exactly 1 plan found: use automatically and inform user
 3. If multiple plans found: use AskUserQuestion to present list and ask user to select
@@ -27,6 +29,7 @@ Update an existing plan and tasklist based on conversation context. This command
 `{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
 
 Example file paths:
+
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
 
@@ -38,21 +41,25 @@ Example file paths:
 2. If skill `cfw-planning` not loaded, load it
 
 Read the following if not already loaded:
+
 - `references/amendment.md`
 
 Read existing documents:
+
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
 
 If either missing: inform user and suggest running `/write-plan` or verifying feature name. STOP.
 
 Analyze recent conversation history (last 10-20 messages before this command) to extract:
+
 - Specific changes discussed
 - New tasks/phases to add
 - Plan sections to modify
 - Where insertions should occur
 
 Identify current state from tasklist:
+
 - Which phases complete/in-progress/not-started
 - Highest task number in each phase
 
@@ -105,6 +112,7 @@ Wait for confirmation. Use AskUserQuestion if needed to clarify.
 **Proposal Refinement:**
 
 Present the proposed amendments to the user. Then:
+
 - IF user accepts: Proceed to Section 3
 - IF user rejects: Ask what's missing/wrong/needs changing, revise the amendments, and present revised proposal (loop until accepted or aborted)
 - IF user provides feedback: Incorporate the feedback and make new proposal. Ask question if the user intent is unclear (loop until accepted or aborted)
@@ -114,6 +122,7 @@ Present the proposed amendments to the user. Then:
 ### 3. Apply and Validate
 
 After confirmation, apply the accepted changes:
+
 1. Apply each change using the Edit tool
 2. Validate structural conformance:
    - New sections use same markdown heading levels and structure as existing sections
@@ -148,7 +157,6 @@ Present summary:
 - Follow safety rules from amendment.md
 - ALWAYS confirm understanding before changes
 - Make inline updates, no separate amendment sections
-
 
 ## Example Flow
 

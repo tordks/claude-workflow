@@ -67,6 +67,7 @@ Safety rules for modifying CWF plans and tasklists during implementation.
 ## Before Amending
 
 **Verify:**
+
 - [ ] Task/phase to modify is incomplete (has `[ ]` tasks)
 - [ ] Not changing any task IDs
 - [ ] Not modifying completed tasks `[x]`

@@ -15,11 +15,13 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 **Expected format**: `/write-plan {feature-name} [planning context]`
 
 **Parsing:**
+
 - First token: feature name
 - Remaining tokens: optional planning guidance or focus areas
   - Example: `user-auth focus on OAuth2 and session management`
 
 **Feature name requirements:**
+
 - Format: kebab-case (lowercase with hyphens)
 - Length: 1-3 words, concise and descriptive
 - Characters: lowercase letters, numbers, hyphens only
@@ -27,6 +29,7 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 - Avoid: special characters, uppercase, underscores
 
 **If no feature name provided:**
+
 - Analyze conversation to suggest an appropriate feature name based on discussion
 - Present suggestion: "Based on our discussion, I suggest the feature name: '{suggested-name}'"
 - Ask user to confirm before creating files
@@ -35,9 +38,9 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 `{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
 
 Example file paths:
+
 - `plans/{feature-name}-plan.md`
 - `plans/{feature-name}-tasklist.md`
-
 
 ## Instructions
 
@@ -47,12 +50,14 @@ Example file paths:
 2. If skill `cfw-planning` not loaded, load it
 
 Read the following if not already loaded:
+
 - `references/plan-spec.md`
 - `references/tasklist-spec.md`
 
 **Context Extraction:**
 
 Analyze the conversation to extract:
+
 - Requirements and scope (IN/OUT)
 - Design decisions with rationale (WHY)
 - Alternatives considered and rejected
@@ -66,6 +71,7 @@ Review as much of the conversation as necessary to capture all planning context.
 Assess feature complexity (Simple/Medium/Complex) using these criteria:
 
 **Simple:**
+
 - 1-2 files affected
 - Single component or module
 - <5 tasks total
@@ -73,6 +79,7 @@ Assess feature complexity (Simple/Medium/Complex) using these criteria:
 - Focus on MUST requirements from specs
 
 **Medium:**
+
 - 3-5 files affected
 - 2-3 components involved
 - 5-15 tasks total
@@ -80,6 +87,7 @@ Assess feature complexity (Simple/Medium/Complex) using these criteria:
 - Include MUST + SHOULD requirements
 
 **Complex:**
+
 - 6+ files affected
 - 4+ components involved
 - 15+ tasks total
@@ -91,10 +99,12 @@ Assess feature complexity (Simple/Medium/Complex) using these criteria:
 ### 2. Create Planning Documents
 
 Create `plans/{feature-name}-plan.md`:
+
 - Follow plan-spec.md structure, tailoring depth to feature complexity
 - Use extracted context from Section 1
 
 Create `plans/{feature-name}-tasklist.md`:
+
 - Follow tasklist-spec.md structure, tailoring depth to feature complexity
 - Break into phases aligned with plan's Implementation Strategy
 - Include checkpoints per SKILL.md guidance
@@ -105,14 +115,17 @@ Create `plans/{feature-name}-tasklist.md`:
 ### 3. Validate Documents
 
 **Validate plan**:
+
 - [ ] Plan validated against all MUST/SHOULD requirements in plan-spec.md
 - [ ] If validation fails: revise plan and re-validate until all requirements pass
 
 **Validate tasklist**:
+
 - [ ] Tasklist validated against all MUST/SHOULD requirements in tasklist-spec.md
 - [ ] If validation fails: revise tasklist and re-validate until all requirements pass
 
 **Validate coherence** between documents:
+
 - [ ] Tasklist execution follows plan's Implementation Strategy pattern
 - [ ] Tasklist execution follows plan's Testing approach
 - [ ] Files marked [CREATE]/[MODIFY] in plan appear as tasks in tasklist
@@ -126,7 +139,7 @@ Create `plans/{feature-name}-tasklist.md`:
 
 Confirm both files exist and are valid, then present summary:
 
-```
+```text
 Planning documents created successfully! ✅
 
 Created:

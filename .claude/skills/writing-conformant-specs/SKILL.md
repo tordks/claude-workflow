@@ -10,6 +10,7 @@ Guides creation and iteration of RFC 2119-conformant specifications. Supports ac
 ## When to Use
 
 This skill should be used when:
+
 - Creating new specification documents from scratch
 - Iterating on specification drafts to improve conformance
 - Drafting requirements and choosing appropriate keywords
@@ -44,7 +45,7 @@ Provide guidance at any step. Support jumping between steps as writing progresse
 
 ### 4. Apply Decision Tree
 
-```
+```text
 Is requirement critical for correctness/safety/core functionality?
 ├─ Yes → MUST / MUST NOT
 └─ No → Strongly recommended for quality?

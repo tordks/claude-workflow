@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.39.0
+    hooks:
+      - id: markdownlint
+        args:
+          - '--fix'
+          - '--disable'
+          - 'MD013'  # Line length
+          - 'MD033'  # Inline HTML
+          - 'MD036'  # Emphasis as heading
+          - 'MD041'  # First line heading
+          - '--'

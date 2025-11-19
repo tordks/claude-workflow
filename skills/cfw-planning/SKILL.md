@@ -12,11 +12,13 @@ Knowledge repository for Claude Workflow (CWF).
 CWF is a plan-driven development workflow using two complementary documents that work together to guide feature implementation:
 
 **Plan Document (`{feature-name}-plan.md`):**
+
 - Captures architectural context and design rationale
 - Documents WHY decisions were made and WHAT the solution is
 - **Structure defined in `plan-spec.md`**
 
 **Tasklist Document (`{feature-name}-tasklist.md`):**
+
 - Provides step-by-step execution guidance
 - Documents WHEN to do tasks and HOW to implement them
 - **Structure defined in `tasklist-spec.md`**
@@ -44,11 +46,13 @@ The specifications in `plan-spec.md` and `tasklist-spec.md` use these keywords a
 Checkpoints are end-of-phase validation operations that provide quality control for AI-driven development.
 
 **Purpose:**
+
 - Validate code quality independent of functional testing
 - Ensure AI-generated code meets project standards
 - Catch issues early before accumulating technical debt
 
 **Checkpoint Types:**
+
 - **Self-review:** Agent reviews implementation against phase deliverable
 - **Code quality:** Linting, formatting, type checking (project-specific tools)
 - **Code complexity:** Complexity analysis (project-specific thresholds)
@@ -56,6 +60,7 @@ Checkpoints are end-of-phase validation operations that provide quality control 
 Human review occurs after checkpoints complete, when "Phase X Complete" is signaled.
 
 **Where checkpoints appear:**
+
 - **Plan:** Checkpoint strategy explains WHY these checkpoints and WHAT tools
 - **Tasklist:** Checkpoint checklist specifies WHEN to run and HOW to execute
 
@@ -67,7 +72,7 @@ Human review occurs after checkpoints complete, when "Phase X Complete" is signa
 
 The CWF planning workflow follows this command-driven flow:
 
-```
+```text
   /brainstorm (optional) [Human runs]
          ↓
   Design Summary [Agent writes]
@@ -91,6 +96,7 @@ The CWF planning workflow follows this command-driven flow:
 ### Stage Breakdown
 
 **1. `/brainstorm` Command (Optional)**
+
 - **Human:** Runs `/brainstorm` command (optional step for structured exploration)
 - **Agent:**
   - Systematically extracts requirements through guided questions
@@ -101,6 +107,7 @@ The CWF planning workflow follows this command-driven flow:
 - **Note:** Can be skipped in favor of informal planning discussion or written specification
 
 **2. `/write-plan` Command**
+
 - **Human:** Runs `/write-plan` command
 - **Agent:** Generates two documents:
   - Plan: Architectural context and WHY/WHAT decisions
@@ -127,6 +134,7 @@ The implementation follows this repeating cycle:
 **Note:** Conversation history is lost after `/clear`; only plan, tasklist checkboxes, and committed code persist across cycles.
 
 **4. `/amend-plan` Command (When Needed)**
+
 - **Human:** Discusses amendment and runs `/amend-plan` when requirements change during development
 - **Agent:**
   - Adds tasks to incomplete phases
@@ -136,6 +144,7 @@ The implementation follows this repeating cycle:
 - **Agent:** Continues development with amended plan
 
 **5. Feature Completion**
+
 - **Agent:** Completes all phases and signals completion
 - **Human:** Reviews and confirms feature is complete (✓)
 
@@ -148,7 +157,6 @@ The implementation follows this repeating cycle:
 | **Amendment rules and safety** | `references/amendment.md` | Rules for safely modifying plans and tasklists |
 | **Argument parsing for commands** | `references/parsing-arguments.md` | Command argument parsing logic and discovery patterns |
 | **Feature naming and file structure** | `references/conventions.md` | Feature naming and file structure standards |
-
 
 ---
 

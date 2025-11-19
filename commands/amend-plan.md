@@ -4,11 +4,7 @@ description: Update existing plan and tasklist based on conversation
 
 # Amend Plan Command
 
-Update an existing plan and tasklist based on conversation context.
-
-## Context
-
-This command is used when amendments, changes, or extensions to an existing plan have been discussed. Your job is to understand those changes from the conversation and apply them safely.
+Update an existing plan and tasklist based on conversation context. This command is used when amendments, changes, or extensions to an existing plan have been discussed. Your job is to understand those changes from the conversation and apply them safely.
 
 ## Arguments
 

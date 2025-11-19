@@ -4,11 +4,7 @@ description: Create plan and tasklist from planning discussion
 
 # Plan Command
 
-Formalize the planning discussion from plan mode into structured documentation.
-
-## Context
-
-This command is run AFTER iterating with Claude in plan mode. The user has already discussed and refined the approach. Your job is to capture and formalize what was discussed.
+Formalize the planning discussion from plan mode into structured documentation. This command is run AFTER iterating with Claude in plan mode. The user has already discussed and refined the approach. Your job is to capture and formalize what was discussed.
 
 Assume the engineer using the plan has zero context for the codebase. Document everything they need: which files to touch, code/testing/docs to check, how to test. Assume they are skilled but know little about the toolset or problem domain.
 

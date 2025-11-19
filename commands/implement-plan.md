@@ -4,7 +4,7 @@ description: Execute plan phase-by-phase following tasklist
 
 # Implement Command
 
-Implement a feature by following the plan and tasklist documents.
+Implement a feature by following the plan and tasklist documents. This command executes an existing plan phase-by-phase, reading the plan for architectural context and the tasklist for sequential execution. Your job is to execute tasks systematically and produce working code. Work proceeds one phase at a time with human review between phases.
 
 ## Arguments
 
@@ -89,11 +89,16 @@ After all phase tasks are marked complete:
 
 When all checkpoints pass:
 
-1. Make sure all tasks in the tasklist are marked as complete
-2. Output "Phase X Complete ✅" summary
-3. Summarize what was accomplished
-4. Suggest commit message if appropriate
-5. **STOP for human review** - do NOT proceed to next phase
+**Before signaling phase complete, verify:**
+- [ ] All tasks in phase marked complete
+- [ ] All checkpoints passed
+- [ ] Code is runnable
+- [ ] Tests pass (if applicable)
+
+1. Output "Phase X Complete ✅" summary
+2. Summarize what was accomplished
+3. Suggest commit message if appropriate
+4. **STOP for human review** - do NOT proceed to next phase
 
 **Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement-plan {feature-name}` to resume.
 

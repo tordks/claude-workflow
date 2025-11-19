@@ -77,7 +77,10 @@ After all phase tasks are marked complete:
 
 1. Execute checkpoints sequentially (defined in tasklist)
 2. Mark each checkpoint complete as it passes
-3. If checkpoint fails: fix the issue is minor and retry until passing, else alert user.
+3. If checkpoint fails:
+   - Minor issues (linting, formatting, types): fix and retry until passes or stuck
+   - Major issues (architectural issues, complex problems): stop, describe to user and ask user for direction.
+   - If stuck: ask user for guidance
 4. Continue until all checkpoints pass
 
 ---

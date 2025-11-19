@@ -106,19 +106,23 @@ Is this correct? Should I proceed?
 
 Wait for confirmation. Use AskUserQuestion if needed to clarify.
 
-If user rejects: ask for concerns, revise proposal, re-present. Repeat until approved.
+**Proposal Refinement:**
+
+Present the proposed amendments to the user. Then:
+- IF user accepts: Proceed to Section 3
+- IF user rejects: Ask what's missing/wrong/needs changing, revise the amendments, and present revised proposal (loop until accepted or aborted)
+- IF user provides feedback: Incorporate the feedback and make new proposal. Ask question if the user intent is unclear (loop until accepted or aborted)
 
 ---
 
 ### 3. Apply and Validate
 
-After confirmation, apply changes following safety rules from amendment.md (loaded in Section 1):
-1. For each change: verify allowed operation, apply with Edit tool
+After confirmation, apply the accepted changes:
+1. Apply each change using the Edit tool
 2. Validate structural conformance:
    - New sections use same markdown heading levels and structure as existing sections
    - New tasks use `- [ ] [PX.Y] Description` format matching existing tasks
    - Task IDs are sequential with no gaps (e.g., P3.5 → P3.6 → P3.7)
-   - Verify against amendment.md: no modifications to completed tasks, only additions to incomplete phases
 3. If validation fails: fix and re-validate
 
 ---

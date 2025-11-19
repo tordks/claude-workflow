@@ -54,12 +54,18 @@ Read the following if not already loaded:
 - `references/plan-spec.md`
 - `references/tasklist-spec.md`
 
-Extract from recent conversation history (last 15-30 messages before this command):
+**Context Extraction:**
+
+Analyze the conversation to extract:
 - Requirements and scope (IN/OUT)
 - Design decisions with rationale (WHY)
 - Alternatives considered and rejected
 - Technical constraints and dependencies
 - File and component structure
+
+Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /brainstorm results, design summaries, input arguments to this command).
+
+**Complexity Assessment:**
 
 Assess feature complexity (Simple/Medium/Complex) using these criteria:
 

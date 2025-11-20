@@ -161,15 +161,20 @@ If requirements change during implementation or you discover a gap in the plan, 
 
 ### Coding Constitution (Optional)
 
-CWF supports a constitution (`.constitution/` directory) to guide implementation quality and consistency. When present, constitution files are automatically loaded by workflow commands (`/write-plan`, `/implement-plan`, `/amend-plan`) and can be manually loaded with `/read-constitution`.
+CWF supports a constitution (`.constitution/` directory) for principles and standards that applies to the repository. Constitution files are automatically loaded by workflow commands and can be manually loaded with `/read-constitution`.
 
-Example constitution files:
+**You don't need a constitution.** It's a convenience to avoid long, unwieldy CLAUDE.md files. When your CLAUDE.md grows large with coding standards and principles, move that content to `.constitution/` files instead.
+
+**What goes where:**
+
+- **CLAUDE.md** - Repository context, structure, navigation (loaded immediately)
+- **Constitution** - Coding principles, standards, guidelines (loaded on-demand during implementation)
+
+Example constitution files (see `.constitution-examples/`):
 
 - **Software Engineering Principles:** DRY, YAGNI, orthogonality, separation of concerns
-- **Testing Philosophy:** Test coverage expectations, testing patterns, when to test
+- **Testing Philosophy:** Test coverage expectations, testing patterns
 - **Language Standards:** Python-specific conventions and best practices
-
-When configured, the constitution helps agents maintain consistent conventions and quality standards across implementations. Create `.constitution/` files for project-specific standards, or use CWF without them.
 
 ## Alternatives & Resources
 

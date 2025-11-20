@@ -4,38 +4,13 @@ You are in the **claude-workflow repository**, which distributes the Claude Work
 
 ## Repository Purpose
 
-**This repository IS the CWF plugin.**
+**This repository IS the CWF plugin.** For workflow documentation, see README.md.
 
-Your role depends on the user's intent:
+**Documentation by audience:**
 
-**If the user is browsing/evaluating the plugin:**
-
-- Explain what CWF provides (plan-driven workflow with phase-based implementation)
-- Reference README.md for detailed documentation
-- Show available commands: /write-plan, /implement-plan, /amend-plan
-
-**If the user is developing/contributing to the plugin:**
-
-- They should run `/prime-cwf-dev` to load development skills
-- Development context is provided by this file (CLAUDE.md) and README.md
-- Changes made here will be distributed to all plugin users
-
-## What CWF Provides to Users
-
-For complete user documentation, see README.md. In summary, CWF provides:
-
-- The **Claude Workflow**: Plan-driven development with preserved context across sessions
-- **Commands** for orchestrating the workflow: /brainstorm, /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
-- **Skills** for distributing knowledge of CWF: claude-workflow (workflow knowledge), read-constitution (coding standards)
-
-## CWF Workflow (Quick Reference)
-
-For detailed workflow stages and responsibilities, see:
-
-- README.md (user perspective and usage instructions)
-- plugins/cwf/skills/claude-workflow/SKILL.md (agent perspective and execution details)
-
-Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
+- **README.md** - User entrypoint (how to install and use CWF)
+- **SKILL.md** (`plugins/cwf/skills/claude-workflow/`) - Agent workflow knowledge (loaded when executing CWF commands)
+- **CLAUDE.md** - Development context (loaded when working in this repository)
 
 ## Repository Structure
 
@@ -46,101 +21,38 @@ Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /
 - Installation: `/plugin install cwf@claude-workflow`
 - Purpose: Provides plan-driven development workflow to Claude Code users
 
-**What Gets Distributed to Users:**
+**Project Structure:**
 
 ```text
 claude-workflow/
-├── plugins/               → Plugin packages
-│   └── cwf/               → CWF plugin (distributed)
+├── plugins/                    → Plugin packages (distributed to users)
+│   └── cwf/                    → CWF plugin
 │       ├── .claude-plugin/
-│       │   └── plugin.json    → Plugin manifest
-│       ├── commands/          → User slash commands
+│       │   └── plugin.json         → Plugin manifest
+│       ├── commands/               → User slash commands
 │       │   ├── write-plan.md
 │       │   ├── implement-plan.md
 │       │   ├── amend-plan.md
 │       │   ├── brainstorm.md
 │       │   └── read-constitution.md
-│       └── skills/            → Plugin skills
-│           ├── claude-workflow/  → Planning workflow knowledge
-│           └── read-constitution/ → Constitution loader
-├── .claude-plugin/        → Marketplace configuration
-│   └── marketplace.json   → Points to plugins/cwf
-├── .constitution/         → Example constitution files (distributed)
+│       └── skills/                 → Plugin skills
+│           ├── claude-workflow/    → Planning workflow knowledge
+│           └── read-constitution/  → Constitution loader
+├── .claude-plugin/             → Marketplace configuration
+│   └── marketplace.json            → Points to plugins/cwf
+├── .claude/                    → Development-only (NOT distributed)
+├── .constitution/              → CWF project-specific constitution
+├── .constitution-examples/     → Example constitution files for users
 ```
 
-**Development-Only (NOT distributed):**
+## Quality checks
 
-```text
-.claude/
+Run pre-commit in a subagent after making changes. If there are
+linting/formatting issues, the subagent should fix them:
+
+```bash
+uvx pre-commit run
 ```
-
-**Development vs User Context:**
-
-When developing (you):
-
-- Work IN this repository
-- Modify specifications, commands, and skills
-- Use `/prime-cwf-dev` to load development skills
-- Changes you make will be distributed to users
-
-When users install:
-
-- Run `/plugin install cwf@claude-workflow` in their projects
-- Get access to /write-plan, /implement-plan, /amend-plan commands
-- Can load `claude-workflow` and `read-constitution` skills
-- Use CWF workflow in their own projects, not this repo
-
-## Design Principles
-
-Understanding these principles helps you make consistent development decisions aligned with CWF's architecture.
-
-### Single Source of Truth
-
-**Principle:** Each piece of knowledge lives in exactly one place.
-
-**Application in CWF:**
-
-- Domain knowledge → skills
-- Workflow logic → skills
-- Workflow execution → commands
-
-**Why This Matters:** When conventions change, update one skill file. All commands using `claude-workflow` automatically benefit.
-
-**Example:** Task structure rules live in `claude-workflow/references/tasklist-spec.md` only. `/write-plan`, `/implement-plan`, and `/amend-plan` all reference this same source. Update task conventions once → all commands use new conventions.
-
-**Anti-pattern:** Embedding task rules in each command, requiring three updates for one change.
-
-### Orthogonality
-
-**Principle:** Design components so changes to one don't require changes to others.
-
-**Application in CWF:**
-
-- Change skills → commands automatically benefit
-- Change commands → skills remain unchanged
-- Add new skills → no changes to existing commands
-
-**Why This Matters:** Components compose cleanly. Improve planning conventions without touching commands. Add new commands reusing existing skills.
-
-**Example:** Update `tasklist-spec` to support new task format → `/write-plan` and `/implement-plan` automatically use new format → no command code changes needed.
-
-**Anti-pattern:** Tight coupling where skill changes force command rewrites.
-
-### Explicit Over Implicit
-
-**Principle:** Make relationships and dependencies clear.
-
-**Application in CWF:**
-
-- Commands explicitly invoke skills by name
-- Skills explicitly reference resources
-- Data flow clearly visible
-
-**Why This Matters:** No hidden dependencies. Reading a command shows exactly what skills it loads. New contributors understand quickly.
-
-**Example:** Commands use bootstrap pattern: "1. Load claude-workflow skill, 2. Read plan and tasklist, 3. Execute tasks"
-
-**Anti-pattern:** Commands assuming skills magically loaded, or skills with hidden resource dependencies.
 
 ## Development Areas
 
@@ -183,100 +95,8 @@ The claude-workflow repository consists of:
 
 ### Constitution
 
-- `.constitution/software-engineering.md` - Engineering principles (DRY, YAGNI, orthogonality)
-- `.constitution/testing.md` - Testing philosophy and coverage expectations
-- `.constitution/python-standards.md` - Python conventions
-
-## Key Development Guidelines
-
-### Code Quality
-
-Run pre-commit before committing changes:
-
-```bash
-uvx pre-commit run
-```
-
-This checks trailing whitespace, end-of-file fixes, and markdownlint rules.
-
-### When working on specifications (plan-spec.md, tasklist-spec.md)
-
-- Maintain RFC 2119 conformance (use MUST/SHOULD/MAY keywords correctly)
-- Apply RFC 2119 decision tree from writing-conformant-specs skill
-- Use proper keyword capitalization (MUST, SHOULD, MAY)
-- Separate normative requirements from informative content
-- Label informative sections explicitly: "(Informative)", "Best Practice:", "Example:"
-- Validate changes against RFC 2119 checklist
-
-### When working on skills
-
-- Follow single source of truth principle
-- Maintain orthogonality between skill components
-- Keep references self-contained and focused
-- Update SKILL.md descriptions when changing structure
-- Follow Claude Code skill patterns from developing-claude-code-plugins
-
-### When working on commands
-
-- Follow bootstrap pattern: load skills first, then execute
-- Reference skill knowledge, don't duplicate content
-- Keep workflow logic clear and explicit
-- Use standard argument parsing from parsing-arguments.md
-- Test with actual CWF usage scenarios
-- Follow Claude Code command conventions
-
-### When working on plugin configuration
-
-- Maintain plugin.json with correct version, dependencies, structure
-- Follow Claude Code plugin specification from working-with-claude-code
-- Test plugin installation and loading
-- Validate marketplace.json if distributing
-
-### When working on documentation
-
-- Keep README as entry point for users
-- Document design decisions in design-principles.md
-- Update examples when changing specifications
-- Maintain consistency with loaded skills
-- Update documentation when needed, ie.
-  - New skills or commands are introduced
-  - Intent or purpose of existing skills/commands changes
-  - Workflow behavior changes
-- Implementation-only changes (no intent/workflow change) do not require documentation updates
-
-## Development Workflow Pattern
-
-CWF development follows its own workflow:
-
-```text
-Identify need → Plan in plan-mode → Write/Edit → Test → Validate → Commit
-```
-
-For major changes:
-
-1. Discuss approach in plan mode
-2. Use `/write-plan` if needed for complex features
-3. Implement following CWF principles and loaded constitution
-4. Test with actual usage scenarios
-5. Validate specifications with writing-conformant-specs guidance
-6. Update documentation
-7. Commit with clear message
-
-## Responding to Users
-
-**For questions about using CWF:**
-
-- Reference README.md for detailed documentation
-- Explain workflow: plan → implement → amend
-- Show command usage examples
-
-**For development/contribution questions:**
-
-- Direct them to run `/prime-cwf-dev` to load development skills
-- This file (CLAUDE.md) provides repository structure and guidelines
-- README.md provides user-facing documentation
-
-**For general inquiries:**
-
-- This plugin solves: lost context, inconsistent structure, changing requirements, loss of control
-- Best for: multi-session work, complex features, work requiring checkpoints
+- `.constitution/cwf-principles.md` - Design philosophy (Single Source of Truth, Orthogonality, Explicit Over Implicit)
+- `.constitution/cwf-guidelines.md` - Component development guidelines
+- `.constitution/rfc-2119.md` - RFC 2119 conformance rules
+- `.constitution/cwf-workflow.md` - Development workflow pattern
+- `.constitution-examples/` - Example constitution files for users

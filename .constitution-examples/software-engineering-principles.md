@@ -1,4 +1,4 @@
-# Fundamental Principles
+# Software Engineering Principles
 
 ## DRY (Don't Repeat Yourself)
 

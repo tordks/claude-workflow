@@ -33,7 +33,7 @@ For complete user documentation, see README.md. In summary, CWF provides:
 For detailed workflow stages and responsibilities, see:
 
 - README.md (user perspective and usage instructions)
-- skills/cfw-planning/SKILL.md (agent perspective and execution details)
+- plugins/cwf/skills/cfw-planning/SKILL.md (agent perspective and execution details)
 
 Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
 
@@ -50,18 +50,21 @@ Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /
 
 ```text
 claude-workflow/
-├── commands/              → User slash commands (distributed)
-│   ├── write-plan.md      → /write-plan command
-│   ├── implement-plan.md  → /implement-plan command
-│   ├── amend-plan.md      → /amend-plan command
-│   ├── read-constitution.md → /read-constitution command
-│   └── create-claude-md.md  → /create-claude-md command
-├── skills/                → Plugin skills (distributed)
-│   ├── cfw-planning/      → Planning workflow knowledge (critical for understanding specs)
-│   └── read-constitution/ → Constitution loader
-├── .claude-plugin/        → Plugin metadata (distributed)
-│   ├── plugin.json        → Plugin manifest
-│   └── marketplace.json   → Marketplace configuration
+├── plugins/               → Plugin packages
+│   └── cwf/               → CWF plugin (distributed)
+│       ├── .claude-plugin/
+│       │   └── plugin.json    → Plugin manifest
+│       ├── commands/          → User slash commands
+│       │   ├── write-plan.md
+│       │   ├── implement-plan.md
+│       │   ├── amend-plan.md
+│       │   ├── brainstorm.md
+│       │   └── read-constitution.md
+│       └── skills/            → Plugin skills
+│           ├── cfw-planning/  → Planning workflow knowledge
+│           └── read-constitution/ → Constitution loader
+├── .claude-plugin/        → Marketplace configuration
+│   └── marketplace.json   → Points to plugins/cwf
 ├── .constitution/         → Example constitution files (distributed)
 ```
 
@@ -145,32 +148,31 @@ The claude-workflow repository consists of:
 
 ### Core Specifications
 
-- `skills/cfw-planning/references/plan-spec.md` - Plan document specification (RFC 2119)
-- `skills/cfw-planning/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
-- `skills/cfw-planning/references/conventions.md` - Feature naming and file structure
-- `skills/cfw-planning/references/parsing-arguments.md` - Command argument parsing
-- `skills/cfw-planning/references/amendment.md` - Amendment safety rules
+- `plugins/cwf/skills/cfw-planning/references/plan-spec.md` - Plan document specification (RFC 2119)
+- `plugins/cwf/skills/cfw-planning/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
+- `plugins/cwf/skills/cfw-planning/references/conventions.md` - Feature naming and file structure
+- `plugins/cwf/skills/cfw-planning/references/parsing-arguments.md` - Command argument parsing
+- `plugins/cwf/skills/cfw-planning/references/amendment.md` - Amendment safety rules
 
 ### Skills
 
-- `skills/cfw-planning/` - Core CWF planning knowledge repository
-- `skills/read-constitution/` - Constitution loader skill
+- `plugins/cwf/skills/cfw-planning/` - Core CWF planning knowledge repository
+- `plugins/cwf/skills/read-constitution/` - Constitution loader skill
 - `.claude/skills/writing-conformant-specs/` - RFC 2119 spec writing guidance (dev-only)
 
-**Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `cfw-planning`), it only sees files under that skill's directory (`skills/cfw-planning/`). This is why `cfw-planning` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
+**Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `cfw-planning`), it only sees files under that skill's directory (`plugins/cwf/skills/cfw-planning/`). This is why `cfw-planning` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
 
 ### Commands
 
-- `commands/brainstorm.md` - Feature exploration workflow
-- `commands/write-plan.md` - Plan creation workflow
-- `commands/implement-plan.md` - Implementation workflow
-- `commands/amend-plan.md` - Plan amendment workflow
-- `commands/read-constitution.md` - Constitution loading
-- `commands/create-claude-md.md` - CLAUDE.md template generation
+- `plugins/cwf/commands/brainstorm.md` - Feature exploration workflow
+- `plugins/cwf/commands/write-plan.md` - Plan creation workflow
+- `plugins/cwf/commands/implement-plan.md` - Implementation workflow
+- `plugins/cwf/commands/amend-plan.md` - Plan amendment workflow
+- `plugins/cwf/commands/read-constitution.md` - Constitution loading
 
 ### Plugin Configuration
 
-- `.claude-plugin/plugin.json` - Plugin manifest
+- `plugins/cwf/.claude-plugin/plugin.json` - Plugin manifest
 - `.claude-plugin/marketplace.json` - Marketplace configuration
 
 ### Documentation

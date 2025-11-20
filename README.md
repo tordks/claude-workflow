@@ -147,6 +147,7 @@ Run `/implement-plan` to start implementing the feature. The agent continues fro
 - You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
 - Use `/amend-plan` when requirements change (don't work around the plan)
 - Use CLAUDE.md in subfolders to help facilitate discovery
+- Use subagents to run independent phases/tasks in parallel or to preserve main instance context: `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel, enforce phase 2 for second subagent`
 
 ### Amending Plans
 

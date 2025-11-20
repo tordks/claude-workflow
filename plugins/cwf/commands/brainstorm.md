@@ -19,7 +19,7 @@ If arguments are provided, they contain context or initial direction for the bra
 ## Brainstorm workflow
 
 1. If skill `read-constitution` not loaded, load it
-2. If skill `cfw-planning` not loaded, load it
+2. If skill `claude-workflow` not loaded, load it
 
 Read the following if not already loaded:
 

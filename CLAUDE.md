@@ -26,14 +26,14 @@ For complete user documentation, see README.md. In summary, CWF provides:
 
 - The **Claude Workflow**: Plan-driven development with preserved context across sessions
 - **Commands** for orchestrating the workflow: /brainstorm, /write-plan, /implement-plan, /amend-plan, /read-constitution, /create-claude-md
-- **Skills** for distributing knowledge of CWF: cfw-planning (workflow knowledge), read-constitution (coding standards)
+- **Skills** for distributing knowledge of CWF: claude-workflow (workflow knowledge), read-constitution (coding standards)
 
 ## CWF Workflow (Quick Reference)
 
 For detailed workflow stages and responsibilities, see:
 
 - README.md (user perspective and usage instructions)
-- plugins/cwf/skills/cfw-planning/SKILL.md (agent perspective and execution details)
+- plugins/cwf/skills/claude-workflow/SKILL.md (agent perspective and execution details)
 
 Brief overview: (Optional /brainstorm) → /write-plan → Plan + Tasklist → /implement-plan (phase-by-phase with checkpoints) → /amend-plan (if needed) → Feature complete
 
@@ -61,7 +61,7 @@ claude-workflow/
 │       │   ├── brainstorm.md
 │       │   └── read-constitution.md
 │       └── skills/            → Plugin skills
-│           ├── cfw-planning/  → Planning workflow knowledge
+│           ├── claude-workflow/  → Planning workflow knowledge
 │           └── read-constitution/ → Constitution loader
 ├── .claude-plugin/        → Marketplace configuration
 │   └── marketplace.json   → Points to plugins/cwf
@@ -87,7 +87,7 @@ When users install:
 
 - Run `/plugin install cwf@claude-workflow` in their projects
 - Get access to /write-plan, /implement-plan, /amend-plan commands
-- Can load `cfw-planning` and `read-constitution` skills
+- Can load `claude-workflow` and `read-constitution` skills
 - Use CWF workflow in their own projects, not this repo
 
 ## Design Principles
@@ -104,9 +104,9 @@ Understanding these principles helps you make consistent development decisions a
 - Workflow logic → skills
 - Workflow execution → commands
 
-**Why This Matters:** When conventions change, update one skill file. All commands using `cfw-planning` automatically benefit.
+**Why This Matters:** When conventions change, update one skill file. All commands using `claude-workflow` automatically benefit.
 
-**Example:** Task structure rules live in `cfw-planning/references/tasklist-spec.md` only. `/write-plan`, `/implement-plan`, and `/amend-plan` all reference this same source. Update task conventions once → all commands use new conventions.
+**Example:** Task structure rules live in `claude-workflow/references/tasklist-spec.md` only. `/write-plan`, `/implement-plan`, and `/amend-plan` all reference this same source. Update task conventions once → all commands use new conventions.
 
 **Anti-pattern:** Embedding task rules in each command, requiring three updates for one change.
 
@@ -138,7 +138,7 @@ Understanding these principles helps you make consistent development decisions a
 
 **Why This Matters:** No hidden dependencies. Reading a command shows exactly what skills it loads. New contributors understand quickly.
 
-**Example:** Commands use bootstrap pattern: "1. Load cfw-planning skill, 2. Read plan and tasklist, 3. Execute tasks"
+**Example:** Commands use bootstrap pattern: "1. Load claude-workflow skill, 2. Read plan and tasklist, 3. Execute tasks"
 
 **Anti-pattern:** Commands assuming skills magically loaded, or skills with hidden resource dependencies.
 
@@ -148,19 +148,19 @@ The claude-workflow repository consists of:
 
 ### Core Specifications
 
-- `plugins/cwf/skills/cfw-planning/references/plan-spec.md` - Plan document specification (RFC 2119)
-- `plugins/cwf/skills/cfw-planning/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
-- `plugins/cwf/skills/cfw-planning/references/conventions.md` - Feature naming and file structure
-- `plugins/cwf/skills/cfw-planning/references/parsing-arguments.md` - Command argument parsing
-- `plugins/cwf/skills/cfw-planning/references/amendment.md` - Amendment safety rules
+- `plugins/cwf/skills/claude-workflow/references/plan-spec.md` - Plan document specification (RFC 2119)
+- `plugins/cwf/skills/claude-workflow/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
+- `plugins/cwf/skills/claude-workflow/references/conventions.md` - Feature naming and file structure
+- `plugins/cwf/skills/claude-workflow/references/parsing-arguments.md` - Command argument parsing
+- `plugins/cwf/skills/claude-workflow/references/amendment.md` - Amendment safety rules
 
 ### Skills
 
-- `plugins/cwf/skills/cfw-planning/` - Core CWF planning knowledge repository
+- `plugins/cwf/skills/claude-workflow/` - Core CWF planning knowledge repository
 - `plugins/cwf/skills/read-constitution/` - Constitution loader skill
 - `.claude/skills/writing-conformant-specs/` - RFC 2119 spec writing guidance (dev-only)
 
-**Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `cfw-planning`), it only sees files under that skill's directory (`plugins/cwf/skills/cfw-planning/`). This is why `cfw-planning` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
+**Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `claude-workflow`), it only sees files under that skill's directory (`plugins/cwf/skills/claude-workflow/`). This is why `claude-workflow` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
 
 ### Commands
 

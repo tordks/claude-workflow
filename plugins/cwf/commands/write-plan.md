@@ -47,7 +47,7 @@ Example file paths:
 ### 1. Extract Planning Context
 
 1. If skill `read-constitution` not loaded, load it
-2. If skill `cfw-planning` not loaded, load it
+2. If skill `claude-workflow` not loaded, load it
 
 Read the following if not already loaded:
 

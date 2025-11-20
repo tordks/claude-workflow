@@ -79,7 +79,7 @@ Install as plugin in claude code:
 
 CWF preserves context across sessions by storing planning and progress in structured documents. It uses two key mechanisms:
 
-**Skills** provide specialized knowledge to Claude as self-contained packages. The `cfw-planning` skill contains all CWF workflow knowledge (plan structure, tasklist format, amendment rules, etc.) that agents need to execute the workflow. Skills are loaded on-demand to keep context focused.
+**Skills** provide specialized knowledge to Claude as self-contained packages. The `claude-workflow` skill contains all CWF workflow knowledge (plan structure, tasklist format, amendment rules, etc.) that agents need to execute the workflow. Skills are loaded on-demand to keep context focused.
 
 **Commands** are called by users to orchestrate the workflow. They provide instructions that guide agents through each stage and automatically load relevant skills.
 
@@ -97,7 +97,7 @@ CWF preserves context across sessions by storing planning and progress in struct
 
 | Skill | Contains | How It's Used |
 |-------|----------|---------------|
-| `cfw-planning` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
+| `claude-workflow` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
 | `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Manually at the start of a planning session or by cwf commands automatically|
 
 ### Planning

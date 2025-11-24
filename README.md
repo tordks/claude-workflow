@@ -129,7 +129,7 @@ These checkpoints provide quality control, catching issues early before they acc
 
 - Be specific about requirements, components, and technologies
 - Set clear scope (what's IN and OUT of this feature)
-- Define success criteria
+- Before writing the plan, ask the agent to write svg or mermaid diagrams. Especially useful for webapps to confirm layout understanding, or for database schemas.
 - For multi-session planning, save discussion to file and reload when resuming
 - Use plan mode to get an initial plan draft that can be fed into `/write-plan`
 - You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`

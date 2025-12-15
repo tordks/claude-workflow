@@ -24,14 +24,27 @@ Read the following if not already loaded:
 
 - `references/plan-spec.md`
 
-**Gain quick repository understanding:**
+**Understand repository context before asking questions:**
 
-- Scan project structure (directories, modules, organization)
-- Identify architecture patterns (how things are currently built)
-- Note key dependencies and constraints (libraries, APIs, integrations)
-- Survey existing features (what's already implemented)
+Before diving into questions, actively explore the codebase to understand what exists and how it's structured. This context ensures questions are relevant and informed.
 
-Ask questions one at a time to uncover context for /write-plan. Adapt based on responses. Explore relevant code when discussing components/architecture.
+**Exploration approach:**
+
+1. Read CLAUDE.md if present for repository overview and navigation guidance
+2. Examine project structure using appropriate tools (glob patterns, directory listings)
+3. Search for similar or related features to understand existing patterns
+4. Identify testing approach (test files, frameworks used)
+5. Note architecture patterns and conventions from actual code
+
+**What to understand:**
+
+- Project organization (monorepo vs single package, directory structure)
+- Existing implementations similar to planned feature
+- Testing conventions (where tests live, what frameworks are used, how detailed)
+- Key dependencies and technologies in use
+- Coding patterns and architectural decisions evident in code
+
+Once you have sufficient repository context, ask questions one at a time to uncover additional context needed for /write-plan. Adapt questions based on responses. Reference specific files and patterns you discovered during exploration.
 
 **Essential questions** (adapt as needed):
 
@@ -39,7 +52,7 @@ Ask questions one at a time to uncover context for /write-plan. Adapt based on r
 - Why this approach? (reasoning, alternatives, apply YAGNI)
 - What components involved? (create vs modify, integration)
 - How should it be built? (strategy, phases, risks, priorities)
-- How tested? (strategy, coverage)
+- How should it be tested? (strategy, coverage)
 - Other context? (dependencies, constraints, performance, security)
 
 **Stop when you have:**

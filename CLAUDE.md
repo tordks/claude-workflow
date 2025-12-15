@@ -33,16 +33,14 @@ claude-workflow/
 │       │   ├── write-plan.md
 │       │   ├── implement-plan.md
 │       │   ├── amend-plan.md
-│       │   ├── brainstorm.md
-│       │   └── read-constitution.md
+│       │   └── brainstorm.md
 │       └── skills/                 → Plugin skills
-│           ├── claude-workflow/    → Planning workflow knowledge
-│           └── read-constitution/  → Constitution loader
+│           └── claude-workflow/    → Planning workflow knowledge
 ├── .claude-plugin/             → Marketplace configuration
 │   └── marketplace.json            → Points to plugins/cwf
 ├── .claude/                    → Development-only (NOT distributed)
-├── .constitution/              → CWF project-specific constitution
-├── .constitution-examples/     → Example constitution files for users
+│   └── rules/                      → Project rules (auto-loaded)
+├── claude-rules-example/       → Example .claude/rules/ files for users
 ```
 
 ## Quality checks
@@ -69,7 +67,6 @@ The claude-workflow repository consists of:
 ### Skills
 
 - `plugins/cwf/skills/claude-workflow/` - Core CWF planning knowledge repository
-- `plugins/cwf/skills/read-constitution/` - Constitution loader skill
 - `.claude/skills/writing-conformant-specs/` - RFC 2119 spec writing guidance (dev-only)
 
 **Important:** Skills are self-contained knowledge packages. When an agent loads a skill (e.g., `claude-workflow`), it only sees files under that skill's directory (`plugins/cwf/skills/claude-workflow/`). This is why `claude-workflow` contains all workflow knowledge in `SKILL.md` and `references/` - it cannot reference files outside its directory. Skills are the complete CWF workflow knowledge shipped to agents.
@@ -80,7 +77,6 @@ The claude-workflow repository consists of:
 - `plugins/cwf/commands/write-plan.md` - Plan creation workflow
 - `plugins/cwf/commands/implement-plan.md` - Implementation workflow
 - `plugins/cwf/commands/amend-plan.md` - Plan amendment workflow
-- `plugins/cwf/commands/read-constitution.md` - Constitution loading
 
 ### Plugin Configuration
 
@@ -93,10 +89,10 @@ The claude-workflow repository consists of:
 - `docs/design-principles.md` - Architectural decisions and rationale
 - `docs/backlog.md` - Feature backlog and planned improvements
 
-### Constitution
+### Project Rules
 
-- `.constitution/cwf-principles.md` - Design philosophy (Single Source of Truth, Orthogonality, Explicit Over Implicit)
-- `.constitution/cwf-guidelines.md` - Component development guidelines
-- `.constitution/rfc-2119.md` - RFC 2119 conformance rules
-- `.constitution/cwf-workflow.md` - Development workflow pattern
-- `.constitution-examples/` - Example constitution files for users
+Project-specific coding rules in `.claude/rules/` are automatically loaded by Claude Code with the same priority as CLAUDE.md:
+
+- `.claude/rules/cwf-principles.md` - Design philosophy (Single Source of Truth, Orthogonality, Explicit Over Implicit)
+- `.claude/rules/rfc-2119.md` - RFC 2119 conformance rules
+- `claude-rules-example/` - Example rules files for users

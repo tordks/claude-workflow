@@ -91,14 +91,12 @@ CWF preserves context across sessions by storing planning and progress in struct
 | `/write-plan` | After planning | Feature name, optional additional instructions | Writes planning documents |
 | `/implement-plan` | Start/Resume implementation | Feature name, optional additional instructions | Executes tasks task-by-task and phase-by-phase with quality checkpoints |
 | `/amend-plan` | Requirements changed or gaps identified | Feature name, optional additional instructions | Updates plan/tasklist safely |
-| `/read-constitution` | When in need of coding principles | None | Loads  constitution files into context |
 
 ### Skill Reference
 
 | Skill | Contains | How It's Used |
 |-------|----------|---------------|
 | `claude-workflow` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
-| `read-constitution` | Engineering fundamentals (DRY, YAGNI, orthogonality), testing philosophy | Manually at the start of a planning session or by cwf commands automatically|
 
 ### Planning
 
@@ -133,7 +131,7 @@ These checkpoints provide quality control, catching issues early before they acc
 - For multi-session planning, save discussion to file and reload when resuming
 - Use plan mode to get an initial plan draft that can be fed into `/write-plan`
 - You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`
-- Create `.constitution/` files for project-specific coding standards when claude.md grows large.
+- Create `.claude/rules/` files for project-specific coding standards when CLAUDE.md grows large. See <https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/>.
 
 ### Implementation
 
@@ -160,18 +158,28 @@ If requirements change during implementation or you discover a gap in the plan, 
 - Keep the plan updated—it's the agent's source of truth
 - **Warning:** Changing implementation without amending the plan causes confusion after `/clear` and will likely result in an erroneous implementation.
 
-### Coding Constitution (Optional)
+### Project Rules (Optional)
 
-CWF supports a constitution (`.constitution/` directory) for principles and standards that applies to the repository. Constitution files are automatically loaded by workflow commands and can be manually loaded with `/read-constitution`.
+Claude Code supports modular rules in `.claude/rules/` for principles and standards that apply to the repository. All `.md` files in this directory are automatically loaded with the same priority as CLAUDE.md.
 
-**You don't need a constitution.** It's a convenience to avoid long, unwieldy CLAUDE.md files. When your CLAUDE.md grows large with coding standards and principles, move that content to `.constitution/` files instead.
+Rules accept a yaml frontmatter that specify conditions for when the rules are to be loaded into context. For example:
+
+```
+paths: **/*.py
+```
+
+Specifies a rule that should only be loaded when considering python files.
+
+Read more here: https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/
+
+**You don't need separate rules files.** It's a convenience to avoid long, unwieldy CLAUDE.md files. When your CLAUDE.md grows large with coding standards and principles, move that content to `.claude/rules/` files instead.
 
 **What goes where:**
 
-- **CLAUDE.md** - Repository context, structure, navigation (loaded immediately)
-- **Constitution** - Coding principles, standards, guidelines (loaded on-demand during implementation)
+- **CLAUDE.md** - Repository context, structure, navigation
+- **`.claude/rules/`** - Coding principles, standards, guidelines
 
-Example constitution files (see `.constitution-examples/`):
+Example rules files (see `claude-rules-example/`):
 
 - **Software Engineering Principles:** DRY, YAGNI, orthogonality, separation of concerns
 - **Testing Philosophy:** Test coverage expectations, testing patterns

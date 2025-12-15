@@ -371,28 +371,6 @@ Is this requirement critical for correctness/safety?
 - **URL:** <https://json-schema.org/specification.html>
 - **Why:** Clean normative/informative separation in data format specs
 
-### Examples in This Repository
-
-- Local specification documents demonstrate applied patterns
-- Review existing specs to see RFC 2119 in practice
-
-### Learning Path
-
-**Beginner (30 minutes):**
-
-1. Read RFC 2119 (15 min) - The foundation
-2. Read RFC 8174 (5 min) - Crucial clarification
-3. Review OpenAPI examples (10 min) - Real-world patterns
-
-**Intermediate (1 hour):**
-4. Study W3C Manual section (20 min)
-5. Review specification examples to see applied patterns (20 min)
-6. Practice identifying missing keywords in a document (20 min)
-
-**Advanced (2+ hours):**
-7. Study Kubernetes API Conventions (1 hour)
-8. Read IETF Style Guide (30 min)
-9. Write your own spec following RFC 2119 (practice)
 
 ### Quick References
 
@@ -400,7 +378,6 @@ Bookmark these for fast lookup:
 
 - RFC 2119: <https://www.ietf.org/rfc/rfc2119.txt>
 - RFC 8174: <https://www.rfc-editor.org/rfc/rfc8174.html>
-- This guide: `.constitution/rfc-2119-guide.md`
 
 ---
 

@@ -37,8 +37,7 @@ Example file paths:
 
 ### 1. Load Context
 
-1. If skill `read-constitution` not loaded, load it
-2. If skill `claude-workflow` not loaded, load it
+If skill `claude-workflow` is not loaded, load it
 
 ---
 
@@ -138,7 +137,7 @@ Summary of changes:
 ✅ Implemented core data models with Pydantic validation
 ✅ Added type hints and proper __init__.py exports
 
-All checkpoints passed. Foundation layer complete following constitution principles.
+All checkpoints passed. Foundation layer complete.
 
 Suggested commit:
 feat: establish foundational architecture
@@ -206,4 +205,4 @@ Assess task clarity using these criteria:
 
 - Keep codebase runnable throughout
 - Run tests after implementing functionality
-- Follow constitution and project principles
+- Follow project principles and rules

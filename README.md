@@ -1,6 +1,6 @@
 # Claude Workflow
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/tordks/claude-workflow/releases)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](https://github.com/tordks/claude-workflow/releases)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.com/claude-code)
 
 Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code with phase-based implementation.

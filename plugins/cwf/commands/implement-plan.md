@@ -1,5 +1,7 @@
 ---
 description: Execute plan phase-by-phase following tasklist
+disable-model-invocation: true
+argument-hint: [feature-name] [instructions]
 ---
 
 # Implement Command
@@ -37,7 +39,7 @@ Example file paths:
 
 ### 1. Load Context
 
-If skill `claude-workflow` is not loaded, load it
+If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 ---
 

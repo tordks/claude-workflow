@@ -164,13 +164,13 @@ Claude Code supports modular rules in `.claude/rules/` for principles and standa
 
 Rules accept a yaml frontmatter that specify conditions for when the rules are to be loaded into context. For example:
 
-```
+```yaml
 paths: **/*.py
 ```
 
 Specifies a rule that should only be loaded when considering python files.
 
-Read more here: https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/
+Read more here: <https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/>
 
 **You don't need separate rules files.** It's a convenience to avoid long, unwieldy CLAUDE.md files. When your CLAUDE.md grows large with coding standards and principles, move that content to `.claude/rules/` files instead.
 

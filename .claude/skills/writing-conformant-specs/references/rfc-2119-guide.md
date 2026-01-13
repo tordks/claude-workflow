@@ -371,7 +371,6 @@ Is this requirement critical for correctness/safety?
 - **URL:** <https://json-schema.org/specification.html>
 - **Why:** Clean normative/informative separation in data format specs
 
-
 ### Quick References
 
 Bookmark these for fast lookup:

@@ -1,6 +1,14 @@
 ---
 name: claude-workflow
-description: Load for any CWF planning task including: explaining the workflow, answering planning questions, creating plans, amending plans, and implementing features. Contains conventions, phase structure, task formats, validation rules, and templates.
+description: >-
+  CWF knowledge repository providing plan structure, tasklist format, checkpoint
+  definitions, amendment rules, and validation requirements. Load this skill when:
+  (1) executing CWF commands like /write-plan, /implement-plan, /amend-plan,
+  (2) answering questions about CWF workflow or plan/tasklist format,
+  (3) validating plan or tasklist documents,
+  (4) understanding phase structure or task conventions.
+  This is KNOWLEDGE context, not an action - do NOT confuse with the /write-plan,
+  /implement-plan, /amend-plan, or /brainstorm commands which are user-invoked.
 ---
 
 # Claude Workflow

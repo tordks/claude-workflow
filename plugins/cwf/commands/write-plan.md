@@ -1,5 +1,7 @@
 ---
 description: Create plan and tasklist from planning discussion
+disable-model-invocation: true
+argument-hint: [feature-name] [planning context]
 ---
 
 # Plan Command
@@ -46,7 +48,7 @@ Example file paths:
 
 ### 1. Extract Planning Context
 
-If skill `claude-workflow` is not loaded, load it
+If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if not already loaded:
 

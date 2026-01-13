@@ -1,5 +1,7 @@
 ---
 description: Quick feature exploration before creating plan
+disable-model-invocation: true
+argument-hint: [initial context]
 ---
 
 # Brainstorm Command
@@ -18,7 +20,7 @@ If arguments are provided, they contain context or initial direction for the bra
 
 ## Brainstorm workflow
 
-If skill `claude-workflow` is not loaded, load it
+If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if not already loaded:
 

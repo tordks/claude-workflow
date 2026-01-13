@@ -1,5 +1,7 @@
 ---
 description: Update existing plan and tasklist based on conversation
+disable-model-invocation: true
+argument-hint: [feature-name] [amendment description]
 ---
 
 # Amend Plan Command
@@ -37,7 +39,7 @@ Example file paths:
 
 ### 1. Load and Analyze
 
-If skill `claude-workflow` is not loaded, load it
+If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if not already loaded:
 

@@ -70,10 +70,12 @@ CWF adds persistent plan documents you can review and safely modify during imple
 
 ## Installation
 
-Install as plugin in claude code:
+Install as plugin in Claude Code:
 
-1. `/plugin marketplace add tordks/claude-workflow`
-2. `/plugin install cwf@claude-workflow`
+1. `/plugin marketplace add tordks/claude-workflow` - adds repository to your marketplace
+2. `/plugin install cwf@claude-workflow` - installs the plugin
+
+To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 ## How It Works
 
@@ -85,12 +87,14 @@ CWF preserves context across sessions by storing planning and progress in struct
 
 ### Command Reference
 
-| Command | When to Use | Inputs | What It Does |
-|---------|-------------|--------|--------------|
-| `/brainstorm` | During planning | Feature name (optional) | Structured exploration with guided questions, alternatives analysis, produces design summary |
-| `/write-plan` | After planning | Feature name, optional additional instructions | Writes planning documents |
-| `/implement-plan` | Start/Resume implementation | Feature name, optional additional instructions | Executes tasks task-by-task and phase-by-phase with quality checkpoints |
-| `/amend-plan` | Requirements changed or gaps identified | Feature name, optional additional instructions | Updates plan/tasklist safely |
+| Command | When to Use | What It Does |
+|---------|-------------|--------------|
+| `/brainstorm [feature-name] [instructions]` | During planning | Structured exploration with guided questions, alternatives analysis, produces design summary |
+| `/write-plan <feature-name> [instructions]` | After planning | Writes planning documents |
+| `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks task-by-task and phase-by-phase with quality checkpoints |
+| `/amend-plan <feature-name> [instructions]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
+
+Arguments: `<feature-name>` is required (except for brainstorm). `[instructions]` are optional free-form text for additional context or constraints.
 
 ### Skill Reference
 
@@ -110,7 +114,7 @@ You can either:
 
 The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that can serve as input for `/write-plan`.
 
-After solidifying the specification, run `/write-plan` to create the planning documents in `.cwf/{feature-name}/`:
+After solidifying the specification, run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
 
 - **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
@@ -119,8 +123,8 @@ After solidifying the specification, run `/write-plan` to create the planning do
 The plan divides work into phases that each produce runnable code. Each phase ends with **checkpoints**—validation operations that ensure code quality before proceeding:
 
 - **Self-review:** Agent reviews implementation against phase deliverable
-- **Code quality checks:** Linting, formatting, type checking (only if project uses these tools)
-- **Complexity checks:** Code complexity analysis (only if project uses these tools)
+- **Code quality checks:** Linting, formatting, type checking—runs whatever tools the project already uses (e.g., eslint, prettier, mypy, ruff)
+- **Complexity checks:** Code complexity analysis—runs if project has complexity tools configured
 
 These checkpoints provide quality control, catching issues early before they accumulate (ie. ever-increasing function- or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 

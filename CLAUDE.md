@@ -39,7 +39,11 @@ claude-workflow/
 ├── .claude-plugin/             → Marketplace configuration
 │   └── marketplace.json            → Points to plugins/cwf
 ├── .claude/                    → Development-only (NOT distributed)
-│   └── rules/                      → Project rules (auto-loaded)
+│   ├── commands/                   → Dev commands
+│   │   └── prime-cwf-dev.md        → Load dev context
+│   ├── rules/                      → Project rules (auto-loaded)
+│   └── skills/                     → Dev-only skills
+│       └── writing-conformant-specs/   → RFC 2119 spec writing guidance
 ├── claude-rules-example/       → Example .claude/rules/ files for users
 ```
 
@@ -61,7 +65,6 @@ The claude-workflow repository consists of:
 - `plugins/cwf/skills/claude-workflow/references/plan-spec.md` - Plan document specification (RFC 2119)
 - `plugins/cwf/skills/claude-workflow/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
 - `plugins/cwf/skills/claude-workflow/references/mockup.md` - HTML mockup conventions
-- `plugins/cwf/skills/claude-workflow/references/parsing-arguments.md` - Command argument parsing
 - `plugins/cwf/skills/claude-workflow/references/amendment.md` - Amendment safety rules
 
 ### Skills
@@ -82,12 +85,6 @@ The claude-workflow repository consists of:
 
 - `plugins/cwf/.claude-plugin/plugin.json` - Plugin manifest
 - `.claude-plugin/marketplace.json` - Marketplace configuration
-
-### Documentation
-
-- `README.md` - Main documentation and usage guide
-- `docs/design-principles.md` - Architectural decisions and rationale
-- `docs/backlog.md` - Feature backlog and planned improvements
 
 ### Project Rules
 

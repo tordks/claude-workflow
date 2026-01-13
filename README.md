@@ -1,6 +1,6 @@
 # Claude Workflow
 
-[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](https://github.com/tordks/claude-workflow/releases)
+[![Version](https://img.shields.io/badge/version-0.2.2-blue.svg)](https://github.com/tordks/claude-workflow/releases)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.com/claude-code)
 
 Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code with phase-based implementation.
@@ -110,10 +110,11 @@ You can either:
 
 The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that can serve as input for `/write-plan`.
 
-After solidifying the specification, run `/write-plan` to create the planning documents:
+After solidifying the specification, run `/write-plan` to create the planning documents in `.cwf/{feature-name}/`:
 
-- **Plan** `{feature.name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
-- **Tasklist** `{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
+- **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
+- **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
+- **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
 
 The plan divides work into phases that each produce runnable code. Each phase ends with **checkpoints**—validation operations that ensure code quality before proceeding:
 
@@ -128,6 +129,7 @@ These checkpoints provide quality control, catching issues early before they acc
 - Be specific about requirements, components, and technologies
 - Set clear scope (what's IN and OUT of this feature)
 - Before writing the plan, ask the agent to write svg or mermaid diagrams. Especially useful for webapps to confirm layout understanding, or for database schemas.
+- For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.
 - For multi-session planning, save discussion to file and reload when resuming
 - Use plan mode to get an initial plan draft that can be fed into `/write-plan`
 - You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`

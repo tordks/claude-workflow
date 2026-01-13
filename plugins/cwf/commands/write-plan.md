@@ -41,8 +41,8 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 
 Example file paths:
 
-- `plans/{feature-name}-plan.md`
-- `plans/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-plan.md`
+- `.cwf/{feature-name}/{feature-name}-tasklist.md`
 
 ## Instructions
 
@@ -54,6 +54,7 @@ Read the following if not already loaded:
 
 - `references/plan-spec.md`
 - `references/tasklist-spec.md`
+- `references/mockup.md`
 
 **Context Extraction:**
 
@@ -99,17 +100,26 @@ Assess feature complexity (Simple/Medium/Complex) using these criteria:
 
 ### 2. Create Planning Documents
 
-Create `plans/{feature-name}-plan.md`:
+Create `.cwf/{feature-name}/{feature-name}-plan.md`:
 
 - Follow plan-spec.md structure, tailoring depth to feature complexity
 - Use extracted context from Section 1
 
-Create `plans/{feature-name}-tasklist.md`:
+Create `.cwf/{feature-name}/{feature-name}-tasklist.md`:
 
 - Follow tasklist-spec.md structure, tailoring depth to feature complexity
 - Break into phases aligned with plan's Implementation Strategy
 - Include checkpoints per SKILL.md guidance
 - Stay faithful to discussion, use clear language
+
+### 2.5 Create Mockup (UI Features)
+
+Assess whether the feature involves UI/frontend work. If so, create a mockup when user explicitly requests one OR agent determines visual verification would be valuable.
+
+**If creating mockup:**
+
+- Create `.cwf/{feature-name}/{feature-name}-mockup.html` (single HTML file with inline CSS)
+- Reference mockup inline in plan's Solution Design section
 
 ---
 
@@ -130,7 +140,7 @@ Create `plans/{feature-name}-tasklist.md`:
 - [ ] Tasklist execution follows plan's Implementation Strategy pattern
 - [ ] Tasklist execution follows plan's Testing approach
 - [ ] Files marked [CREATE]/[MODIFY] in plan appear as tasks in tasklist
-- [ ] Consistent terminology between documentsss
+- [ ] Consistent terminology between documents
 - [ ] Tasks reference only files/components defined in plan
 - [ ] If coherence fails: revise either document and re-validate until all checks pass
 
@@ -138,14 +148,15 @@ Create `plans/{feature-name}-tasklist.md`:
 
 ### 4. Finalization
 
-Confirm both files exist and are valid, then present summary:
+Confirm files exist and are valid, then present summary:
 
 ```text
 Planning documents created successfully! ✅
 
 Created:
-- plans/{feature-name}-plan.md
-- plans/{feature-name}-tasklist.md
+- .cwf/{feature-name}/{feature-name}-plan.md
+- .cwf/{feature-name}/{feature-name}-tasklist.md
+- .cwf/{feature-name}/{feature-name}-mockup.html (if UI feature)
 
 Implementation Structure:
 - {N} phases defined

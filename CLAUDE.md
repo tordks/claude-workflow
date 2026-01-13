@@ -60,7 +60,7 @@ The claude-workflow repository consists of:
 
 - `plugins/cwf/skills/claude-workflow/references/plan-spec.md` - Plan document specification (RFC 2119)
 - `plugins/cwf/skills/claude-workflow/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
-- `plugins/cwf/skills/claude-workflow/references/conventions.md` - Feature naming and file structure
+- `plugins/cwf/skills/claude-workflow/references/mockup.md` - HTML mockup conventions
 - `plugins/cwf/skills/claude-workflow/references/parsing-arguments.md` - Command argument parsing
 - `plugins/cwf/skills/claude-workflow/references/amendment.md` - Amendment safety rules
 

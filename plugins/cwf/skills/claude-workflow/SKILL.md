@@ -17,21 +17,59 @@ Knowledge repository for Claude Workflow (CWF).
 
 ## Overview
 
-CWF is a plan-driven development workflow using two complementary documents that work together to guide feature implementation:
+CWF is a plan-driven development workflow using complementary documents that work together to guide feature implementation. All documents are stored in `.cwf/{feature-name}/`.
 
-**Plan Document (`{feature-name}-plan.md`):**
+**Plan Document (`.cwf/{feature-name}/{feature-name}-plan.md`):**
 
 - Captures architectural context and design rationale
 - Documents WHY decisions were made and WHAT the solution is
 - **Structure defined in `plan-spec.md`**
 
-**Tasklist Document (`{feature-name}-tasklist.md`):**
+**Tasklist Document (`.cwf/{feature-name}/{feature-name}-tasklist.md`):**
 
 - Provides step-by-step execution guidance
 - Documents WHEN to do tasks and HOW to implement them
 - **Structure defined in `tasklist-spec.md`**
 
-**Both documents follow the conformance requirements defined below.**
+**Mockup (`.cwf/{feature-name}/{feature-name}-mockup.html`) [Optional]:**
+
+- Visual reference for UI/frontend features
+- **Conventions defined in `mockup.md`**
+
+**All documents follow the conformance requirements defined below.**
+
+---
+
+## Conventions
+
+### Feature Naming
+
+Feature names MUST:
+
+- Use kebab-case (lowercase with hyphens)
+- Be 1-3 words, concise and descriptive
+- Contain only lowercase letters, numbers, and hyphens
+- Start with a letter
+
+Feature names MUST NOT contain uppercase, underscores, or start/end with hyphens.
+
+**Validation pattern:** `^[a-z][a-z0-9]*(-[a-z0-9]+)*$`
+
+**Examples:** `query-command`, `user-auth`, `oauth2-flow`
+
+### Directory Structure
+
+CWF planning documents MUST be stored in `.cwf/{feature-name}/`:
+
+```text
+.cwf/
+└── {feature-name}/
+    ├── {feature-name}-plan.md       [REQUIRED]
+    ├── {feature-name}-tasklist.md   [REQUIRED]
+    └── {feature-name}-mockup.html   [OPTIONAL]
+```
+
+The `.cwf/` directory is hidden to keep project root clean. Per-feature subdirectories contain related artifacts.
 
 ---
 
@@ -163,8 +201,7 @@ The implementation follows this repeating cycle:
 | **Plan document specification** | `references/plan-spec.md` | Plan structure requirements with RFC 2119 keywords |
 | **Tasklist document specification** | `references/tasklist-spec.md` | Tasklist structure requirements with RFC 2119 keywords |
 | **Amendment rules and safety** | `references/amendment.md` | Rules for safely modifying plans and tasklists |
-| **Argument parsing for commands** | `references/parsing-arguments.md` | Command argument parsing logic and discovery patterns |
-| **Feature naming and file structure** | `references/conventions.md` | Feature naming and file structure standards |
+| **Mockup conventions** | `references/mockup.md` | When and how to create HTML mockups |
 
 ---
 

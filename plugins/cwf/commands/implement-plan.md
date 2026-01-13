@@ -22,7 +22,7 @@ Implement a feature by following the plan and tasklist documents. This command e
 
 **If no feature name provided:**
 
-1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
+1. List existing plans: `find .cwf -maxdepth 2 -name "*-plan.md" -exec sh -c 'basename "$1" -plan.md' _ {} \;`
 2. If exactly 1 plan found: use automatically and inform user
 3. If multiple plans found: present list (optionally with progress status), use AskUserQuestion to ask user to select
 4. If 0 plans found: inform user and suggest running `/write-plan` first
@@ -32,8 +32,8 @@ Implement a feature by following the plan and tasklist documents. This command e
 
 Example file paths:
 
-- `plans/{feature-name}-plan.md`
-- `plans/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-plan.md`
+- `.cwf/{feature-name}/{feature-name}-tasklist.md`
 
 ## Instructions
 
@@ -47,8 +47,8 @@ If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if they are not already loaded:
 
-- `plans/{feature-name}-plan.md` (WHY/WHAT - architectural context)
-- `plans/{feature-name}-tasklist.md` (WHEN/HOW - sequential tasks)
+- `.cwf/{feature-name}/{feature-name}-plan.md` (WHY/WHAT - architectural context)
+- `.cwf/{feature-name}/{feature-name}-tasklist.md` (WHEN/HOW - sequential tasks)
 
 ---
 
@@ -69,7 +69,7 @@ For each task in the current phase:
 1. **Read** the task description from tasklist
 2. **Implement** the task following plan guidance
 3. **Test** the task according to project standards
-4. **Mark complete** in `plans/{feature-name}-tasklist.md`:
+4. **Mark complete** in `.cwf/{feature-name}/{feature-name}-tasklist.md`:
    - Change `- [ ] [PX.Y]` to `- [x] [PX.Y]`
 
 Repeat until all tasks in current phase are complete.
@@ -106,8 +106,8 @@ When all checkpoints pass:
 ```text
 # Starting fresh
 Reading plans for feature: query-command
-- Plan: plans/query-command-plan.md
-- Tasklist: plans/query-command-tasklist.md
+- Plan: .cwf/query-command/query-command-plan.md
+- Tasklist: .cwf/query-command/query-command-tasklist.md
 
 Progress check: No tasks completed yet. Starting from Phase 1.
 

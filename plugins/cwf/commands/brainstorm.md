@@ -65,6 +65,18 @@ Once you have sufficient repository context, ask questions one at a time to unco
 - Implementation strategy
 - Testing approach
 
+**UI Feature Detection:**
+
+After gathering sufficient context, assess whether the feature involves UI/frontend work:
+
+- Does the feature modify or create visual components?
+- Are there layout, styling, or user interaction considerations?
+- Would a visual mockup help verify understanding before planning?
+
+If UI work detected, ask: "This feature involves UI work. Would an HTML mockup help verify the layout and component structure before we proceed to `/write-plan`?"
+
+If user agrees, note that mockup should be created during `/write-plan`.
+
 **Transition:** When sufficient context gathered, ask: "Ready to run /write-plan?" If yes, confirm they should run `/write-plan [feature-name]`.
 
 **Guidelines:**

@@ -22,7 +22,7 @@ Update an existing plan and tasklist based on conversation context. This command
 
 **If no feature name provided:**
 
-1. List existing plans: `find plans/ -name "*-plan.md" -exec basename {} -plan.md \;`
+1. List existing plans: `find .cwf -maxdepth 2 -name "*-plan.md" -exec sh -c 'basename "$1" -plan.md' _ {} \;`
 2. If exactly 1 plan found: use automatically and inform user
 3. If multiple plans found: use AskUserQuestion to present list and ask user to select
 4. If 0 plans found: inform user and suggest running `/write-plan` first
@@ -32,8 +32,8 @@ Update an existing plan and tasklist based on conversation context. This command
 
 Example file paths:
 
-- `plans/{feature-name}-plan.md`
-- `plans/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-plan.md`
+- `.cwf/{feature-name}/{feature-name}-tasklist.md`
 
 ## Instructions
 
@@ -47,8 +47,8 @@ Read the following if not already loaded:
 
 Read existing documents:
 
-- `plans/{feature-name}-plan.md`
-- `plans/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-plan.md`
+- `.cwf/{feature-name}/{feature-name}-tasklist.md`
 
 If either missing: inform user and suggest running `/write-plan` or verifying feature name. STOP.
 
@@ -73,10 +73,10 @@ Identify current state from tasklist:
 ```markdown
 ## Proposed Amendments to {feature-name} Plan
 
-### Changes to Plan Document (plans/{feature-name}-plan.md)
+### Changes to Plan Document (.cwf/{feature-name}/{feature-name}-plan.md)
 - [List sections to add/modify with brief preview]
 
-### Changes to Tasklist (plans/{feature-name}-tasklist.md)
+### Changes to Tasklist (.cwf/{feature-name}/{feature-name}-tasklist.md)
 - [List tasks to add with IDs and descriptions]
 - [OR: New phases with goals]
 
@@ -141,8 +141,8 @@ Present summary:
 ## Amendments Applied ✅
 
 ### Updated Files
-- plans/{feature-name}-plan.md - [changes]
-- plans/{feature-name}-tasklist.md - [changes]
+- .cwf/{feature-name}/{feature-name}-plan.md - [changes]
+- .cwf/{feature-name}/{feature-name}-tasklist.md - [changes]
 
 ### Summary
 - [What was added/modified]
@@ -163,8 +163,8 @@ Present summary:
 
 ```text
 Loading plan: query-command
-- Read plans/query-command-plan.md ✅
-- Read plans/query-command-tasklist.md ✅
+- Read .cwf/query-command/query-command-plan.md ✅
+- Read .cwf/query-command/query-command-tasklist.md ✅
 
 Analyzing conversation...
 You want to: add caching to Phase 3, create Phase 4 for performance testing
@@ -188,8 +188,8 @@ Safety check: ✅ All amendments target incomplete phases
 Proceed? [User confirms]
 
 Applying...
-✅ Updated plans/query-command-plan.md (added Caching Strategy section)
-✅ Updated plans/query-command-tasklist.md (added P3.6-P3.8, new Phase 4)
+✅ Updated .cwf/query-command/query-command-plan.md (added Caching Strategy section)
+✅ Updated .cwf/query-command/query-command-tasklist.md (added P3.6-P3.8, new Phase 4)
 
 Validating amendments...
 ✓ Plan sections match existing structure and style

@@ -88,12 +88,12 @@ CWF uses slash commands to orchestrate the workflow and loads specialized knowle
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/brainstorm [feature-name] [instructions]` | During planning | Structured exploration with guided questions, alternatives analysis, produces design summary |
+| `/brainstorm [initial context]` | During planning | Guided conversation to explore requirements, alternatives, and design decisions |
 | `/write-plan <feature-name> [instructions]` | After planning | Writes planning documents |
-| `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks task-by-task and phase-by-phase with quality checkpoints |
+| `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
 | `/amend-plan <feature-name> [instructions]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
-Arguments: `<feature-name>` is required (except for brainstorm). `[instructions]` are optional free-form text for additional context or constraints.
+Arguments: `<feature-name>` is required for all commands except `/brainstorm`. `[instructions]` are optional free-form text for additional context or constraints.
 
 ### Skill Reference
 
@@ -111,7 +111,7 @@ You can either:
 - Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
 - Provide a written specification file
 
-The `/brainstorm` command systematically extracts requirements, explores alternatives, and produces a design summary that can serve as input for `/write-plan`.
+The `/brainstorm` command is a guided conversation that systematically explores requirements, alternatives, and design decisions, preparing context for `/write-plan`.
 
 After solidifying the specification, run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
 
@@ -130,7 +130,6 @@ The plan divides work into phases that each produce runnable code. Each phase en
 - For multi-session planning, save discussion to file and reload when resuming
 - Use plan mode to get an initial plan draft that can be fed into `/write-plan`
 - You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`
-- Create `.claude/rules/` files for project-specific coding standards when CLAUDE.md grows large. See <https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/>.
 
 ### Implementation
 
@@ -151,7 +150,7 @@ These checkpoints catch issues early before they accumulate (ie. ever-increasing
 - If context allows, write "continue to next phase" instead of clearing to speed up development
 - You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
 - Use `/amend-plan` when requirements change (don't work around the plan)
-- Use CLAUDE.md in subfolders to help facilitate discovery
+- Use CLAUDE.md files in subfolders to help the agent understand subsystem context
 - Use subagents to run independent phases/tasks in parallel or to preserve main instance context: `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel, enforce phase 2 for second subagent`
 
 ### Amending Plans

@@ -5,8 +5,6 @@
 
 Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code with phase-based implementation.
 
-CWF is my personal exploration of agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between session. See links to other resources below.
-
 ## What Problem Does CWF Solve?
 
 AI-assisted development faces two core challenges:
@@ -15,7 +13,29 @@ AI-assisted development faces two core challenges:
 
 2. **Developers lose ownership of the codebase.** Agents can produce large volumes of code from brief instructions. Without a pre-prepared plan/spec and checkpoints for review, developers cannot follow what was built or verify that it matches their intent. Problems compound silently across files, and the codebase accumulates code that nobody fully understands.
 
-CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with human review and code quality/complexity checks between each phase keeps the developer in control of every change and ensures the codebase remains maintainable.
+CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with code quality checks and human review between each phase keeps the developer in control and the codebase maintainable.
+
+## When to Use CWF
+
+The workflow should match the complexity of the work. CWF is designed for features that involve architectural decisions, touch multiple components, or span multiple sessions. For quick fixes or single-session work, chat mode or plan mode is more efficient.
+
+**Chat mode** — no upfront planning:
+
+- Fix a null pointer exception
+- Add one or more logging statements
+- Explore or explain unfamiliar code
+
+**Plan mode** — plan first, then implement in one session:
+
+- Add form validation to the signup page
+- Refactor a module to use dependency injection
+
+**CWF** — persistent plan, multi-session with review checkpoints:
+
+- Build user authentication with OAuth, sessions, and role-based access
+- Add a payment integration that touches API, database, and frontend
+- Bootstrap and set up an initial version of a greenfield project
+- Implement a new feature that requires design decisions and will take multiple sessions to complete
 
 ## The Workflow
 
@@ -49,29 +69,7 @@ Each phase is started manually with `/implement-plan`, which continues from the 
     /amend-plan: update documents when requirements change
 ```
 
-## When to Use CWF
-
-The workflow should match the complexity of the work. CWF is designed for features that involve architectural decisions, touch multiple components, or span multiple sessions. For quick fixes or single-session work, chat mode or plan mode is more efficient.
-
-**Chat mode** — no upfront planning:
-
-- Fix a null pointer exception
-- Add one or more logging statements
-- Explore or explain unfamiliar code
-
-**Plan mode** — plan first, then implement in one session:
-
-- Add form validation to the signup page
-- Refactor a module to use dependency injection
-
-**CWF** — persistent plan, multi-session with review checkpoints:
-
-- Build user authentication with OAuth, sessions, and role-based access
-- Add a payment integration that touches API, database, and frontend
-- Bootstrap and set up an initial version of a greenfield project
-- Implement a new feature that requires design decisions and will take multiple sessions to complete
-
-## Installation
+## Getting Started
 
 Install as plugin in Claude Code:
 
@@ -80,9 +78,30 @@ Install as plugin in Claude Code:
 
 To uninstall: `/plugin uninstall cwf@claude-workflow`
 
+### Example Use
+
+```text
+/brainstorm Build OAuth login with session management
+# → guided conversation exploring requirements and design decisions
+
+/write-plan user-auth
+# → creates plan + tasklist in .cwf/user-auth/
+# review the plan before implementing
+
+/implement-plan user-auth       # runs phase 1, checkpoints, stops for review
+
+/clear
+
+/implement-plan user-auth       # picks up at phase 2
+
+/amend-plan user-auth add refresh token rotation   # Realizing mid-implementation that we need refresh token rotation
+
+/implement-plan user-auth       # picks up at phase 3, repeat until done.
+```
+
 ## Usage Guide
 
-CWF uses slash commands to orchestrate the workflow and loads specialized knowledge (skills) on demand.
+CWF provides four slash commands that orchestrate the workflow. Commands automatically load the `claude-workflow` skill, which provides planning structure, task format, and amendment rules.
 
 ### Command Reference
 
@@ -95,31 +114,15 @@ CWF uses slash commands to orchestrate the workflow and loads specialized knowle
 
 Arguments: `<feature-name>` is required for all commands except `/brainstorm`. `[instructions]` are optional free-form text for additional context or constraints.
 
-### Skill Reference
-
-| Skill | Contains | How It's Used |
-|-------|----------|---------------|
-| `claude-workflow` | Planning structure, phase patterns, task format, amendment rules | Loaded by cwf commands |
-
 ### Planning
 
-The planning phase is about solidifying the specifications for the feature we are about to implement, and make sure we have all the information for an agent to perform the implementation.
+The planning phase is about solidifying requirements before implementation. You can have an informal discussion with the agent, use `/brainstorm` for structured exploration, or provide a written specification file.
 
-You can either:
-
-- Have an informal planning discussion with the agent
-- Use `/brainstorm` for structured exploration with guided questions and alternatives analysis
-- Provide a written specification file
-
-The `/brainstorm` command is a guided conversation that systematically explores requirements, alternatives, and design decisions, preparing context for `/write-plan`.
-
-After solidifying the specification, run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
+Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
 
 - **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
-
-The plan divides work into phases that each produce runnable code. Each phase ends with quality checkpoints and human review before proceeding (see Implementation below).
 
 **Tips:**
 
@@ -166,34 +169,11 @@ If requirements change during implementation or you discover a gap in the plan, 
 
 ### Project Rules (Optional)
 
-Claude Code supports modular rules in `.claude/rules/` for principles and standards that apply to the repository. All `.md` files in this directory are automatically loaded with the same priority as CLAUDE.md.
-
-Rules accept a yaml frontmatter that specify conditions for when the rules are to be loaded into context. For example:
-
-```yaml
-paths: **/*.py
-```
-
-Specifies a rule that should only be loaded when considering python files.
-
-Read more here: <https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/>
-
-**You don't need separate rules files.** It's a convenience to avoid long, unwieldy CLAUDE.md files. When your CLAUDE.md grows large with coding standards and principles, move that content to `.claude/rules/` files instead.
-
-**What goes where:**
-
-- **CLAUDE.md** - Repository context, structure, navigation
-- **`.claude/rules/`** - Coding principles, standards, guidelines
-
-Example rules files (see `claude-rules-example/`):
-
-- **Software Engineering Principles:** DRY, YAGNI, orthogonality, separation of concerns
-- **Testing Philosophy:** Test coverage expectations, testing patterns
-- **Language Standards:** Python-specific conventions and best practices
+For coding principles and standards that apply across your repository, Claude Code supports modular rules in `.claude/rules/`. This pairs well with CWF — the agent uses your rules during implementation. See the [Claude Code docs](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/) and `claude-rules-example/` in this repository for examples.
 
 ## Alternatives & Resources
 
-Below are related projects and resources. Not thoroughly reviewed.
+CWF is one approach to agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between sessions. Below are related projects and resources.
 
 **Development Workflows:**
 

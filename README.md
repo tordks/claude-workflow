@@ -183,31 +183,21 @@ For coding principles and standards that apply across your repository, Claude Co
 
 ## Alternatives & Resources
 
-CWF is one approach to agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between sessions. Below are related projects and resources.
+CWF is one approach to agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between sessions. Below are some related projects and resources in the Claude Code ecosystem.
 
-**Development Workflows:**
+### Plan-Driven Development
 
 - [superpowers](https://github.com/obra/superpowers) - Comprehensive skills library with techniques and patterns that auto-activate through Claude Code's plugin system
-- [spec-kit](https://github.com/github/spec-kit) - Spec-Driven Development toolkit where detailed specifications become executable artifacts that directly generate implementations
-- [superclaude](https://github.com/SuperClaude-Org/SuperClaude_Framework) - Meta-programming framework with 16 specialized agents and 7 behavioral modes for systematic workflow automation
-- [BMAD-method](https://github.com/bmad-code-org/BMAD-METHOD) - Human-AI collaboration framework with 19+ specialized agents for software development, creativity, and problem-solving
-- [claude-orchestration](https://github.com/mbruhler/claude-orchestration) - Multi-agent workflow orchestration enabling sequential, parallel, and conditional chaining of AI agents with manual checkpoints
-- [VibeCoder (VC)](https://github.com/steveyegge/vc) - VC orchestrates multiple coding agents (Amp, Claude Code, etc.) to work on small, well-defined tasks, guided by AI supervision
-- [moai-adk](https://github.com/modu-ai/moai-adk/tree/main/) - SPEC-First framework with 19 specialized agents for requirements, TDD, and documentation automation
+- [spec-kit](https://github.com/github/spec-kit) - GitHub's Spec-Driven Development toolkit where specifications become executable artifacts that generate implementations
+- [GSD (Get Shit Done)](https://github.com/gsd-build/get-shit-done) - Spec-driven development system with specialized agents, programmatic tooling, and state management
+- [BMAD-method](https://github.com/bmad-code-org/BMAD-METHOD) - Human-AI collaboration framework with specialized agents for software development, creativity, and problem-solving
+- [SuperClaude](https://github.com/SuperClaude-Org/SuperClaude_Framework) - Configuration framework with specialized slash commands, cognitive personas, and behavioral modes
+- [spec-workflow-mcp](https://github.com/Pimzino/spec-workflow-mcp) - MCP server for structured spec-driven development with real-time dashboard, VSCode extension, and session caching
+- [Claude Pilot](https://github.com/maxritter/claude-pilot) - Development framework with spec-driven workflows, TDD enforcement, persistent memory, and continuous quality checks via hooks
 
-**Resources:**
+### Multi-Agent Orchestration
 
-- [superpowers-marketplace](https://github.com/obra/superpowers-marketplace/tree/main) - Marketplace for plugins related to superpowers
-- [superpowers-developing-for-claude-code](https://github.com/obra/superpowers-developing-for-claude-code/tree/main) - A Claude Code plugin providing skills and comprehensive documentation for building plugins, skills, MCP servers, and other Claude Code extensions.
-- [episodic-memory](https://github.com/obra/episodic-memory) - Semantic search for Claude Code conversations. Remember past discussions, decisions, and patterns.
-- [beads](https://github.com/steveyegge/beads) -  lightweight memory system for coding agents, using a graph-based issue tracker
-  - <https://steve-yegge.medium.com/introducing-beads-a-coding-agent-memory-system-637d7d92514a>
-  - <https://steve-yegge.medium.com/the-beads-revolution-how-i-built-the-todo-system-that-ai-agents-actually-want-to-use-228a5f9be2a9>
-- [awesome-claude-skills](https://github.com/BehiSecc/awesome-claude-skills) - Curated list of Claude Skills organized by category (document handling, development, data analysis, scientific research, etc.)
-- [claude-code-infrastructure-showcase](https://github.com/diet103/claude-code-infrastructure-showcase) - PAtterns for auto-activating skills, modular organization, and scaling AI-assisted development
-- [Martin Fowler on Spec-Driven Development](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) - Conceptual overview of specification-driven AI development approaches
-- [claude-code-prompt-improver](https://github.com/severity1/claude-code-prompt-improver) - Prompt enhancement tool that intercepts and enriches vague prompts with targeted clarifying questions
-- [armchr](https://github.com/armchr/armchr) - Toolkit with Splitter and Reviewer agents for helping AI better analyze and understand code through logical commit chunking
-- [claude-code-switch](https://github.com/foreveryh/claude-code-switch) - Model switching tool supporting multiple AI providers (Claude, Deepseek, KIMI, GLM, Qwen) with intelligent fallback
-- [claude-context](https://github.com/zilliztech/claude-context) - MCP plugin that adds semantic code search to Claude Code
-- [sourcegraph-amp](https://sourcegraph.com/amp) - Agentic coding platform with autonomous reasoning and task execution
+- [Claude Code Agent Teams](https://code.claude.com/docs/en/agent-teams) - Official Anthropic feature: coordinated Claude Code instances with a team lead, shared task list, and dependency tracking
+- [Gas Town](https://github.com/steveyegge/gastown) - Workspace manager using git-backed "beads" for persistent state across a fleet of AI agents
+- [CLI Agent Orchestrator (AWS)](https://github.com/awslabs/cli-agent-orchestrator) - AWS-backed hierarchical orchestration with supervisor agent coordinating workers in isolated sessions
+- [babysitter](https://github.com/a5c-ai/babysitter) - Event-sourced orchestration with quality convergence, human-in-the-loop breakpoints, and pause/resume/recovery

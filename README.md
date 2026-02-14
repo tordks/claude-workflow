@@ -97,11 +97,16 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 /clear
 
-/implement-plan user-auth       # picks up at phase 2
+/implement-plan user-auth       # picks up at phase 2, checkpoints, stops for review
 
-/amend-plan user-auth add refresh token rotation   # Realizing mid-implementation that we need refresh token rotation
+/clear
 
-/implement-plan user-auth       # picks up at phase 3, repeat until done.
+/amend-plan user-auth add refresh token rotation
+# → updates plan and tasklist to include refresh token rotation
+
+/clear
+
+/implement-plan user-auth       # picks up at phase 3
 ```
 
 ## Usage Guide

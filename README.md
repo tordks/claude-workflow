@@ -21,7 +21,6 @@ CWF addresses both. Persistent plan documents preserve decisions and progress ac
 
 Based on an input context (specification, design discussion, or brainstorm), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
 
-
 ```text
         /brainstorm (optional)
                ↓
@@ -46,31 +45,27 @@ Based on an input context (specification, design discussion, or brainstorm), CWF
     /amend-plan: update documents when requirements change
 ```
 
-## When to use CWF
+## When to Use CWF
 
-Claude Code has different modes for different types of work. CWF is a workflow framework that adds structure for complex, multi-session development.
+The workflow should match the complexity of the work. CWF is designed for features that involve architectural decisions, touch multiple components, or span multiple sessions. For quick fixes or single-session work, chat mode or plan mode is more efficient.
 
-**Use regular chat mode when:**
+**Chat mode** — no upfront planning:
 
-- Single-session work
-- Quick fixes or simple features
-- No architectural decisions needed
-- Informal exploration
+- Fix a null pointer exception
+- Add one or more logging statements
+- Explore or explain unfamiliar code
 
-**Use plan mode when:**
+**Plan mode** — plan first, then implement in one session:
 
-- Starting more complex features
-- You want to review the work before implementation starts
+- Add form validation to the signup page
+- Refactor a module to use dependency injection
 
-Plan mode lets Claude read and analyze without editing or executing. Great for careful deliberation before implementation.
+**CWF** — persistent plan, multi-session with review checkpoints:
 
-**Use CWF when:**
-
-- Work spans multiple sessions
-- Need to adjust plans during implementation
-- Need reviewable checkpoints with runnable code
-
-CWF adds persistent plan documents you can review and safely modify during implementation. In plan mode, evolving requirements and discovered gaps remain implicit and it can be hard to know that the agent applies amendments as intended.
+- Build user authentication with OAuth, sessions, and role-based access
+- Add a payment integration that touches API, database, and frontend
+- Bootstrap and set up an initial version of a greenfield project
+- Implement a new feature that requires design decisions and will take multiple sessions to complete
 
 ## Installation
 

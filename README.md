@@ -9,15 +9,13 @@ CWF is my personal exploration of agent development workflows. Other frameworks 
 
 ## What Problem Does CWF Solve?
 
-AI-assisted development often faces these challenges:
+AI-assisted development faces two core challenges:
 
-1. **Lost Implementation Context:** When context clears, gets compacted, or sessions end, implementation details vanish. Architectural decisions, component relationships, and technical rationale all disappear, forcing agents to re-derive or guess.
+1. **Context is lost between sessions.** When a session ends or context is compacted, everything the agent learned disappears—architectural decisions, implementation progress, and requirements that were refined during development. The next session starts from scratch, forcing the agent to re-derive what was already decided or, worse, to guess.
 
-2. **Inconsistent Quality:** Without documented standards or quality control, implementation quality varies unpredictably. One session produces well-structured code with proper error handling; the next produces a 500-line function that mixes concerns.
+2. **Developers lose ownership of the code.** Agents can produce large volumes of code from brief instructions. Without structured points for review, developers cannot follow what was built or verify that it matches their intent. Problems compound silently across files, and the codebase accumulates code that nobody fully understands.
 
-3. **Plan Evolution Lost:** When implementation reveals gaps and needed changes, amended requirements remain buried in conversation. New sessions start with the original flawed plan, repeating the same discovery process.
-
-4. **Loss of Control:** Agents can make dozens of changes at once, and without oversight mechanisms, developers lose control of what is being built. Instructions are often underspecified, so agents guess at developer intent and implementations quickly go off the rails—either building the wrong thing entirely or taking opaque approaches that require investigation to understand. Without checkpoints for human review and quality control, problems compound before they're caught.
+CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with human review at each checkpoint keeps the developer in control of every change.
 
 ## The Workflow
 

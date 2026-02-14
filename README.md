@@ -7,13 +7,18 @@ Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code
 
 ## What Problem Does CWF Solve?
 
-AI-assisted development faces two core challenges:
+When work spans multiple sessions or outgrows a single context window, AI-assisted development breaks down in two ways:
 
-1. **Context is lost between sessions.** When a session ends or context is compacted, everything the agent learned disappears. Architectural decisions, implementation progress and requirements that were refined during development are no longer available. The next session starts from scratch, forcing the agent to re-derive what was already decided.
+1. **The agent loses context.** Architectural decisions, refined requirements, and implementation progress disappear when context is compacted or a session ends. The next session starts from scratch, and the agent re-derives what was already decided, or worse, decides differently.
 
-2. **Developers lose ownership of the codebase.** Agents can produce large volumes of code from brief instructions. Without a pre-prepared plan/spec and checkpoints for review, developers cannot follow what was built or verify that it matches their intent. Problems compound silently across files, and the codebase accumulates code that nobody fully understands.
+2. **The developer loses ownership.** Without a plan to review upfront, the agent makes design decisions implicitly as it codes. Problems compound across files before anyone notices, and the codebase drifts from the developer's intent.
 
-CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with code quality checks and human review between each phase keeps the developer in control and the codebase maintainable.
+Both stem from the same gap: nothing captures what was decided, what was built, and what remains. CWF fills this gap with plan and tasklist documents, and structures implementation around them:
+
+- **Persistent plan documents** give every session the full picture of architectural decisions, design rationale, and progress so far.
+- **Phase-based implementation** breaks work into sequential phases with concrete deliverables, so scope and sequencing are decided before coding starts.
+- **Automated checkpoints** run code quality, complexity, and test checks at phase boundaries, catching issues before they accumulate.
+- **Scheduled human review** between phases keeps the developer in control, not just informed.
 
 ## When to Use CWF
 

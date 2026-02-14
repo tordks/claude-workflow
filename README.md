@@ -136,12 +136,10 @@ Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at 
 
 **Tips:**
 
-- Be specific about requirements, components, and technologies
-- Set clear scope (what's IN and OUT of this feature)
-- Before writing the plan, ask the agent to write svg or mermaid diagrams. Especially useful for webapps to confirm layout understanding, or for database schemas.
+- Provide concrete context. Specify technologies, scope boundaries and constraints. Avoid vague goals, the more specific your input, the more useful the plan.
+- Before writing the plan, ask the agent to generate diagrams (SVG, HTML or Mermaid). Especially useful for database schemas, or system architecture diagrams.
 - For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.
-- For multi-session planning, save discussion to file and reload when resuming
-- Use plan mode to get an initial plan draft that can be fed into `/write-plan`
+- For multi-session planning, ask the agent to write a summary of the discussion to a file (e.g., `.cwf/feature/notes.md`), then reference that file when resuming in a new session.
 - You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`
 
 ### Implementation
@@ -158,13 +156,13 @@ These checkpoints catch issues early before they accumulate (ie. ever-increasing
 
 **Tips:**
 
-- Review at phase boundaries before approving
-- Run `/clear` often to maintain fresh context
-- If context allows, write "continue to next phase" instead of clearing to speed up development
+- At phase boundaries, verify deliverables match the tasklist, test the feature, and check edge cases before proceeding.
+- If context allows, write "continue to next phase" instead of clearing to reuse exploration.
 - You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
-- Use `/amend-plan` when requirements change (don't work around the plan)
-- Use CLAUDE.md files in subfolders to help the agent understand subsystem context
-- Use subagents to run independent phases/tasks in parallel or to preserve main instance context: `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel, enforce phase 2 for second subagent`
+- Use `/amend-plan` when requirements change or you discover gaps in the plan during implementation.
+- Add CLAUDE.md files sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
+- You can use subagents to run independent phases or tasks in parallel, or to preserve main instance context. ie. `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel`.
+
 
 ### Amending Plans
 
@@ -174,8 +172,7 @@ If requirements change during implementation or you discover a gap in the plan, 
 
 - For complex amendments, `/clear` and discuss changes first, you might even want to use `/brainstorm <initial-description-of-change>`
 - Add change description for amendments that might not need discussion: `/amend-plan my-cli-tool the cli needs an --output option`
-- Keep the plan updated—it's the agent's source of truth
-- **Warning:** Changing implementation without amending the plan causes confusion after `/clear` and will likely result in an erroneous implementation.
+- **Warning:** Changing implementation, or deviating from the plan, without amending the plan or adding a changelog causes confusion after `/clear`. The agent treats the plan as its source of truth and will likely undo or conflict with unamended changes.
 
 ### Project Rules (Optional)
 

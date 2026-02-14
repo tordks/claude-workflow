@@ -21,10 +21,14 @@ CWF addresses both. Persistent plan documents preserve decisions and progress ac
 
 Based on an input context (specification, design discussion, or brainstorm), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
 
+Each phase is started manually with `/implement-plan`, which continues from the next incomplete task and accepts free-form instructions to control scope. This allows you to pause and resume implementation across sessions without losing context or progress.
+
 ```text
-        /brainstorm (optional)
-               ↓
-          input context
+       input context (plan draft, design discussion, specification file)
+               │
+               ├── /brainstorm (optional: structured exploration
+               │                to extract requirements and
+               │                design decisions)
                ↓
            /write-plan
                ↓
@@ -76,13 +80,9 @@ Install as plugin in Claude Code:
 
 To uninstall: `/plugin uninstall cwf@claude-workflow`
 
-## How It Works
+## Usage Guide
 
-CWF preserves context across sessions by storing planning and progress in structured documents. It uses two key mechanisms:
-
-**Skills** provide specialized knowledge to Claude as self-contained packages. The `claude-workflow` skill contains all CWF workflow knowledge (plan structure, tasklist format, amendment rules, etc.) that agents need to execute the workflow. Skills are loaded on-demand to keep context focused.
-
-**Commands** are called by users to orchestrate the workflow. They provide instructions that guide agents through each stage and automatically load relevant skills.
+CWF uses slash commands to orchestrate the workflow and loads specialized knowledge (skills) on demand.
 
 ### Command Reference
 
@@ -119,13 +119,7 @@ After solidifying the specification, run `/write-plan` to create the planning do
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
 
-The plan divides work into phases that each produce runnable code. Each phase ends with **checkpoints**—validation operations that ensure code quality before proceeding:
-
-- **Self-review:** Agent reviews implementation against phase deliverable
-- **Code quality checks:** Linting, formatting, type checking—runs whatever tools the project already uses (e.g., eslint, prettier, mypy, ruff)
-- **Complexity checks:** Code complexity analysis—runs if project has complexity tools configured
-
-These checkpoints provide quality control, catching issues early before they accumulate (ie. ever-increasing function- or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
+The plan divides work into phases that each produce runnable code. Each phase ends with quality checkpoints and human review before proceeding (see Implementation below).
 
 **Tips:**
 
@@ -141,6 +135,14 @@ These checkpoints provide quality control, catching issues early before they acc
 ### Implementation
 
 Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context.
+
+At the end of each phase, the agent runs **checkpoints**—validation operations that ensure code quality before proceeding:
+
+- **Self-review:** Agent reviews implementation against phase deliverable
+- **Code quality checks:** Linting, formatting, type checking—runs whatever tools the project already uses (e.g., eslint, prettier, mypy, ruff)
+- **Complexity checks:** Code complexity analysis—runs if project has complexity tools configured
+
+These checkpoints catch issues early before they accumulate (ie. ever-increasing function- or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
 **Tips:**
 

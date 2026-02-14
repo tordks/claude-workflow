@@ -11,33 +11,39 @@ CWF is my personal exploration of agent development workflows. Other frameworks 
 
 AI-assisted development faces two core challenges:
 
-1. **Context is lost between sessions.** When a session ends or context is compacted, everything the agent learned disappears—architectural decisions, implementation progress, and requirements that were refined during development. The next session starts from scratch, forcing the agent to re-derive what was already decided or, worse, to guess.
+1. **Context is lost between sessions.** When a session ends or context is compacted, everything the agent learned disappears. Architectural decisions, implementation progress and requirements that were refined during development are no longer available. The next session starts from scratch, forcing the agent to re-derive what was already decided.
 
-2. **Developers lose ownership of the code.** Agents can produce large volumes of code from brief instructions. Without structured points for review, developers cannot follow what was built or verify that it matches their intent. Problems compound silently across files, and the codebase accumulates code that nobody fully understands.
+2. **Developers lose ownership of the codebase.** Agents can produce large volumes of code from brief instructions. Without a pre-prepared plan/spec and checkpoints for review, developers cannot follow what was built or verify that it matches their intent. Problems compound silently across files, and the codebase accumulates code that nobody fully understands.
 
-CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with human review at each checkpoint keeps the developer in control of every change.
+CWF addresses both. Persistent plan documents preserve decisions and progress across sessions, so agents always have the full picture. Phase-based implementation with human review and code quality/complexity checks between each phase keeps the developer in control of every change and ensures the codebase remains maintainable.
 
 ## The Workflow
 
+Based on an input context (specification, design discussion, or brainstorm), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
+
+
 ```text
-  /brainstorm (optional)
-         ↓
-  Design Summary
-         ↓
-     /write-plan
-         ↓
-   Plan + Tasklist
-         ↓
-   /implement-plan
-         ↓
-  Phase 1 → Checkpoints → Review → ✓ → /clear
-         ↓
- Phase 2 → Checkpoints → Review → ✓ → /clear
-  [Changes?] → /amend-plan ──┐
-         ↓                   │
-  Continue development ←─────┘
-         ↓
-  Feature Complete ✓
+        /brainstorm (optional)
+               ↓
+          input context
+               ↓
+           /write-plan
+               ↓
+         Review plan + tasklist
+               ↓
+        /implement-plan ←──────┐
+               ↓               │
+        Execute phase tasks    │ repeat
+               ↓               │ per
+        Run checkpoints        │ phase
+               ↓               │
+        Human review           │
+               ↓               │
+            /clear ────────────┘
+               ↓ (all phases done)
+         Feature complete
+
+    /amend-plan: update documents when requirements change
 ```
 
 ## When to use CWF

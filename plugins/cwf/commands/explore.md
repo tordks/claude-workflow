@@ -26,21 +26,29 @@ Read the following if not already loaded:
 
 - `references/plan-spec.md`
 
-### 1. Explore Repository Context
+### 1. Quick Repository Scan
 
-Before diving into questions, actively explore the codebase to understand what exists and how it's structured. This context ensures questions are relevant and informed.
+Get a high-level understanding of the project — just enough to ask informed questions. Do NOT read deeply into the codebase at this stage.
 
-**What to understand:**
+**Do:**
 
-- Project organization (greenfield vs brownfield, monorepo vs single package, project structure, etc.)
-- Existing implementations similar to planned feature
-- Testing conventions (where tests live, what frameworks are used, how detailed)
-- Key dependencies and technologies in use
-- Coding patterns and architectural decisions evident in code and repo docs
+- List the top-level directory structure
+- Read project README, CLAUDE.md, or equivalent entrypoint docs if they exist
+- Note the language, framework, and rough architecture
+
+**Do NOT:**
+
+- Read source files, tests, or configs beyond the entrypoint docs
+- Try to understand every module or convention upfront
+- Read files unrelated to what the user wants to explore
+
+Deeper codebase reading happens in step 2, targeted by the feature direction.
 
 ### 2. Understand the Idea and Explore Approaches
 
-Once you have sufficient repository context, ask questions to uncover requirements, design constraints, and converge on an approach. Ask 1-3 questions at a time, allowing for natural conversation and exploration. Use the following principles to guide your questioning and proposal of approaches:
+Start by understanding what the user wants to build, then explore the codebase **as needed** to inform your questions and proposals. Read source files only when they are relevant to the feature being discussed.
+
+Ask 1-3 questions at a time, allowing for natural conversation and exploration. Use the following principles to guide your questioning and proposal of approaches:
 
 - Group related questions together to minimize context switching and allow for deeper exploration of specific areas before moving on
 - Make informed guesses based on repo context rather than asking endless questions — present what you infer and ask the user to confirm or correct

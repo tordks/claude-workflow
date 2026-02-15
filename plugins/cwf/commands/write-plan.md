@@ -104,6 +104,7 @@ Create `.cwf/{feature-name}/{feature-name}-plan.md`:
 
 - Follow plan-spec.md structure, tailoring depth to feature complexity
 - Use extracted context from Section 1
+- Use mermaid diagrams where helpful to illustrate architecture, component interactions, or workflows
 
 Create `.cwf/{feature-name}/{feature-name}-tasklist.md`:
 

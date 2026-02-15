@@ -66,7 +66,7 @@ Analyze the conversation to extract:
 - Technical constraints and dependencies
 - File and component structure
 
-Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /brainstorm results, design summaries, input arguments to this command).
+Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /explore design summary, input arguments to this command).
 
 **Complexity Assessment:**
 

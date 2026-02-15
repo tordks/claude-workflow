@@ -44,16 +44,16 @@ The workflow should match the complexity of the work. CWF is designed for featur
 
 ## The Workflow
 
-Based on an input context (specification, design discussion, or brainstorm), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
+Based on an input context (specification, design discussion, or exploration), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
 
 Each phase is started manually with `/implement-plan`, which continues from the next incomplete task and accepts free-form instructions to control scope. This allows you to pause and resume implementation across sessions without losing context or progress.
 
 ```text
        input context (plan draft, design discussion, specification file)
                │
-               ├── /brainstorm (optional: structured exploration
-               │                to extract requirements and
-               │                design decisions)
+               ├── /explore (optional: iterative discovery
+               │             to converge on design before
+               │             planning)
                ↓
            /write-plan
                ↓
@@ -86,8 +86,8 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 ### Example Use
 
 ```text
-/brainstorm Build OAuth login with session management
-# → guided conversation exploring requirements and design decisions
+/explore Build OAuth login with session management
+# → iterative discovery converging on design
 
 /write-plan user-auth
 # → creates plan + tasklist in .cwf/user-auth/
@@ -117,16 +117,16 @@ CWF provides four slash commands that orchestrate the workflow. Commands automat
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/brainstorm [initial context]` | During planning | Guided conversation to explore requirements, alternatives, and design decisions |
+| `/explore [initial context]` | During planning | Iterative discovery of requirements, approaches, and design with approval gate |
 | `/write-plan <feature-name> [instructions]` | After planning | Writes planning documents |
 | `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
 | `/amend-plan <feature-name> [instructions]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
-Arguments: `<feature-name>` is required for all commands except `/brainstorm`. `[instructions]` are optional free-form text for additional context or constraints.
+Arguments: `<feature-name>` is required for all commands except `/explore`. `[instructions]` are optional free-form text for additional context or constraints.
 
 ### Planning
 
-The planning phase is about solidifying requirements before implementation. You can have an informal discussion with the agent, use `/brainstorm` for structured exploration, or provide a written specification file.
+The planning phase is about solidifying requirements before implementation. You can have an informal discussion with the agent, use `/explore` for iterative design exploration, or provide a written specification file.
 
 Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
 
@@ -163,14 +163,13 @@ These checkpoints catch issues early before they accumulate (ie. ever-increasing
 - Add CLAUDE.md files sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
 - You can use subagents to run independent phases or tasks in parallel, or to preserve main instance context. ie. `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel`.
 
-
 ### Amending Plans
 
 If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely.
 
 **Tips:**
 
-- For complex amendments, `/clear` and discuss changes first, you might even want to use `/brainstorm <initial-description-of-change>`
+- For complex amendments `/clear` and discuss changes first, you might even want to use `/explore <initial-description-of-change>`
 - Add change description for amendments that might not need discussion: `/amend-plan my-cli-tool the cli needs an --output option`
 - **Warning:** Changing implementation, or deviating from the plan, without amending the plan or adding a changelog causes confusion after `/clear`. The agent treats the plan as its source of truth and will likely undo or conflict with unamended changes.
 

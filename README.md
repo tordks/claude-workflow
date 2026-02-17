@@ -86,6 +86,7 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 ### Example usage
 
 #### Full workflow
+
 ```text
 /explore move job processing out of the API server into a queue-based worker
 # → iterative discovery converging on design
@@ -110,7 +111,7 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 /implement-plan redis-queue     # picks up at amended phase
 ```
 
-See [docs/examples/](docs/examples/) for an example of a plan and tasklist from the above workflow with the redis-queue feature.
+See [docs/examples/](docs/examples/) for example plan and tasklist made by `/write-plan`.
 
 #### Explore command
 
@@ -149,7 +150,7 @@ See [docs/examples/](docs/examples/) for an example of a plan and tasklist from 
   Agent: Design approved. Run /write-plan redis-queue to create the plan.
 ```
 
-You can also feed an existing draft or spec as input: `/explore plan-draft.md`. The agent will then use it as a starting point for iterative refinement instead of exploring from scratch.
+You can also feed an existing draft or spec as input: `/explore plan-draft.md`. The agent will use the draft as a starting point for iterative refinement.
 
 ## Usage Guide
 
@@ -174,7 +175,7 @@ Arguments: `<feature-name>` is required for all commands except `/explore`. `[in
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
 
-See [`docs/examples/`](docs/examples/) for a full plan and tasklist from the redis-queue example above.
+Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
 
 **Tips:**
 
@@ -203,7 +204,7 @@ These checkpoints catch issues early before they accumulate (ie. ever-increasing
 - If context allows, write "continue to next phase" instead of clearing to reuse exploration.
 - You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
 - Use `/amend-plan` when requirements change or you discover gaps in the plan during implementation.
-- Add CLAUDE.md files sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
+- Add CLAUDE.md files in sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
 - You can use subagents to run independent phases or tasks in parallel, or to preserve main instance context. ie. `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel`.
 
 ### Amending Plans

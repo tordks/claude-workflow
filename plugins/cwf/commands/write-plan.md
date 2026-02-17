@@ -65,6 +65,7 @@ Analyze the conversation to extract:
 - Alternatives considered and rejected
 - Technical constraints and dependencies
 - File and component structure
+- Quality tooling (linters, formatters, type checkers, complexity analyzers, dead code analyzers)
 
 Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /explore design summary, input arguments to this command).
 

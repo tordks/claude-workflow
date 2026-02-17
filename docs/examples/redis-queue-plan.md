@@ -216,4 +216,5 @@ Each phase produces a working, testable state. The API continues to function bet
 Each phase ends with:
 - **Self-review:** Agent reviews implementation against phase deliverable
 - **Code quality:** `uvx ruff check packages/samui-backend/src/ && uvx ruff format --check packages/samui-backend/src/`
+- **Code complexity:** `uvx ruff check packages/samui-backend/src/ --select C901,PLR0912,PLR0915`
 - **Dead code:** `uvx vulture packages/samui-backend/src/ --min-confidence 80` (verify removed functions don't leave orphans)

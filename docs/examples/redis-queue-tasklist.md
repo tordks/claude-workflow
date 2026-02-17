@@ -21,6 +21,7 @@
 **Checkpoints:**
 
 - [ ] Code quality: `uvx ruff check packages/samui-backend/src/ && uvx ruff format --check packages/samui-backend/src/`
+- [ ] Code complexity: `uvx ruff check packages/samui-backend/src/ --select C901,PLR0912,PLR0915`
 - [ ] Review: Verify Redis service starts with `docker compose up redis -d` and `docker compose exec redis redis-cli ping` returns PONG
 
 **Phase 1 Complete:** Redis infrastructure available, RQ dependency installed, configuration settings accessible via `settings` object. Existing tests pass unchanged.
@@ -67,6 +68,7 @@
 **Checkpoints:**
 
 - [ ] Code quality: `uvx ruff check packages/samui-backend/src/ && uvx ruff format --check packages/samui-backend/src/`
+- [ ] Code complexity: `uvx ruff check packages/samui-backend/src/ --select C901,PLR0912,PLR0915`
 - [ ] Review: Verify poller functions handle edge cases (empty result sets, exceptions) and worker entry point is complete
 
 **Phase 2 Complete:** Poller and worker modules created with passing tests. Poller handles three-step cleanup/enqueue cycle. Worker loads model and starts poller thread.
@@ -115,6 +117,7 @@
 **Checkpoints:**
 
 - [ ] Code quality: `uvx ruff check packages/samui-backend/src/ && uvx ruff format --check packages/samui-backend/src/`
+- [ ] Code complexity: `uvx ruff check packages/samui-backend/src/ --select C901,PLR0912,PLR0915`
 - [ ] Dead code: `uvx vulture packages/samui-backend/src/ --min-confidence 80`
 - [ ] Review: Verify complete flow — API creates job, poller would enqueue (manual verification or integration test), dead code fully removed, all tests pass
 

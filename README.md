@@ -115,14 +115,14 @@ See [docs/examples/](docs/examples/) for example plan and tasklist made by `/wri
 
 ## Usage Guide
 
-CWF provides four slash commands that orchestrate the workflow. Commands automatically load the `claude-workflow` skill, which provides planning structure, task format, and amendment rules.
+CWF provides four slash commands that orchestrate the workflow.
 
 ### Command Reference
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/explore [initial context]` | During planning | Iterative discovery of requirements, approaches, and design converging on a design summary |
-| `/write-plan [feature-name] [planning context]` | After planning | Writes planning documents |
+| `/explore [initial context]` | During planning | Iterative discovery that converges on a design summary |
+| `/write-plan [feature-name] [planning context]` | After planning | Creates plan and tasklist from input context |
 | `/implement-plan [feature-name] [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
 | `/amend-plan [feature-name] [amendment description]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
@@ -151,13 +151,14 @@ Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
 
 Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context.
 
-At the end of each phase, the agent runs **checkpoints**—validation operations that ensure code quality before proceeding:
+At the end of each phase, the agent runs **checkpoints** to validate quality before proceeding. `/write-plan` picks up on configured tooling and tailors checkpoints to the project. These can for example include:
 
 - **Self-review:** Agent reviews implementation against phase deliverable
-- **Code quality checks:** Linting, formatting, type checking—runs whatever tools the project already uses (e.g., eslint, prettier, mypy, ruff)
-- **Complexity checks:** Code complexity analysis—runs if project has complexity tools configured
+- **Code quality:** Linting, formatting, type checking
+- **Code complexity:** Function size, branching depth, and cyclomatic complexity
+- **Dead code:** Verify removed functionality don't leave orphans
 
-These checkpoints catch issues early before they accumulate (e.g., ever-increasing function or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
+Checkpoints catch issues early before they accumulate (e.g., ever-increasing function size or deep nesting). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
 **Tips:**
 

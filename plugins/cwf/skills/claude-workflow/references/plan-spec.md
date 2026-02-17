@@ -295,11 +295,12 @@ Each phase ends with mandatory validation before proceeding:
 - Self-review: Agent reviews implementation against phase deliverable
 - Code quality: Linting and formatting with ruff
 - Code complexity: Complexity check with Radon
+- Dead code: Unused function and import detection
 
 These checkpoints ensure AI-generated code meets project standards before continuing to next phase.
 ```
 
-**Note (Informative):** Checkpoint types are project-specific. Use only tools your project already has. If the project doesn't use linting or complexity analysis, omit those checkpoints.
+Checkpoint strategy SHOULD reference specific project tools discovered during planning. If the project doesn't use linting, complexity analysis, or dead code detection, omit those checkpoints.
 
 ---
 

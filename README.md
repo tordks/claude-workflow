@@ -140,12 +140,12 @@ Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
 
 **Tips:**
 
-- `/write-plan` works from any input — a conversation in the current session, a spec file, or a draft document. Reference files directly: `/write-plan user-auth based on auth-spec.md`.
-- Provide concrete context. Specify technologies, scope boundaries and constraints. Avoid vague goals, the more specific your input, the more useful the plan.
-- Before writing the plan, ask the agent to generate diagrams (SVG, HTML or Mermaid). Especially useful for database schemas, or system architecture diagrams.
-- For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.
-- For multi-session planning, ask the agent to write a summary of the discussion to a file (e.g., `.cwf/feature/notes.md`), then reference that file when resuming in a new session.
-- You can focus on specific parts of a discussion/spec and provide file inputs: `/write-plan user-auth only make a plan for the authentication layer described in my-spec-file.md`
+- `/write-plan` works from any input (conversation, spec file, or draft): `/write-plan user-auth auth-spec.md`.
+- Be specific. "OAuth2 with Google, PostgreSQL sessions, admin/user roles" beats "build auth".
+- You can scope to part of a written spec: `/write-plan user-auth only the auth layer from auth-spec.md`.
+- Discuss the feature or draft in chat first. Ask for diagrams (SVG, Mermaid) for schemas or architecture to ensure the agent understands before planning.
+- For UI features, request an HTML mockup to verify layout before implementation.
+- For multi-session planning, save a summary and reference it when resuming.
 
 ### Implementation
 
@@ -157,26 +157,25 @@ At the end of each phase, the agent runs **checkpoints**—validation operations
 - **Code quality checks:** Linting, formatting, type checking—runs whatever tools the project already uses (e.g., eslint, prettier, mypy, ruff)
 - **Complexity checks:** Code complexity analysis—runs if project has complexity tools configured
 
-These checkpoints catch issues early before they accumulate (ie. ever-increasing function- or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
+These checkpoints catch issues early before they accumulate (e.g., ever-increasing function or file size). After checkpoints pass, implementation stops for human review before proceeding to the next phase.
 
 **Tips:**
 
-- At phase boundaries, verify deliverables match the tasklist, test the feature, and check edge cases before proceeding.
-- If context allows, write "continue to next phase" instead of clearing to reuse exploration.
-- You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
-- Use `/amend-plan` when requirements change or you discover gaps in the plan during implementation.
-- Add CLAUDE.md files in sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
-- You can use subagents to run independent phases or tasks in parallel, or to preserve main instance context. ie. `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel`.
+- Pass instructions to scope a run. `/implement-plan user-auth phase 1, 2 and 3` will run phase 1-3 without stopping for review.
+- If the session has room, skip `/clear` and write "continue to next phase" to reuse context.
+- Run independent phases in parallel with subagents: `/implement-plan user-auth use subagents for phase 1 and 2 in parallel`.
 
 ### Amending Plans
 
 If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely.
 
+> **Warning:** Changing implementation without amending the plan causes confusion after `/clear`. The agent treats the plan as its source of truth and will undo or conflict with unamended changes. Always `/amend-plan` before (or immediately after) deviating.
+
 **Tips:**
 
-- For complex amendments `/clear` and discuss changes first, you might even want to use `/explore <initial-description-of-change>`
-- Add change description for amendments that might not need discussion: `/amend-plan my-cli-tool the cli needs an --output option`
-- **Warning:** Changing implementation, or deviating from the plan, without amending the plan or adding a changelog causes confusion after `/clear`. The agent treats the plan as its source of truth and will likely undo or conflict with unamended changes.
+- For simple changes: `/amend-plan my-cli-tool add --output option`.
+- For complex amendments, clear context and discuss amendments before amending.
+- If the change invalidates the overall approach, re-plan with `/write-plan` instead.
 
 ## Alternatives & Resources
 

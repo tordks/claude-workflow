@@ -85,6 +85,7 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 ### Example usage
 
+#### Full workflow
 ```text
 /explore move job processing out of the API server into a queue-based worker
 # → iterative discovery converging on design
@@ -109,7 +110,9 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 /implement-plan redis-queue     # picks up at amended phase
 ```
 
-The `/explore` step (condensed) :
+See [docs/examples/](docs/examples/) for an example of a plan and tasklist from the above workflow with the redis-queue feature.
+
+#### Explore command
 
 ```text
 /explore move job processing out of the API server into a queue-based worker
@@ -170,6 +173,8 @@ Arguments: `<feature-name>` is required for all commands except `/explore`. `[in
 - **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
+
+See [`docs/examples/`](docs/examples/) for a full plan and tasklist from the redis-queue example above.
 
 **Tips:**
 

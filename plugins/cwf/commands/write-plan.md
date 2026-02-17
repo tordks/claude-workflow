@@ -130,26 +130,15 @@ Assess whether the feature involves UI/frontend work. If so, create or update a 
 
 ---
 
-### 3. Validate Documents
+### 3. Self-Review
 
-**Validate plan**:
+Launch a single subagent to review the plan and tasklist for coherence. The subagent reads both documents and checks:
 
-- [ ] Plan validated against all MUST/SHOULD requirements in plan-spec.md
-- [ ] If validation fails: revise plan and re-validate until all requirements pass
+1. **File coverage** — every file marked [CREATE]/[MODIFY]/[REMOVE] in the plan has corresponding tasks in the tasklist
+2. **Strategy alignment** — tasklist phases follow the plan's Implementation Strategy and Testing approach
+3. **Scope match** — tasklist tasks collectively deliver everything in the plan's Scope (nothing missing, nothing extra)
 
-**Validate tasklist**:
-
-- [ ] Tasklist validated against all MUST/SHOULD requirements in tasklist-spec.md
-- [ ] If validation fails: revise tasklist and re-validate until all requirements pass
-
-**Validate coherence** between documents:
-
-- [ ] Tasklist execution follows plan's Implementation Strategy pattern
-- [ ] Tasklist execution follows plan's Testing approach
-- [ ] Files marked [CREATE]/[MODIFY] in plan appear as tasks in tasklist
-- [ ] Consistent terminology between documents
-- [ ] Tasks reference only files/components defined in plan
-- [ ] If coherence fails: revise either document and re-validate until all checks pass
+If the subagent finds issues, fix them inline and move on.
 
 ---
 

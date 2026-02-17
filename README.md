@@ -85,13 +85,13 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 ### Example usage
 
-#### Full workflow
-
 ```text
-/explore move job processing out of the API server into a queue-based worker
-# → iterative discovery converging on design
-
+# discuss the feature in chat, then create the plan from the conversation
 /write-plan redis-queue
+
+# or reference a spec or draft directly
+/write-plan redis-queue docs/redis-queue-rfc.md
+
 # → creates plan + tasklist in .cwf/redis-queue/
 # review the plan before implementing
 
@@ -113,45 +113,6 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 See [docs/examples/](docs/examples/) for example plan and tasklist made by `/write-plan`.
 
-#### Explore command
-
-```text
-/explore move job processing out of the API server into a queue-based worker
-
-  # scans repo — finds BackgroundTasks queue in job_processor.py,
-  # ProcessingJob model via SQLAlchemy, single recursive worker
-  Agent: Low complexity — single in-process worker, no broker. A full Celery
-         setup would be overkill here. RQ is a lighter fit for this codebase.
-         What's driving the move — scaling, reliability, or both?
-
-  User:  Scaling — we need workers on dedicated GPU machines, but right now
-         processing is coupled to the API server.
-
-  # explores job creation route and BackgroundTasks processing chain
-  Agent: The coupling is in the route — job creation immediately dispatches
-         via BackgroundTasks. To run workers separately, you need a queue
-         between API and worker. One subtlety: if the API writes to both
-         DB and Redis, a crash between them loses the job silently. An
-         outbox pattern avoids this — API only writes to PostgreSQL, then
-         a poller picks up QUEUED jobs and enqueues to RQ. Workers run on
-         separate machines, each with their own GPU.
-
-  User:  That makes sense. Go with outbox + RQ.
-
-  # presents design summary
-  Agent: - Scope: Redis + RQ infra, poller, worker container, API rewire
-         - Architecture: outbox via SQLAlchemy, poller with SKIP LOCKED,
-           RQ workers with resident model
-         - Testing: poller logic, worker task, existing API tests updated
-         - Out of scope: job cancellation, priority queues, frontend changes
-
-  User:  Looks good.
-
-  Agent: Design approved. Run /write-plan redis-queue to create the plan.
-```
-
-You can also feed an existing draft or spec as input: `/explore plan-draft.md`. The agent will use the draft as a starting point for iterative refinement.
-
 ## Usage Guide
 
 CWF provides four slash commands that orchestrate the workflow. Commands automatically load the `claude-workflow` skill, which provides planning structure, task format, and amendment rules.
@@ -160,12 +121,12 @@ CWF provides four slash commands that orchestrate the workflow. Commands automat
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/explore [initial context]` | During planning | Iterative discovery of requirements, approaches, and design with approval gate |
-| `/write-plan <feature-name> [instructions]` | After planning | Writes planning documents |
-| `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
-| `/amend-plan <feature-name> [instructions]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
+| `/explore [initial context]` | During planning | Iterative discovery of requirements, approaches, and design converging on a design summary |
+| `/write-plan [feature-name] [planning context]` | After planning | Writes planning documents |
+| `/implement-plan [feature-name] [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
+| `/amend-plan [feature-name] [amendment description]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
-Arguments: `<feature-name>` is required for all commands except `/explore`. `[instructions]` are optional free-form text for additional context or constraints.
+Arguments: `[feature-name]` is optional — auto-detected when only one plan exists, otherwise prompts for selection. Additional arguments are optional free-form text for context or constraints.
 
 ### Planning
 
@@ -179,7 +140,7 @@ Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
 
 **Tips:**
 
-- If you have a draft or spec, feed it to explore first: `/explore my-draft.md` — the agent refines the design iteratively before you formalize with `/write-plan`.
+- `/write-plan` works from any input — a conversation in the current session, a spec file, or a draft document. Reference files directly: `/write-plan user-auth based on auth-spec.md`.
 - Provide concrete context. Specify technologies, scope boundaries and constraints. Avoid vague goals, the more specific your input, the more useful the plan.
 - Before writing the plan, ask the agent to generate diagrams (SVG, HTML or Mermaid). Especially useful for database schemas, or system architecture diagrams.
 - For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.

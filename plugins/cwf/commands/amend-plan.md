@@ -199,5 +199,5 @@ Validating amendments...
 ✓ Checkboxes preserved
 ✓ No completed tasks modified
 
-Done! Resume with `/implement query-command`.
+Done! Resume with `/implement-plan query-command`.
 ```

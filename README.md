@@ -90,7 +90,7 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 /write-plan redis-queue
 
 # or reference a spec or draft directly
-/write-plan redis-queue docs/redis-queue-rfc.md
+/write-plan redis-queue docs/redis-queue-draft.md
 
 # → creates plan + tasklist in .cwf/redis-queue/
 # review the plan before implementing
@@ -108,7 +108,7 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 
 /clear
 
-/implement-plan redis-queue     # picks up at amended phase
+/implement-plan redis-queue     # continues where we left off
 ```
 
 See [docs/examples/](docs/examples/) for example plan and tasklist made by `/write-plan`.

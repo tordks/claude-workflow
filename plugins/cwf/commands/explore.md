@@ -10,13 +10,15 @@ Guide iterative exploration of feature requirements and design before formalizin
 
 ## Context
 
-This command is run BEFORE writing planning documents to explore feature requirements and converge on a design through natural conversation. The agent first understands the repository context, then asks targeted questions, proposes approaches, and incrementally builds a design summary that the user validates before transitioning to `/write-plan`.
+This command is run BEFORE writing planning documents to explore an idea or feature requirements and converge on a design or conclusion through natural conversation. The agent first understands the repository context, then asks targeted questions, proposes approaches, and incrementally builds a design summary before transitioning to `/write-plan`.
 
 ## Arguments
 
 **Input**: `$ARGUMENTS`
 
 If arguments are provided, they contain context or initial direction for the exploration session. Use this context to inform your questions and exploration.
+
+If no context is provided, ask the user what they want to explore and use that as the starting point for your questions.
 
 ## Explore workflow
 
@@ -35,10 +37,11 @@ Get a high-level understanding of the project — just enough to ask informed qu
 - List the top-level directory structure
 - Read project README, CLAUDE.md, or equivalent entrypoint docs if they exist
 - Note the language, framework, and rough architecture
+- Use subagents for exploration
 
 **Do NOT:**
 
-- Read source files, tests, or configs beyond the entrypoint docs
+- Extensively read source files, tests, or configs beyond the entrypoint docs
 - Try to understand every module or convention upfront
 - Read files unrelated to what the user wants to explore
 
@@ -75,25 +78,11 @@ Synthesize the conversation into a design summary covering:
 4. **Technical architecture** — components, files affected, dependencies
 5. **Testing approach** — how to verify the implementation
 
-These sections align with what `/write-plan` expects to extract from conversation. Present the full summary, then ask if any sections need revision. If so, revise the specific sections and re-present.
+These sections align with what `/write-plan` expects to extract from conversation.
 
-### 4. UI Feature Detection
+If the feature involves UI/frontend work, suggest creating an HTML mockup and saving it to `.cwf/{feature-name}/` per `references/mockup.md` conventions. Create the mockup if the user agrees.
 
-Assess whether the feature involves UI/frontend work:
-
-- Does the feature modify or create visual components?
-- Are there layout, styling, or user interaction considerations?
-- Would a visual mockup help verify understanding before planning?
-
-If UI work detected, ask: "This feature involves UI work. Would an HTML mockup help verify the layout and component structure before we proceed to `/write-plan`?"
-
-If user agrees, note that mockup should be created during `/write-plan`.
-
-### 5. Approval Gate
-
-Require explicit user confirmation of the design summary before suggesting `/write-plan`.
-
-On approval: confirm the user should run `/write-plan [feature-name]`.
+End by suggesting the user run `/write-plan [feature-name]` when the design looks good.
 
 ## Guidelines
 

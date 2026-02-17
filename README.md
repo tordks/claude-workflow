@@ -86,28 +86,67 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 ### Example Use
 
 ```text
-/explore Build OAuth login with session management
+/explore move job processing out of the API server into a queue-based worker
 # → iterative discovery converging on design
 
-/write-plan user-auth
-# → creates plan + tasklist in .cwf/user-auth/
+/write-plan redis-queue
+# → creates plan + tasklist in .cwf/redis-queue/
 # review the plan before implementing
 
-/implement-plan user-auth       # runs phase 1, checkpoints, stops for review
+/implement-plan redis-queue     # phase 1: Redis infra + config
 
 /clear
 
-/implement-plan user-auth       # picks up at phase 2, checkpoints, stops for review
+/implement-plan redis-queue     # phase 2: poller + worker + API rewire
 
 /clear
 
-/amend-plan user-auth add refresh token rotation
-# → updates plan and tasklist to include refresh token rotation
+/amend-plan redis-queue add stale job detection for crashed workers
+# → updates plan and tasklist to include stale job recovery
 
 /clear
 
-/implement-plan user-auth       # picks up at phase 3
+/implement-plan redis-queue     # picks up at amended phase
 ```
+
+The `/explore` step (condensed) :
+
+```text
+/explore move job processing out of the API server into a queue-based worker
+
+  # scans repo — finds BackgroundTasks queue in job_processor.py,
+  # ProcessingJob model via SQLAlchemy, single recursive worker
+  Agent: Low complexity — single in-process worker, no broker. A full Celery
+         setup would be overkill here. RQ is a lighter fit for this codebase.
+         What's driving the move — scaling, reliability, or both?
+
+  User:  Scaling — we need workers on dedicated GPU machines, but right now
+         processing is coupled to the API server.
+
+  # explores job creation route and BackgroundTasks processing chain
+  Agent: The coupling is in the route — job creation immediately dispatches
+         via BackgroundTasks. To run workers separately, you need a queue
+         between API and worker. One subtlety: if the API writes to both
+         DB and Redis, a crash between them loses the job silently. An
+         outbox pattern avoids this — API only writes to PostgreSQL, then
+         a poller picks up QUEUED jobs and enqueues to RQ. Workers run on
+         separate machines, each with their own GPU.
+
+  User:  That makes sense. Go with outbox + RQ.
+
+  # presents design summary
+  Agent: - Scope: Redis + RQ infra, poller, worker container, API rewire
+         - Architecture: outbox via SQLAlchemy, poller with SKIP LOCKED,
+           RQ workers with resident model
+         - Testing: poller logic, worker task, existing API tests updated
+         - Out of scope: job cancellation, priority queues, frontend changes
+
+  User:  Looks good.
+
+  Agent: Design approved. Run /write-plan redis-queue to create the plan.
+```
+
+You can also feed an existing draft or spec as input: `/explore plan-draft.md` — the agent uses it as a starting point for iterative refinement instead of exploring from scratch.
 
 ## Usage Guide
 
@@ -136,6 +175,7 @@ Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at 
 
 **Tips:**
 
+- If you have a draft or spec, feed it to explore first: `/explore my-draft.md` — the agent refines the design iteratively before you formalize with `/write-plan`.
 - Provide concrete context. Specify technologies, scope boundaries and constraints. Avoid vague goals, the more specific your input, the more useful the plan.
 - Before writing the plan, ask the agent to generate diagrams (SVG, HTML or Mermaid). Especially useful for database schemas, or system architecture diagrams.
 - For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.

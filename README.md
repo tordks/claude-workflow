@@ -126,7 +126,7 @@ CWF provides four slash commands that orchestrate the workflow.
 | `/implement-plan [feature-name] [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
 | `/amend-plan [feature-name] [amendment description]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
-Arguments: `[feature-name]` is optional — auto-detected when only one plan exists, otherwise prompts for selection. Additional arguments are optional free-form text for context or constraints.
+`[feature-name]` is optional for `/write-plan`, `/implement-plan`, and `/amend-plan`. `/implement-plan` and `/amend-plan` auto-detect when only one plan exists, otherwise prompt for selection. `/write-plan` suggests a name from conversation context. All additional arguments are optional free-form text.
 
 ### Planning
 

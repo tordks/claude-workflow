@@ -33,7 +33,7 @@ claude-workflow/
 │       │   ├── write-plan.md
 │       │   ├── implement-plan.md
 │       │   ├── amend-plan.md
-│       │   └── brainstorm.md
+│       │   └── explore.md
 │       └── skills/                 → Plugin skills
 │           └── claude-workflow/    → Planning workflow knowledge
 ├── .claude-plugin/             → Marketplace configuration
@@ -76,7 +76,7 @@ The claude-workflow repository consists of:
 
 ### Commands
 
-- `plugins/cwf/commands/brainstorm.md` - Feature exploration workflow
+- `plugins/cwf/commands/explore.md` - Iterative feature design exploration
 - `plugins/cwf/commands/write-plan.md` - Plan creation workflow
 - `plugins/cwf/commands/implement-plan.md` - Implementation workflow
 - `plugins/cwf/commands/amend-plan.md` - Plan amendment workflow

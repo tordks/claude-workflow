@@ -8,7 +8,7 @@ description: >-
   (3) validating plan or tasklist documents,
   (4) understanding phase structure or task conventions.
   This is KNOWLEDGE context, not an action - do NOT confuse with the /write-plan,
-  /implement-plan, /amend-plan, or /brainstorm commands which are user-invoked.
+  /implement-plan, /amend-plan, or /explore commands which are user-invoked.
 ---
 
 # Claude Workflow
@@ -119,9 +119,9 @@ Human review occurs after checkpoints complete, when "Phase X Complete" is signa
 The CWF planning workflow follows this command-driven flow:
 
 ```text
-  /brainstorm (optional) [Human runs]
+  /explore (optional) [Human runs]
          ↓
-  Design Summary [Agent writes]
+  Design Summary [In conversation]
          ↓
      /write-plan [Human runs]
          ↓
@@ -141,15 +141,16 @@ The CWF planning workflow follows this command-driven flow:
 
 ### Stage Breakdown
 
-**1. `/brainstorm` Command (Optional)**
+**1. `/explore` Command (Optional)**
 
-- **Human:** Runs `/brainstorm` command (optional step for structured exploration)
+- **Human:** Runs `/explore` command (optional step for iterative design discovery)
 - **Agent:**
-  - Systematically extracts requirements through guided questions
-  - Explores 2-3 alternative approaches with trade-offs
-  - Incrementally builds design with validation checkpoints
-  - Produces design summary document in `docs/brainstorms/`
-- **Outcome:** Complete design context ready for `/write-plan`
+  - Explores repo context to inform targeted questions
+  - Makes informed guesses based on codebase, confirms with user
+  - Proposes 2-3 alternative approaches with trade-offs
+  - Incrementally builds and validates design summary in conversation
+  - Requires explicit user approval before transition
+- **Outcome:** Complete design context in conversation, ready for `/write-plan` extraction
 - **Note:** Can be skipped in favor of informal planning discussion or written specification
 
 **2. `/write-plan` Command**

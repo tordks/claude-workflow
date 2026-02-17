@@ -44,16 +44,16 @@ The workflow should match the complexity of the work. CWF is designed for featur
 
 ## The Workflow
 
-Based on an input context (specification, design discussion, or brainstorm), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
+Based on an input context (specification, design discussion, or exploration), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
 
 Each phase is started manually with `/implement-plan`, which continues from the next incomplete task and accepts free-form instructions to control scope. This allows you to pause and resume implementation across sessions without losing context or progress.
 
 ```text
        input context (plan draft, design discussion, specification file)
                │
-               ├── /brainstorm (optional: structured exploration
-               │                to extract requirements and
-               │                design decisions)
+               ├── /explore (optional: iterative discovery
+               │             to converge on design before
+               │             planning)
                ↓
            /write-plan
                ↓
@@ -83,31 +83,74 @@ Install as plugin in Claude Code:
 
 To uninstall: `/plugin uninstall cwf@claude-workflow`
 
-### Example Use
+### Example usage
+
+#### Full workflow
 
 ```text
-/brainstorm Build OAuth login with session management
-# → guided conversation exploring requirements and design decisions
+/explore move job processing out of the API server into a queue-based worker
+# → iterative discovery converging on design
 
-/write-plan user-auth
-# → creates plan + tasklist in .cwf/user-auth/
+/write-plan redis-queue
+# → creates plan + tasklist in .cwf/redis-queue/
 # review the plan before implementing
 
-/implement-plan user-auth       # runs phase 1, checkpoints, stops for review
+/implement-plan redis-queue     # phase 1: Redis infra + config
 
 /clear
 
-/implement-plan user-auth       # picks up at phase 2, checkpoints, stops for review
+/implement-plan redis-queue     # phase 2: poller + worker + API rewire
 
 /clear
 
-/amend-plan user-auth add refresh token rotation
-# → updates plan and tasklist to include refresh token rotation
+/amend-plan redis-queue add stale job detection for crashed workers
+# → updates plan and tasklist to include stale job recovery
 
 /clear
 
-/implement-plan user-auth       # picks up at phase 3
+/implement-plan redis-queue     # picks up at amended phase
 ```
+
+See [docs/examples/](docs/examples/) for example plan and tasklist made by `/write-plan`.
+
+#### Explore command
+
+```text
+/explore move job processing out of the API server into a queue-based worker
+
+  # scans repo — finds BackgroundTasks queue in job_processor.py,
+  # ProcessingJob model via SQLAlchemy, single recursive worker
+  Agent: Low complexity — single in-process worker, no broker. A full Celery
+         setup would be overkill here. RQ is a lighter fit for this codebase.
+         What's driving the move — scaling, reliability, or both?
+
+  User:  Scaling — we need workers on dedicated GPU machines, but right now
+         processing is coupled to the API server.
+
+  # explores job creation route and BackgroundTasks processing chain
+  Agent: The coupling is in the route — job creation immediately dispatches
+         via BackgroundTasks. To run workers separately, you need a queue
+         between API and worker. One subtlety: if the API writes to both
+         DB and Redis, a crash between them loses the job silently. An
+         outbox pattern avoids this — API only writes to PostgreSQL, then
+         a poller picks up QUEUED jobs and enqueues to RQ. Workers run on
+         separate machines, each with their own GPU.
+
+  User:  That makes sense. Go with outbox + RQ.
+
+  # presents design summary
+  Agent: - Scope: Redis + RQ infra, poller, worker container, API rewire
+         - Architecture: outbox via SQLAlchemy, poller with SKIP LOCKED,
+           RQ workers with resident model
+         - Testing: poller logic, worker task, existing API tests updated
+         - Out of scope: job cancellation, priority queues, frontend changes
+
+  User:  Looks good.
+
+  Agent: Design approved. Run /write-plan redis-queue to create the plan.
+```
+
+You can also feed an existing draft or spec as input: `/explore plan-draft.md`. The agent will use the draft as a starting point for iterative refinement.
 
 ## Usage Guide
 
@@ -117,25 +160,26 @@ CWF provides four slash commands that orchestrate the workflow. Commands automat
 
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
-| `/brainstorm [initial context]` | During planning | Guided conversation to explore requirements, alternatives, and design decisions |
+| `/explore [initial context]` | During planning | Iterative discovery of requirements, approaches, and design with approval gate |
 | `/write-plan <feature-name> [instructions]` | After planning | Writes planning documents |
 | `/implement-plan <feature-name> [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
 | `/amend-plan <feature-name> [instructions]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
 
-Arguments: `<feature-name>` is required for all commands except `/brainstorm`. `[instructions]` are optional free-form text for additional context or constraints.
+Arguments: `<feature-name>` is required for all commands except `/explore`. `[instructions]` are optional free-form text for additional context or constraints.
 
 ### Planning
 
-The planning phase is about solidifying requirements before implementation. You can have an informal discussion with the agent, use `/brainstorm` for structured exploration, or provide a written specification file.
-
-Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
+`/write-plan` creates the planning documents in `.cwf/{feature-name}/` at your project root:
 
 - **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
 
+Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
+
 **Tips:**
 
+- If you have a draft or spec, feed it to explore first: `/explore my-draft.md` — the agent refines the design iteratively before you formalize with `/write-plan`.
 - Provide concrete context. Specify technologies, scope boundaries and constraints. Avoid vague goals, the more specific your input, the more useful the plan.
 - Before writing the plan, ask the agent to generate diagrams (SVG, HTML or Mermaid). Especially useful for database schemas, or system architecture diagrams.
 - For UI/frontend features, request an HTML mockup to verify layout understanding before implementation. The agent will create a single HTML file with inline CSS that you can open in a browser.
@@ -160,9 +204,8 @@ These checkpoints catch issues early before they accumulate (ie. ever-increasing
 - If context allows, write "continue to next phase" instead of clearing to reuse exploration.
 - You can add instructions to `/implement-plan`: `/implement-plan user-auth phase 1, 2 and 3, then stop`
 - Use `/amend-plan` when requirements change or you discover gaps in the plan during implementation.
-- Add CLAUDE.md files sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
+- Add CLAUDE.md files in sub-directories to provide navigation guidance for the agent when exploring the codebase during implementation
 - You can use subagents to run independent phases or tasks in parallel, or to preserve main instance context. ie. `/implement-plan user-auth use subagents to implement phase 1 and 2 in parallel`.
-
 
 ### Amending Plans
 
@@ -170,13 +213,9 @@ If requirements change during implementation or you discover a gap in the plan, 
 
 **Tips:**
 
-- For complex amendments, `/clear` and discuss changes first, you might even want to use `/brainstorm <initial-description-of-change>`
+- For complex amendments `/clear` and discuss changes first, you might even want to use `/explore <initial-description-of-change>`
 - Add change description for amendments that might not need discussion: `/amend-plan my-cli-tool the cli needs an --output option`
 - **Warning:** Changing implementation, or deviating from the plan, without amending the plan or adding a changelog causes confusion after `/clear`. The agent treats the plan as its source of truth and will likely undo or conflict with unamended changes.
-
-### Project Rules (Optional)
-
-For coding principles and standards that apply across your repository, Claude Code supports modular rules in `.claude/rules/`. This pairs well with CWF — the agent uses your rules during implementation. See the [Claude Code docs](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/) and `claude-rules-example/` in this repository for examples.
 
 ## Alternatives & Resources
 

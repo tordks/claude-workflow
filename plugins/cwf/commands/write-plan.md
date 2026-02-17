@@ -66,7 +66,7 @@ Analyze the conversation to extract:
 - Technical constraints and dependencies
 - File and component structure
 
-Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /brainstorm results, design summaries, input arguments to this command).
+Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /explore design summary, input arguments to this command).
 
 **Complexity Assessment:**
 
@@ -104,6 +104,7 @@ Create `.cwf/{feature-name}/{feature-name}-plan.md`:
 
 - Follow plan-spec.md structure, tailoring depth to feature complexity
 - Use extracted context from Section 1
+- Use mermaid diagrams where helpful to illustrate architecture, component interactions, or workflows
 
 Create `.cwf/{feature-name}/{feature-name}-tasklist.md`:
 
@@ -112,37 +113,32 @@ Create `.cwf/{feature-name}/{feature-name}-tasklist.md`:
 - Include checkpoints per SKILL.md guidance
 - Stay faithful to discussion, use clear language
 
-### 2.5 Create Mockup (UI Features)
+### 2.5 Mockup (UI Features)
 
-Assess whether the feature involves UI/frontend work. If so, create a mockup when user explicitly requests one OR agent determines visual verification would be valuable.
+Assess whether the feature involves UI/frontend work. If so, create or update a mockup when user explicitly requests one OR agent determines visual verification would be valuable.
 
-**If creating mockup:**
+**If a mockup already exists** (e.g., created during `/explore`):
+
+- Review it against the finalized plan's Solution Design
+- Update the mockup if the design has evolved; leave it as-is if it still matches
+- Reference mockup inline in plan's Solution Design section
+
+**If no mockup exists:**
 
 - Create `.cwf/{feature-name}/{feature-name}-mockup.html` (single HTML file with inline CSS)
 - Reference mockup inline in plan's Solution Design section
 
 ---
 
-### 3. Validate Documents
+### 3. Self-Review
 
-**Validate plan**:
+Launch a single subagent to review the plan and tasklist for coherence. The subagent reads both documents and checks:
 
-- [ ] Plan validated against all MUST/SHOULD requirements in plan-spec.md
-- [ ] If validation fails: revise plan and re-validate until all requirements pass
+1. **File coverage** — every file marked [CREATE]/[MODIFY]/[REMOVE] in the plan has corresponding tasks in the tasklist
+2. **Strategy alignment** — tasklist phases follow the plan's Implementation Strategy and Testing approach
+3. **Scope match** — tasklist tasks collectively deliver everything in the plan's Scope (nothing missing, nothing extra)
 
-**Validate tasklist**:
-
-- [ ] Tasklist validated against all MUST/SHOULD requirements in tasklist-spec.md
-- [ ] If validation fails: revise tasklist and re-validate until all requirements pass
-
-**Validate coherence** between documents:
-
-- [ ] Tasklist execution follows plan's Implementation Strategy pattern
-- [ ] Tasklist execution follows plan's Testing approach
-- [ ] Files marked [CREATE]/[MODIFY] in plan appear as tasks in tasklist
-- [ ] Consistent terminology between documents
-- [ ] Tasks reference only files/components defined in plan
-- [ ] If coherence fails: revise either document and re-validate until all checks pass
+If the subagent finds issues, fix them inline and move on.
 
 ---
 

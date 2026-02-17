@@ -83,7 +83,7 @@ Install as plugin in Claude Code:
 
 To uninstall: `/plugin uninstall cwf@claude-workflow`
 
-### Example Use
+### Example usage
 
 ```text
 /explore move job processing out of the API server into a queue-based worker
@@ -146,7 +146,7 @@ The `/explore` step (condensed) :
   Agent: Design approved. Run /write-plan redis-queue to create the plan.
 ```
 
-You can also feed an existing draft or spec as input: `/explore plan-draft.md` — the agent uses it as a starting point for iterative refinement instead of exploring from scratch.
+You can also feed an existing draft or spec as input: `/explore plan-draft.md`. The agent will then use it as a starting point for iterative refinement instead of exploring from scratch.
 
 ## Usage Guide
 
@@ -165,9 +165,7 @@ Arguments: `<feature-name>` is required for all commands except `/explore`. `[in
 
 ### Planning
 
-The planning phase is about solidifying requirements before implementation. You can have an informal discussion with the agent, use `/explore` for iterative design exploration, or provide a written specification file.
-
-Run `/write-plan` to create the planning documents in `.cwf/{feature-name}/` at your project root:
+`/write-plan` creates the planning documents in `.cwf/{feature-name}/` at your project root:
 
 - **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
 - **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
@@ -212,10 +210,6 @@ If requirements change during implementation or you discover a gap in the plan, 
 - For complex amendments `/clear` and discuss changes first, you might even want to use `/explore <initial-description-of-change>`
 - Add change description for amendments that might not need discussion: `/amend-plan my-cli-tool the cli needs an --output option`
 - **Warning:** Changing implementation, or deviating from the plan, without amending the plan or adding a changelog causes confusion after `/clear`. The agent treats the plan as its source of truth and will likely undo or conflict with unamended changes.
-
-### Project Rules (Optional)
-
-For coding principles and standards that apply across your repository, Claude Code supports modular rules in `.claude/rules/`. This pairs well with CWF — the agent uses your rules during implementation. See the [Claude Code docs](https://code.claude.com/docs/en/memory#modular-rules-with-claude/rules/) and `claude-rules-example/` in this repository for examples.
 
 ## Alternatives & Resources
 

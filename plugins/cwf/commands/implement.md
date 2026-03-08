@@ -16,8 +16,8 @@ Implement a feature by following the spec and state documents. This command exec
 
 **Parsing:**
 
-- First token: feature name (must match existing spec)
-- Remaining tokens: optional implementation scope or behavior
+- First argument: feature name (must match existing spec)
+- Remaining text: optional implementation scope or behavior
   - Example: `query-command implement phase 1 and 2, then stop`
 
 **If no feature name provided:**

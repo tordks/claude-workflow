@@ -18,8 +18,8 @@ Assume the engineer using the spec has zero context for the codebase. Document e
 
 **Parsing:**
 
-- First token: feature name
-- Remaining tokens: optional planning guidance or focus areas
+- First argument: feature name
+- Remaining text: optional planning guidance or focus areas
   - Example: `user-auth focus on OAuth2 and session management`
 
 **Feature name requirements:**

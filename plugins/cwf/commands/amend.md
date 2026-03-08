@@ -16,8 +16,8 @@ Update an existing spec and state based on conversation context. This command is
 
 **Parsing:**
 
-- First token: feature name (must match existing spec)
-- Remaining tokens: optional description of changes
+- First argument: feature name (must match existing spec)
+- Remaining text: optional description of changes
   - Example: `query-command Add caching to Phase 3`
 
 **If no feature name provided:**

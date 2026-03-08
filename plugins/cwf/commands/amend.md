@@ -52,7 +52,7 @@ Read existing documents:
 
 If either missing: inform user and suggest running `/write-spec` or verifying feature name. STOP.
 
-Analyze recent conversation history (last 10-20 messages before this command) to extract:
+Analyze conversation history to extract (focus on recent messages, but review further back if needed):
 
 - Specific changes discussed
 - New tasks/phases to add

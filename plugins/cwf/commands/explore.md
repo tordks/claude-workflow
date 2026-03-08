@@ -27,6 +27,7 @@ If skill `claude-workflow` is not loaded, load it using the Skill tool
 Read the following if not already loaded:
 
 - `references/spec.md`
+- `references/mockup.md`
 
 ### 1. Quick Repository Scan
 

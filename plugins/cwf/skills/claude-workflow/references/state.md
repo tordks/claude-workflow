@@ -63,9 +63,15 @@ Agent notes MAY be added as single-line blockquotes directly under a task. These
 
 ---
 
+## Document Title
+
+State documents MUST begin with a level-1 heading (`# Feature Name State`) that identifies the feature.
+
+---
+
 ## Phase Structure
 
-Every phase MUST follow this standard structure:
+Phases MUST be numbered sequentially starting from 1. Every phase MUST follow this standard structure:
 
 ```markdown
 ## Phase 1: Descriptive Name
@@ -185,6 +191,8 @@ The statement SHOULD be 1-3 sentences describing what capabilities now exist, wh
 
 State documents are conformant when they:
 
+- Begin with a level-1 heading identifying the feature
+- Number phases sequentially starting from 1
 - Include required elements in every phase (Goal, Deliverable, Tasks, Checkpoints, Phase Complete)
 - Use correct task syntax (`- [ ] [PX.Y] **Name** — description`)
 - Use sequential task IDs within each phase (no gaps, no reuse)

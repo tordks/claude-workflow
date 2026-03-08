@@ -6,7 +6,7 @@ argument-hint: [feature-name] [planning context]
 
 # Spec Command
 
-Formalize the planning discussion from plan mode into structured documentation. This command is run AFTER iterating with Claude in plan mode. The user has already discussed and refined the approach. Your job is to capture and formalize what was discussed.
+Formalize the planning discussion into structured documentation. This command is run AFTER iterating with Claude on the design (via `/explore`, plan mode, or conversation). The user has already discussed and refined the approach. Your job is to capture and formalize what was discussed.
 
 Assume the engineer using the spec has zero context for the codebase. Document everything they need: which files to touch, code/testing/docs to check, how to test. Assume they are skilled but know little about the toolset or problem domain.
 
@@ -43,6 +43,14 @@ Example file paths:
 
 - `.cwf/{feature-name}/{feature-name}-spec.md`
 - `.cwf/{feature-name}/{feature-name}-state.md`
+
+**Overwrite guard:**
+
+Before creating files, check if `.cwf/{feature-name}/` already exists. If it does:
+
+- Inform the user that a spec already exists for this feature
+- Suggest using `/amend {feature-name}` to update the existing spec
+- STOP unless the user explicitly confirms they want to overwrite
 
 ## Instructions
 

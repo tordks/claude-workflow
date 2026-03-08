@@ -314,10 +314,14 @@ Specs MUST be self-contained. Implementation may occur in fresh sessions after c
 
 Specs are conformant when they:
 
-- Include all three core sections with required content
-- Contain all three Solution Design subsections
-- Use named component labels (`**Name** — description`)
-- Use file tree markers correctly
+- Include all three core sections (Overview, Solution Design, Implementation Strategy)
+- Overview includes problem statement and feature purpose
+- Solution Design includes all three subsections (System Architecture, Design Rationale, Technical Specification)
+- System Architecture includes component overview with named labels (`**Name** — description`)
+- Design Rationale includes rationale for key design choices
+- Technical Specification includes dependencies
+- Implementation Strategy includes development approach
+- Use file tree operation markers correctly (`[CREATE]`, `[MODIFY]`, `[REMOVE]`)
 - Document WHY for design decisions
 - Are self-contained (no assumed conversation context)
 - Contain no phase enumeration or step-by-step execution instructions

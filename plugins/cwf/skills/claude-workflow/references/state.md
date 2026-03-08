@@ -91,8 +91,10 @@ Phases MUST be numbered sequentially starting from 1. Every phase MUST follow th
 
 **Tasks:**
 - [ ] [P1.1] **Task name** — What this task delivers
-  > Optional agent note added during implementation
+  > Note: key decision or important constraint
 - [ ] [P1.2] **Another task** — Description with clear scope
+
+Task notes SHOULD be added at generation time when a task involves a non-obvious design choice or important constraint. The agent MAY also add notes during implementation to record decisions or assumptions. Each note MUST be concise (one line). Most tasks need no note.
 
 **Checkpoints:**
 - [ ] Code quality: `ruff check src/`
@@ -116,7 +118,7 @@ Checkpoints are end-of-phase validation operations performed after all tasks in 
 
 **Common Checkpoint Types:**
 
-- **Self-review:** Agent reviews implementation against deliverable
+- **Self-review:** Agent SHOULD launch a subagent to review implementation against the phase deliverable. A fresh context avoids implementation bias.
 - **Code quality:** Linting, formatting, type checking (e.g., ruff, black, mypy)
 - **Code complexity:** Complexity analysis (e.g., radon cc)
 

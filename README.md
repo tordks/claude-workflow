@@ -1,9 +1,9 @@
 # Claude Workflow
 
-[![Version](https://img.shields.io/badge/version-0.2.2-blue.svg)](https://github.com/tordks/claude-workflow/releases)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](https://github.com/tordks/claude-workflow/releases)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg)](https://claude.com/claude-code)
 
-Claude Workflow (CWF) defines a plan-driven development workflow for Claude Code with phase-based implementation.
+Claude Workflow (CWF) defines a spec-driven development workflow for Claude Code with phase-based implementation.
 
 ## What Problem Does CWF Solve?
 
@@ -13,9 +13,9 @@ When work spans multiple sessions or outgrows a single context window, AI-assist
 
 2. **The developer loses ownership.** Without a plan to review upfront, the agent makes design decisions implicitly as it codes. Problems compound across files before anyone notices, and the codebase drifts from the developer's intent.
 
-Both stem from the same gap: nothing captures what was decided, what was built, and what remains. CWF fills this gap with plan and tasklist documents, and structures implementation around them:
+Both stem from the same gap: nothing captures what was decided, what was built, and what remains. CWF fills this gap with spec and state documents, and structures implementation around them:
 
-- **Persistent plan documents** give every session the full picture of architectural decisions, design rationale, and progress so far.
+- **Persistent spec documents** give every session the full picture of architectural decisions, design rationale, and progress so far.
 - **Phase-based implementation** breaks work into sequential phases with concrete deliverables, so scope and sequencing are decided before coding starts.
 - **Automated checkpoints** run code quality, complexity, and test checks at phase boundaries, catching issues before they accumulate.
 - **Scheduled human review** between phases keeps the developer in control, not just informed.
@@ -35,7 +35,7 @@ The workflow should match the complexity of the work. CWF is designed for featur
 - Add form validation to the signup page
 - Refactor a module to use dependency injection
 
-**CWF** — persistent plan, multi-session with review checkpoints:
+**CWF** — persistent spec, multi-session with review checkpoints:
 
 - Build user authentication with OAuth, sessions, and role-based access
 - Add a payment integration that touches API, database, and frontend
@@ -44,26 +44,27 @@ The workflow should match the complexity of the work. CWF is designed for featur
 
 ## The Workflow
 
-Based on an input context (specification, design discussion, or exploration), CWF produces a plan and tasklist that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
+Based on an input context (specification, design discussion, or exploration), CWF produces a spec and state that break down the work into phases with runnable deliverables. The agent implements phase-by-phase, running quality checkpoints and pausing for human review before proceeding to the next phase.
 
-Each phase is started manually with `/implement-plan`, which continues from the next incomplete task and accepts free-form instructions to control scope. This allows you to pause and resume implementation across sessions without losing context or progress.
+Each phase is started manually with `/implement`, which continues from the next incomplete task and accepts free-form instructions to control scope. This allows you to pause and resume implementation across sessions without losing context or progress.
 
 ```text
-       input context (plan draft, design discussion, specification file)
+       input context (spec draft, design discussion, specification file)
                │
                ├── /explore (optional: iterative discovery
                │             to converge on design before
                │             planning)
                ↓
-           /write-plan
+           /write-spec
                ↓
-         Review plan + tasklist
+         Review spec + state
                ↓
-        /implement-plan ←──────┐
+        /implement ←───────────┐
                ↓               │
-        Execute phase tasks    │ repeat
-               ↓               │ per
-        Run checkpoints        │ phase
+        Execute phase          │ repeat
+        tasks                  │ per
+               ↓               │ phase
+        Run checkpoints        │
                ↓               │
         Human review           │
                ↓               │
@@ -71,7 +72,7 @@ Each phase is started manually with `/implement-plan`, which continues from the 
                ↓ (all phases done)
          Feature complete
 
-    /amend-plan: update documents when requirements change
+    /amend: update documents when requirements change
 ```
 
 ## Getting Started
@@ -86,32 +87,32 @@ To uninstall: `/plugin uninstall cwf@claude-workflow`
 ### Example usage
 
 ```text
-# discuss the feature in chat, then create the plan from the conversation
-/write-plan redis-queue
+# discuss the feature in chat, then create the spec from the conversation
+/write-spec redis-queue
 
 # or reference a spec or draft directly
-/write-plan redis-queue docs/redis-queue-draft.md
+/write-spec redis-queue docs/redis-queue-draft.md
 
-# → creates plan + tasklist in .cwf/redis-queue/
-# review the plan before implementing
+# → creates spec + state in .cwf/redis-queue/
+# review the spec before implementing
 
-/implement-plan redis-queue     # phase 1: Redis infra + config
-
-/clear
-
-/implement-plan redis-queue     # phase 2: poller + worker + API rewire
+/implement redis-queue     # phase 1: Redis infra + config
 
 /clear
 
-/amend-plan redis-queue add stale job detection for crashed workers
-# → updates plan and tasklist to include stale job recovery
+/implement redis-queue     # phase 2: poller + worker + API rewire
 
 /clear
 
-/implement-plan redis-queue     # continues where we left off
+/amend redis-queue add stale job detection for crashed workers
+# → updates spec and state to include stale job recovery
+
+/clear
+
+/implement redis-queue     # continues where we left off
 ```
 
-See [docs/examples/](docs/examples/) for example plan and tasklist made by `/write-plan`.
+See [docs/examples/](docs/examples/) for example spec and state made by `/write-spec`.
 
 ## Usage Guide
 
@@ -122,36 +123,36 @@ CWF provides four slash commands that orchestrate the workflow.
 | Command | When to Use | What It Does |
 |---------|-------------|--------------|
 | `/explore [initial context]` | During planning | Iterative discovery that converges on a design summary |
-| `/write-plan [feature-name] [planning context]` | After planning | Creates plan and tasklist from input context |
-| `/implement-plan [feature-name] [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
-| `/amend-plan [feature-name] [amendment description]` | Requirements changed or gaps identified | Updates plan/tasklist safely |
+| `/write-spec [feature-name] [planning context]` | After planning | Creates spec and state from input context |
+| `/implement [feature-name] [instructions]` | Start/Resume implementation | Executes tasks phase-by-phase with quality checkpoints |
+| `/amend [feature-name] [amendment description]` | Requirements changed or gaps identified | Updates spec/state safely |
 
-`[feature-name]` is optional for `/write-plan`, `/implement-plan`, and `/amend-plan`. `/implement-plan` and `/amend-plan` auto-detect when only one plan exists, otherwise prompt for selection. `/write-plan` suggests a name from conversation context. All additional arguments are optional free-form text.
+`[feature-name]` is optional for `/write-spec`, `/implement`, and `/amend`. `/implement` and `/amend` auto-detect when only one spec exists, otherwise prompt for selection. `/write-spec` suggests a name from conversation context. All additional arguments are optional free-form text.
 
 ### Planning
 
-`/write-plan` creates the planning documents in `.cwf/{feature-name}/` at your project root:
+`/write-spec` creates the planning documents in `.cwf/{feature-name}/` at your project root:
 
-- **Plan** `.cwf/{feature-name}/{feature-name}-plan.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
-- **Tasklist** `.cwf/{feature-name}/{feature-name}-tasklist.md`: Defines WHEN/HOW—sequential phases with checkbox tracking `[x]`
+- **Spec** `.cwf/{feature-name}/{feature-name}-spec.md`: Captures WHY/WHAT—architectural decisions, design rationale, alternatives considered
+- **State** `.cwf/{feature-name}/{feature-name}-state.md`: Tracks WHEN/HOW—sequential phases with task tracking
 - **Mockup** `.cwf/{feature-name}/{feature-name}-mockup.html` (optional): Visual reference for UI/frontend features
 
-Example plan and tasklist can be found in [`docs/examples/`](docs/examples/).
+Example spec and state can be found in [`docs/examples/`](docs/examples/).
 
 **Tips:**
 
-- `/write-plan` works from any input (conversation, spec file, or draft): `/write-plan user-auth auth-spec.md`.
+- `/write-spec` works from any input (conversation, spec file, or draft): `/write-spec user-auth auth-spec.md`.
 - Be specific. "OAuth2 with Google, PostgreSQL sessions, admin/user roles" beats "build auth".
-- You can scope to part of a written spec: `/write-plan user-auth only the auth layer from auth-spec.md`.
+- You can scope to part of a written spec: `/write-spec user-auth only the auth layer from auth-spec.md`.
 - Discuss the feature or draft in chat first. Ask for diagrams (SVG, Mermaid) for schemas or architecture to ensure the agent understands before planning.
 - For UI features, request an HTML mockup to verify layout before implementation.
 - For multi-session planning, save a summary and reference it when resuming.
 
 ### Implementation
 
-Run `/implement-plan` to start implementing the feature. The agent continues from the next incomplete task in the tasklist, allowing you to resume with clear context.
+Run `/implement` to start implementing the feature. The agent continues from the next incomplete task in the state, allowing you to resume with clear context.
 
-At the end of each phase, the agent runs **checkpoints** to validate quality before proceeding. `/write-plan` picks up on configured tooling and tailors checkpoints to the project. These can for example include:
+At the end of each phase, the agent runs **checkpoints** to validate quality before proceeding. `/write-spec` picks up on configured tooling and tailors checkpoints to the project. These can for example include:
 
 - **Self-review:** Agent reviews implementation against phase deliverable
 - **Code quality:** Linting, formatting, type checking
@@ -162,27 +163,27 @@ Checkpoints catch issues early before they accumulate (e.g., ever-increasing fun
 
 **Tips:**
 
-- Pass instructions to scope a run. `/implement-plan user-auth phase 1, 2 and 3` will run phase 1-3 without stopping for review.
+- Pass instructions to scope a run. `/implement user-auth phase 1, 2 and 3` will run phase 1-3 without stopping for review.
 - If the session has room, skip `/clear` and write "continue to next phase" to reuse context.
-- Run independent phases in parallel with subagents: `/implement-plan user-auth use subagents for phase 1 and 2 in parallel`.
+- Run independent phases in parallel with subagents: `/implement user-auth use subagents for phase 1 and 2 in parallel`.
 
-### Amending Plans
+### Amending Specs
 
-If requirements change during implementation or you discover a gap in the plan, use `/amend-plan` to update the plan and tasklist safely.
+If requirements change during implementation or you discover a gap in the spec, use `/amend` to update the spec and state safely.
 
-> **Warning:** Changing implementation without amending the plan causes confusion after `/clear`. The agent treats the plan as its source of truth and will undo or conflict with unamended changes. Always `/amend-plan` before (or immediately after) deviating.
+> **Warning:** Changing implementation without amending the spec causes confusion after `/clear`. The agent treats the spec as its source of truth and will undo or conflict with unamended changes. Always `/amend` before (or immediately after) deviating.
 
 **Tips:**
 
-- For simple changes: `/amend-plan my-cli-tool add --output option`.
+- For simple changes: `/amend my-cli-tool add --output option`.
 - For complex amendments, clear context and discuss amendments before amending.
-- If the change invalidates the overall approach, re-plan with `/write-plan` instead.
+- If the change invalidates the overall approach, re-plan with `/write-spec` instead.
 
 ## Alternatives & Resources
 
 CWF is one approach to agent development workflows. Other frameworks vary in rigor and documentation requirements, but most share the core concept of persisting specifications to maintain context between sessions. Below are some related projects and resources in the Claude Code ecosystem.
 
-### Plan-Driven Development
+### Spec-Driven Development
 
 - [superpowers](https://github.com/obra/superpowers) - Comprehensive skills library with techniques and patterns that auto-activate through Claude Code's plugin system
 - [spec-kit](https://github.com/github/spec-kit) - GitHub's Spec-Driven Development toolkit where specifications become executable artifacts that generate implementations

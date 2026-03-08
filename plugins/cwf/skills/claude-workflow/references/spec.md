@@ -1,14 +1,14 @@
-# Plan Document Specification
+# Spec Document Specification
 
-Specification for creating conformant plan documents in the CWF workflow.
+Specification for creating conformant spec documents in the CWF workflow.
 
 ---
 
-## What is a Plan Document?
+## What is a Spec Document?
 
-Plan documents capture **architectural context and design rationale**. They preserve WHY decisions were made and WHAT the solution is, enabling implementation across sessions after context has been cleared.
+Spec documents capture **architectural context and design rationale**. They preserve WHY decisions were made and WHAT the solution is, enabling implementation across sessions after context has been cleared.
 
-**Plan = WHY/WHAT** | Tasklist = WHEN/HOW
+**Spec = WHY/WHAT** | State = WHEN/HOW
 
 ---
 
@@ -16,13 +16,11 @@ Plan documents capture **architectural context and design rationale**. They pres
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
 
-> **Note:** See `SKILL.md` for conformance levels (1-3) tailoring documentation depth.
-
 ---
 
-## Core Plan Sections
+## Core Spec Sections
 
-Plan documents MUST include three core sections: Overview, Solution Design, and Implementation Strategy.
+Spec documents MUST include three core sections: Overview, Solution Design, and Implementation Strategy.
 
 ### Section 1: Overview
 
@@ -32,10 +30,10 @@ Provides high-level summary of problem and solution.
 
 - Problem statement (current pain point or gap)
 - Feature purpose (solution being built)
-- Scope (What is IN/OUT of scope)
 
 **SHOULD include:**
 
+- Scope (What is IN/OUT of scope)
 - Success criteria (quantifiable completion validation)
 
 **Example (Informative):**
@@ -79,13 +77,16 @@ Documents the complete solution architecture and technical approach.
 
 **MUST include:**
 
-- Component overview (logical pieces and their responsibilities)
-- Project structure (file tree with operation markers)
+- Component overview (named components with descriptions — these map to state components)
 
 **SHOULD include:**
 
 - Component relationships (dependencies and communication patterns)
+- Project structure (file tree with operation markers)
 - Relationship to existing codebase (where feature fits, what it extends/uses)
+
+**Component Naming:**
+Components MUST use named labels in the format `**Name** — description`. Names SHOULD be PascalCase or descriptive labels that clearly identify the module, service, or feature area. These names are used as component references in the state document.
 
 **File Tree Format:**
 File trees MUST use operation markers:
@@ -100,12 +101,18 @@ File trees MUST use operation markers:
 ````markdown
 ### System Architecture
 
-**Core Components:**
-- **QueryParser:** Parses user search strings into structured queries (operators, quoted phrases)
-- **DocumentIndexer:** Builds and maintains TF-IDF index from document corpus
-- **QueryRanker:** Ranks documents against query using cosine similarity
-- **SearchCache:** LRU cache for frequent queries
-- **SearchAPI:** HTTP endpoint exposing search functionality
+**Components:**
+- **QueryParser** — Parses user search strings into structured queries (operators, quoted phrases)
+- **DocumentIndexer** — Builds and maintains TF-IDF index from document corpus
+- **QueryRanker** — Ranks documents against query using cosine similarity
+- **SearchCache** — LRU cache for frequent queries
+- **SearchAPI** — HTTP endpoint exposing search functionality
+
+**Component Relationships:**
+- SearchAPI depends on QueryParser, SearchCache
+- QueryRanker depends on DocumentIndexer
+- SearchCache depends on QueryRanker
+- All components use shared Document model
 
 **Project Structure:**
 ```
@@ -125,12 +132,6 @@ src/
         ├── test_parser.py [CREATE]
         └── test_ranker.py [CREATE]
 ```
-
-**Component Relationships:**
-- SearchAPI depends on QueryParser, SearchCache
-- QueryRanker depends on DocumentIndexer
-- SearchCache depends on QueryRanker
-- All components use shared Document model
 
 **Relationship to Existing Codebase:**
 - Architectural layer: Service layer (alongside existing `src/api/` endpoints)
@@ -190,6 +191,9 @@ Describes runtime behavior and operational requirements.
 **MUST include:**
 
 - Dependencies (libraries, external systems)
+
+**SHOULD include:**
+
 - Runtime behavior (algorithms, execution flow, state management)
 
 **MAY include:**
@@ -252,7 +256,7 @@ SEARCH_TIMEOUT_MS = 5000
 
 ### Section 3: Implementation Strategy
 
-Describes high-level approach guiding phase and task structure.
+Describes the high-level approach guiding phase and component structure.
 
 **MUST include:**
 
@@ -261,14 +265,13 @@ Describes high-level approach guiding phase and task structure.
 **SHOULD include:**
 
 - Testing approach (test-driven, integration-focused, comprehensive, etc.)
-- Risk mitigation strategy (tackle unknowns first, safe increments, prototype early, etc.)
 - Checkpoint strategy (quality and validation operations at phase boundaries)
-
-The strategy SHOULD explain WHY the tasklist is structured as it is.
 
 **MUST NOT include:**
 
-- Step-by-step execution instructions or task checklists
+- Phase enumeration or step-by-step execution plans
+
+The strategy SHOULD explain WHY the state document is structured as it is, without enumerating the phases themselves.
 
 **Example (Informative):**
 
@@ -279,10 +282,7 @@ The strategy SHOULD explain WHY the tasklist is structured as it is.
 
 **Incremental with Safe Checkpoints**
 
-Build bottom-up with validation at each layer:
-1. **Foundation First:** Core search components (indexer, ranker) before API
-2. **Runnable Increments:** Each phase produces working, testable code
-3. **Early Validation:** Algorithm performance validated early before building around it
+Build bottom-up with validation at each layer. Core search components (indexer, ranker) come before API integration so that algorithm performance can be validated early before building around it. Each phase produces working, testable code.
 
 ### Testing Approach
 Integration-focused with targeted unit tests:
@@ -306,17 +306,18 @@ Checkpoint strategy SHOULD reference specific project tools discovered during pl
 
 ## Context Independence
 
-Plans MUST be self-contained. Implementation may occur in fresh sessions after context has been cleared. All architectural decisions and rationale must be in the plan document.
+Specs MUST be self-contained. Implementation may occur in fresh sessions after context has been cleared. All architectural decisions and rationale must be in the spec document.
 
 ---
 
 ## Validation
 
-Plans are conformant when they:
+Specs are conformant when they:
 
 - Include all three core sections with required content
 - Contain all three Solution Design subsections
+- Use named component labels (`**Name** — description`)
 - Use file tree markers correctly
 - Document WHY for design decisions
 - Are self-contained (no assumed conversation context)
-- Contain no step-by-step execution instructions
+- Contain no phase enumeration or step-by-step execution instructions

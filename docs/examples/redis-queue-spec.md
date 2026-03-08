@@ -1,4 +1,4 @@
-# Redis Queue Plan
+# Redis Queue Spec
 
 ## Overview
 
@@ -89,7 +89,7 @@ Each poll cycle executes three steps in order:
 
 **Project Structure:**
 
-```
+```text
 packages/samui-backend/
 ├── src/samui_backend/
 │   ├── config.py [MODIFY]              -- Add Redis URL and poller/timeout settings
@@ -145,29 +145,35 @@ The poller interval, stale threshold, and failure threshold have sensible defaul
 **Dependencies:**
 
 New libraries:
+
 - `rq>=1.16` — Redis Queue task framework
 - `redis>=5.0` — Redis client (RQ dependency, but explicit for connection management)
 
 New infrastructure:
+
 - Redis container in docker-compose
 
 Existing (unchanged):
+
 - PostgreSQL, Azure Blob Storage (Azurite), FastAPI, SQLAlchemy, PyTorch
 
 **Runtime Behavior:**
 
 Worker startup:
+
 1. Load SAM3 model (kept resident for worker lifetime)
 2. Start poller thread (daemon thread)
 3. Start RQ worker loop (blocks on Redis queue)
 
 Poller loop (each cycle):
+
 1. Fail expired jobs: `UPDATE processing_jobs SET status='failed' WHERE status IN ('queued', 'running') AND created_at < now() - FAILED_JOB_TIMEOUT`
 2. Reset stale jobs: `UPDATE processing_jobs SET status='queued' WHERE status='running' AND started_at < now() - STALE_JOB_TIMEOUT`
 3. Enqueue new jobs: `SELECT ... FROM processing_jobs WHERE status='queued' FOR UPDATE SKIP LOCKED` → set RUNNING → enqueue to RQ
 4. Sleep `POLLER_INTERVAL_SECONDS`
 
 RQ task (`process_job`):
+
 1. Fetch job from DB (already RUNNING, set by poller)
 2. Iterate through `image_ids`, update `current_index` per image
 3. Call `process_single_image()` for each image (unchanged logic)
@@ -214,6 +220,7 @@ Each phase produces a working, testable state. The API continues to function bet
 ### Checkpoint Strategy
 
 Each phase ends with:
+
 - **Self-review:** Agent reviews implementation against phase deliverable
 - **Code quality:** `uvx ruff check packages/samui-backend/src/ && uvx ruff format --check packages/samui-backend/src/`
 - **Code complexity:** `uvx ruff check packages/samui-backend/src/ --select C901,PLR0912,PLR0915`

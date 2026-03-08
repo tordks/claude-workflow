@@ -7,9 +7,9 @@
   "plugins": [
     {
       "name": "cwf",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "source": "./plugins/cwf",
-      "description": "Plan-driven development workflow for Claude Code with phase-based implementation"
+      "description": "Spec-driven development workflow for Claude Code with phase-based implementation"
     }
   ]
 }

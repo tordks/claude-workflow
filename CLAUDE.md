@@ -19,7 +19,7 @@ You are in the **claude-workflow repository**, which distributes the Claude Work
 - Repository: `tordks/claude-workflow`
 - Plugin name: `cwf@claude-workflow`
 - Installation: `/plugin install cwf@claude-workflow`
-- Purpose: Provides plan-driven development workflow to Claude Code users
+- Purpose: Provides spec-driven development workflow to Claude Code users
 
 **Project Structure:**
 
@@ -30,9 +30,9 @@ claude-workflow/
 │       ├── .claude-plugin/
 │       │   └── plugin.json         → Plugin manifest
 │       ├── commands/               → User slash commands
-│       │   ├── write-plan.md
-│       │   ├── implement-plan.md
-│       │   ├── amend-plan.md
+│       │   ├── write-spec.md
+│       │   ├── implement.md
+│       │   ├── amend.md
 │       │   └── explore.md
 │       └── skills/                 → Plugin skills
 │           └── claude-workflow/    → Planning workflow knowledge
@@ -62,8 +62,8 @@ The claude-workflow repository consists of:
 
 ### Core Specifications
 
-- `plugins/cwf/skills/claude-workflow/references/plan-spec.md` - Plan document specification (RFC 2119)
-- `plugins/cwf/skills/claude-workflow/references/tasklist-spec.md` - Tasklist document specification (RFC 2119)
+- `plugins/cwf/skills/claude-workflow/references/spec.md` - Spec document specification (RFC 2119)
+- `plugins/cwf/skills/claude-workflow/references/state.md` - State document specification (RFC 2119)
 - `plugins/cwf/skills/claude-workflow/references/mockup.md` - HTML mockup conventions
 - `plugins/cwf/skills/claude-workflow/references/amendment.md` - Amendment safety rules
 
@@ -77,9 +77,9 @@ The claude-workflow repository consists of:
 ### Commands
 
 - `plugins/cwf/commands/explore.md` - Iterative feature design exploration
-- `plugins/cwf/commands/write-plan.md` - Plan creation workflow
-- `plugins/cwf/commands/implement-plan.md` - Implementation workflow
-- `plugins/cwf/commands/amend-plan.md` - Plan amendment workflow
+- `plugins/cwf/commands/write-spec.md` - Spec creation workflow
+- `plugins/cwf/commands/implement.md` - Implementation workflow
+- `plugins/cwf/commands/amend.md` - Amendment workflow
 
 ### Plugin Configuration
 

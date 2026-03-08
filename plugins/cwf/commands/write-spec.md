@@ -1,20 +1,20 @@
 ---
-description: Create plan and tasklist from planning discussion
+description: Create spec and state from planning discussion
 disable-model-invocation: true
 argument-hint: [feature-name] [planning context]
 ---
 
-# Plan Command
+# Spec Command
 
 Formalize the planning discussion from plan mode into structured documentation. This command is run AFTER iterating with Claude in plan mode. The user has already discussed and refined the approach. Your job is to capture and formalize what was discussed.
 
-Assume the engineer using the plan has zero context for the codebase. Document everything they need: which files to touch, code/testing/docs to check, how to test. Assume they are skilled but know little about the toolset or problem domain.
+Assume the engineer using the spec has zero context for the codebase. Document everything they need: which files to touch, code/testing/docs to check, how to test. Assume they are skilled but know little about the toolset or problem domain.
 
 ## Arguments
 
 **Input**: `$ARGUMENTS`
 
-**Expected format**: `/write-plan {feature-name} [planning context]`
+**Expected format**: `/write-spec {feature-name} [planning context]`
 
 **Parsing:**
 
@@ -41,8 +41,8 @@ Assume the engineer using the plan has zero context for the codebase. Document e
 
 Example file paths:
 
-- `.cwf/{feature-name}/{feature-name}-plan.md`
-- `.cwf/{feature-name}/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-spec.md`
+- `.cwf/{feature-name}/{feature-name}-state.md`
 
 ## Instructions
 
@@ -52,8 +52,8 @@ If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if not already loaded:
 
-- `references/plan-spec.md`
-- `references/tasklist-spec.md`
+- `references/spec.md`
+- `references/state.md`
 - `references/mockup.md`
 
 **Context Extraction:**
@@ -101,16 +101,16 @@ Assess feature complexity (Simple/Medium/Complex) using these criteria:
 
 ### 2. Create Planning Documents
 
-Create `.cwf/{feature-name}/{feature-name}-plan.md`:
+Create `.cwf/{feature-name}/{feature-name}-spec.md`:
 
-- Follow plan-spec.md structure, tailoring depth to feature complexity
+- Follow spec.md structure, tailoring depth to feature complexity
 - Use extracted context from Section 1
 - Use mermaid diagrams where helpful to illustrate architecture, component interactions, or workflows
 
-Create `.cwf/{feature-name}/{feature-name}-tasklist.md`:
+Create `.cwf/{feature-name}/{feature-name}-state.md`:
 
-- Follow tasklist-spec.md structure, tailoring depth to feature complexity
-- Break into phases aligned with plan's Implementation Strategy
+- Follow state.md structure, tailoring depth to feature complexity
+- Break into phases aligned with spec's Implementation Strategy
 - Include checkpoints per SKILL.md guidance
 - Stay faithful to discussion, use clear language
 
@@ -120,24 +120,25 @@ Assess whether the feature involves UI/frontend work. If so, create or update a 
 
 **If a mockup already exists** (e.g., created during `/explore`):
 
-- Review it against the finalized plan's Solution Design
+- Review it against the finalized spec's Solution Design
 - Update the mockup if the design has evolved; leave it as-is if it still matches
-- Reference mockup inline in plan's Solution Design section
+- Reference mockup inline in spec's Solution Design section
 
 **If no mockup exists:**
 
 - Create `.cwf/{feature-name}/{feature-name}-mockup.html` (single HTML file with inline CSS)
-- Reference mockup inline in plan's Solution Design section
+- Reference mockup inline in spec's Solution Design section
 
 ---
 
 ### 3. Self-Review
 
-Launch a single subagent to review the plan and tasklist for coherence. The subagent reads both documents and checks:
+Launch a single subagent to review the spec and state for coherence. The subagent reads both documents and checks:
 
-1. **File coverage** — every file marked [CREATE]/[MODIFY]/[REMOVE] in the plan has corresponding tasks in the tasklist
-2. **Strategy alignment** — tasklist phases follow the plan's Implementation Strategy and Testing approach
-3. **Scope match** — tasklist tasks collectively deliver everything in the plan's Scope (nothing missing, nothing extra)
+1. **File coverage** — every file marked [CREATE]/[MODIFY]/[REMOVE] in the spec has corresponding tasks in the state
+2. **Strategy alignment** — state phases follow the spec's Implementation Strategy and Testing approach
+3. **Scope match** — state tasks collectively deliver everything in the spec's Scope (nothing missing, nothing extra)
+4. **Task IDs** — all tasks use `[PX.Y]` format with sequential numbering within each phase
 
 If the subagent finds issues, fix them inline and move on.
 
@@ -148,11 +149,11 @@ If the subagent finds issues, fix them inline and move on.
 Confirm files exist and are valid, then present summary:
 
 ```text
-Planning documents created successfully! ✅
+Planning documents created successfully!
 
 Created:
-- .cwf/{feature-name}/{feature-name}-plan.md
-- .cwf/{feature-name}/{feature-name}-tasklist.md
+- .cwf/{feature-name}/{feature-name}-spec.md
+- .cwf/{feature-name}/{feature-name}-state.md
 - .cwf/{feature-name}/{feature-name}-mockup.html (if UI feature)
 
 Implementation Structure:
@@ -160,7 +161,7 @@ Implementation Structure:
 - {M} total tasks
 
 Next Steps:
-Run `/implement-plan {feature-name}` to begin phase-by-phase implementation.
+Run `/implement {feature-name}` to begin phase-by-phase implementation.
 ```
 
-Done. Wait for user to run `/implement-plan {feature-name}`.
+Done. Wait for user to run `/implement {feature-name}`.

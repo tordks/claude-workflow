@@ -1,39 +1,39 @@
 ---
-description: Execute plan phase-by-phase following tasklist
+description: Execute spec phase-by-phase following state document
 disable-model-invocation: true
 argument-hint: [feature-name] [instructions]
 ---
 
 # Implement Command
 
-Implement a feature by following the plan and tasklist documents. This command executes an existing plan phase-by-phase, reading the plan for architectural context and the tasklist for sequential execution. Your job is to execute tasks systematically and produce working code. Work proceeds one phase at a time with human review between phases.
+Implement a feature by following the spec and state documents. This command executes an existing spec phase-by-phase, reading the spec for architectural context and the state for sequential execution. Your job is to execute tasks systematically and produce working code. Work proceeds one phase at a time with human review between phases.
 
 ## Arguments
 
 **Input**: `$ARGUMENTS`
 
-**Expected format**: `/implement-plan {feature-name} [implementation instructions]`
+**Expected format**: `/implement {feature-name} [implementation instructions]`
 
 **Parsing:**
 
-- First token: feature name (must match existing plan)
+- First token: feature name (must match existing spec)
 - Remaining tokens: optional implementation scope or behavior
   - Example: `query-command implement phase 1 and 2, then stop`
 
 **If no feature name provided:**
 
-1. List existing plans: `find .cwf -maxdepth 2 -name "*-plan.md" -exec sh -c 'basename "$1" -plan.md' _ {} \;`
-2. If exactly 1 plan found: use automatically and inform user
-3. If multiple plans found: present list (optionally with progress status), use AskUserQuestion to ask user to select
-4. If 0 plans found: inform user and suggest running `/write-plan` first
+1. List existing specs: `find .cwf -maxdepth 2 -name "*-spec.md" -exec sh -c 'basename "$1" -spec.md' _ {} \;`
+2. If exactly 1 spec found: use automatically and inform user
+3. If multiple specs found: present list (optionally with progress status), use AskUserQuestion to ask user to select
+4. If 0 specs found: inform user and suggest running `/write-spec` first
 
 **Feature name usage:**
 `{feature-name}` is a placeholder that gets replaced with the extracted feature name throughout this command.
 
 Example file paths:
 
-- `.cwf/{feature-name}/{feature-name}-plan.md`
-- `.cwf/{feature-name}/{feature-name}-tasklist.md`
+- `.cwf/{feature-name}/{feature-name}-spec.md`
+- `.cwf/{feature-name}/{feature-name}-state.md`
 
 ## Instructions
 
@@ -47,8 +47,8 @@ If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if they are not already loaded:
 
-- `.cwf/{feature-name}/{feature-name}-plan.md` (WHY/WHAT - architectural context)
-- `.cwf/{feature-name}/{feature-name}-tasklist.md` (WHEN/HOW - sequential tasks)
+- `.cwf/{feature-name}/{feature-name}-spec.md` (WHY/WHAT - architectural context)
+- `.cwf/{feature-name}/{feature-name}-state.md` (WHEN/HOW - sequential tasks)
 
 ---
 
@@ -56,8 +56,8 @@ Read the following if they are not already loaded:
 
 Find the first incomplete task in the first incomplete phase:
 
-- Scan tasklist for unchecked tasks: `- [ ] [PX.Y] Task description`
-- Identify current phase and task number
+- Scan state for unchecked tasks: `- [ ] [PX.Y] **ComponentName** — description`
+- Identify current phase and task
 - If all tasks complete: inform user feature is complete
 
 ---
@@ -66,11 +66,14 @@ Find the first incomplete task in the first incomplete phase:
 
 For each task in the current phase:
 
-1. **Read** the task description from tasklist
-2. **Implement** the task following plan guidance
+1. **Read** the task description from state
+2. **Implement** the task following spec guidance
 3. **Test** the task according to project standards
-4. **Mark complete** in `.cwf/{feature-name}/{feature-name}-tasklist.md`:
-   - Change `- [ ] [PX.Y]` to `- [x] [PX.Y]`
+4. **Mark complete** in `.cwf/{feature-name}/{feature-name}-state.md`:
+   - Change `- [ ] [PX.Y] **ComponentName**` to `- [x] [PX.Y] **ComponentName**`
+   - MAY add agent note as blockquote under task: `> Used X approach because Y`
+
+Agent MAY add discovered tasks during implementation when necessary.
 
 Repeat until all tasks in current phase are complete.
 
@@ -80,7 +83,7 @@ Repeat until all tasks in current phase are complete.
 
 After all phase tasks are marked complete:
 
-1. Execute checkpoints sequentially (defined in tasklist)
+1. Execute checkpoints sequentially (defined in state)
 2. Mark each checkpoint complete as it passes
 3. If checkpoint fails:
    - Minor issues (linting, formatting, types): fix and retry until passes or stuck
@@ -94,31 +97,31 @@ After all phase tasks are marked complete:
 
 When all checkpoints pass:
 
-1. Output "Phase X Complete ✅" summary
+1. Output "Phase X Complete" summary
 2. Summarize what was accomplished
 3. Suggest commit message if appropriate
 4. **STOP for human review** - do NOT proceed to next phase
 
-**Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement-plan {feature-name}` to resume.
+**Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement {feature-name}` to resume.
 
 ## Example Workflow
 
 ```text
 # Starting fresh
-Reading plans for feature: query-command
-- Plan: .cwf/query-command/query-command-plan.md
-- Tasklist: .cwf/query-command/query-command-tasklist.md
+Reading spec for feature: query-command
+- Spec: .cwf/query-command/query-command-spec.md
+- State: .cwf/query-command/query-command-state.md
 
 Progress check: No tasks completed yet. Starting from Phase 1.
 
 # Executing tasks
-Working on [P1.1]: Set up basic module structure
+Working on [P1.1] **ModuleStructure**: Set up basic module structure
 [implements the task]
-✓ Marked [P1.1] as complete
+✓ Marked [P1.1] **ModuleStructure** as complete
 
-Working on [P1.2]: Create core data models
+Working on [P1.2] **CoreModels**: Create core data models
 [implements the task]
-✓ Marked [P1.2] as complete
+✓ Marked [P1.2] **CoreModels** as complete
 
 # Phase completion
 All Phase 1 tasks complete. Executing checkpoints...
@@ -132,12 +135,12 @@ Checkpoint: Code quality - ruff check src/
 Checkpoint: Code complexity - radon cc src/
 ✓ Passed. Marked checkpoint complete
 
-Phase 1 Complete! ✅
+Phase 1 Complete!
 
 Summary of changes:
-✅ Created directory structure for modular architecture
-✅ Implemented core data models with Pydantic validation
-✅ Added type hints and proper __init__.py exports
+- Created directory structure for modular architecture
+- Implemented core data models with Pydantic validation
+- Added type hints and proper __init__.py exports
 
 All checkpoints passed. Foundation layer complete.
 
@@ -159,40 +162,40 @@ Progress check:
 ✓ Phase 2: Complete (4/4 tasks)
 → Phase 3: In progress (1/3 tasks)
 
-Resuming from Phase 3, Task [P3.2]...
+Resuming from Phase 3, [P3.2] **ValidationLayer**...
 ```
 
 ## When Tasks Are Unclear
 
 Assess task clarity using these criteria:
 
-**Clear (✅ - proceed with implementation):**
+**Clear (proceed with implementation):**
 
 - Task goal is explicit
 - Acceptance criteria defined or obvious
 - Required files/components identified
-- Approach is straightforward or documented in plan
+- Approach is straightforward or documented in spec
 
-**Minor ambiguity (⚠️ - make reasonable assumption):**
+**Minor ambiguity (make reasonable assumption):**
 
 - Task goal is clear but approach has 2-3 valid options
 - Some details missing but not critical to core functionality
-- Can infer intent from context and plan
+- Can infer intent from context and spec
 - Document assumption in code comments
 
-**Major ambiguity (❌ - stop and ask):**
+**Major ambiguity (stop and ask):**
 
 - Task goal is vague or has multiple interpretations
-- Missing critical information (which component, what data structure, etc.)
-- Approach unclear and not documented in plan
+- Missing critical information (which task, what data structure, etc.)
+- Approach unclear and not documented in spec
 - Decision affects architecture or future phases
 
 **Process:**
 
 1. Read task description carefully
-2. Check relevant plan sections for context
+2. Check relevant spec sections for context
 3. Assess clarity level using criteria above
-4. If Major ambiguity: Use AskUserQuestion with task ID, what's unclear, which plan sections checked, and recommended approach
+4. If Major ambiguity: Use AskUserQuestion with task name, what's unclear, which spec sections checked, and recommended approach
 5. If Minor ambiguity: Proceed with documented assumption
 6. If Clear: Proceed with implementation
 

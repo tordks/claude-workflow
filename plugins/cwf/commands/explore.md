@@ -6,11 +6,11 @@ argument-hint: [initial context]
 
 # Explore Command
 
-Guide iterative exploration of feature requirements and design before formalizing with /write-plan.
+Guide iterative exploration of feature requirements and design before formalizing with /write-spec.
 
 ## Context
 
-This command is run BEFORE writing planning documents to explore an idea or feature requirements and converge on a design or conclusion through natural conversation. The agent first understands the repository context, then asks targeted questions, proposes approaches, and incrementally builds a design summary before transitioning to `/write-plan`.
+This command is run BEFORE writing planning documents to explore an idea or feature requirements and converge on a design or conclusion through natural conversation. The agent first understands the repository context, then asks targeted questions, proposes approaches, and incrementally builds a design summary before transitioning to `/write-spec`.
 
 ## Arguments
 
@@ -26,7 +26,7 @@ If skill `claude-workflow` is not loaded, load it using the Skill tool
 
 Read the following if not already loaded:
 
-- `references/plan-spec.md`
+- `references/spec.md`
 
 ### 1. Quick Repository Scan
 
@@ -78,11 +78,11 @@ Synthesize the conversation into a design summary covering:
 4. **Technical architecture** — components, files affected, dependencies
 5. **Testing approach** — how to verify the implementation
 
-These sections align with what `/write-plan` expects to extract from conversation.
+These sections align with what `/write-spec` expects to extract from conversation.
 
 If the feature involves UI/frontend work, suggest creating an HTML mockup and saving it to `.cwf/{feature-name}/` per `references/mockup.md` conventions. Create the mockup if the user agrees.
 
-End by suggesting the user run `/write-plan [feature-name]` when the design looks good.
+End by suggesting the user run `/write-spec [feature-name]` when the design looks good.
 
 ## Guidelines
 

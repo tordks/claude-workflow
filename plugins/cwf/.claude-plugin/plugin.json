@@ -1,7 +1,7 @@
 {
   "name": "cwf",
-  "version": "0.2.2",
-  "description": "Plan-driven development workflow for Claude Code with phase-based implementation",
+  "version": "0.3.0",
+  "description": "Spec-driven development workflow for Claude Code with phase-based implementation",
   "author": {
     "name": "tordks",
     "email": "tordks@users.noreply.github.com"

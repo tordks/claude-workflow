@@ -80,27 +80,8 @@ Identify current state from state document:
 - [List tasks to add with descriptions]
 - [OR: New phases with goals]
 
-### Safety Check
-
-Assess amendment risk level:
-
-**Safe amendments:**
-- Adding tasks to incomplete phases only
-- Creating new phases for future work
-- Adding new spec sections (no modifications)
-- No changes to completed tasks
-
-**Risky amendments (requires extra care):**
-- Modifying incomplete tasks in current phase
-- Changing phase structure or dependencies
-- Removing tasks or phases
-- Significant scope changes
-
-**Blocked amendments (reject and explain):**
-- Modifying or removing completed tasks
-- Modifying or removing completed phases
-- Retroactive changes to finished phases
-
+### Safety Assessment
+- Classify each change: Safe (new tasks/phases/sections) / Risky (modifying incomplete work) / Blocked (touching completed work)
 Assessment: [Safe/Risky/Blocked]
 Warnings: [List any concerns]
 
@@ -155,48 +136,5 @@ Present summary:
 
 ## Requirements
 
-- Follow safety rules from amendment.md
 - ALWAYS confirm understanding before changes
 - Make inline updates, no separate amendment sections
-
-## Example Flow
-
-```text
-Loading spec: query-command
-- Read .cwf/query-command/query-command-spec.md
-- Read .cwf/query-command/query-command-state.md
-
-Analyzing conversation...
-You want to: add caching to Phase 3, create Phase 4 for performance testing
-
-Current state:
-- Phase 1: Complete (3/3)
-- Phase 2: Complete (4/4)
-- Phase 3: In Progress (2/5 complete)
-
-## Proposed Amendments
-
-**State:**
-- Phase 3: Add tasks [P3.6] **CacheSetup**, [P3.7] **CacheIntegration**, [P3.8] **CacheInvalidation** for caching
-- Phase 4: New phase with 4 tasks ([P4.1]–[P4.4]) for performance testing
-
-**Spec:**
-- Add "Caching Strategy" subsection to Architecture section
-
-Safety check: All amendments target incomplete phases
-
-Proceed? [User confirms]
-
-Applying...
-Updated .cwf/query-command/query-command-spec.md (added Caching Strategy section)
-Updated .cwf/query-command/query-command-state.md (added caching tasks, new Phase 4)
-
-Validating amendments...
-✓ Spec sections match existing structure and style
-✓ State tasks match existing format
-✓ Phase 4 structure matches existing phases
-✓ Checkboxes preserved
-✓ No completed tasks modified
-
-Done! Resume with `/implement query-command`.
-```

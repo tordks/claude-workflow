@@ -73,37 +73,31 @@ Analyze the conversation to extract:
 - Alternatives considered and rejected
 - Technical constraints and dependencies
 - File and component structure
+- Testing expectations (level, strategy, what to test)
 - Quality tooling (linters, formatters, type checkers, complexity analyzers, dead code analyzers)
 
 Review as much of the conversation as necessary to capture all planning context. Focus particularly on recent messages and any structured outputs (e.g., /explore design summary, input arguments to this command).
 
+
+**Gap Check:**
+
+If any of the following are unclear or missing from the conversation, use AskUserQuestion to clarify before creating documents:
+
+- Testing expectations (level of testing, what types of tests)
+- Development approach (when multiple strategies or technology choices seem equally valid)
+- Scope boundaries (when IN/OUT is ambiguous)
+
 **Complexity Assessment:**
 
-Assess feature complexity (Simple/Medium/Complex) using these criteria:
+Assess feature complexity to tailor document depth:
 
-**Simple:**
-
-- 1-2 files affected
-- Single component or module
-- <5 tasks total
-- Minimal external dependencies
-- Focus on MUST requirements from specs
-
-**Medium:**
-
-- 3-5 files affected
-- 2-3 components involved
-- 5-15 tasks total
-- Some cross-component integration
-- Include MUST + SHOULD requirements
-
-**Complex:**
-
-- 6+ files affected
-- 4+ components involved
-- 15+ tasks total
-- Significant architectural changes or cross-system integration
-- Include MUST + SHOULD + MAY requirements
+| Criteria | Simple | Medium | Complex |
+|----------|--------|--------|---------|
+| Files affected | 1-2 | 3-5 | 6+ |
+| Components | 1 | 2-3 | 4+ |
+| Tasks | <5 | 5-15 | 15+ |
+| Dependencies | Minimal | Some cross-component | Cross-system |
+| Spec depth | MUST only | MUST + SHOULD | MUST + SHOULD + MAY |
 
 ---
 
@@ -157,19 +151,10 @@ If the subagent finds issues, fix them inline and move on.
 Confirm files exist and are valid, then present summary:
 
 ```text
-Planning documents created successfully!
-
-Created:
+Planning documents created!
 - .cwf/{feature-name}/{feature-name}-spec.md
 - .cwf/{feature-name}/{feature-name}-state.md
-- .cwf/{feature-name}/{feature-name}-mockup.html (if UI feature)
+- {N} phases, {M} total tasks
 
-Implementation Structure:
-- {N} phases defined
-- {M} total tasks
-
-Next Steps:
-Run `/implement {feature-name}` to begin phase-by-phase implementation.
+Next: Run `/implement {feature-name}` to begin implementation.
 ```
-
-Done. Wait for user to run `/implement {feature-name}`.

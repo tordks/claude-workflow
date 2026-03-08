@@ -93,12 +93,6 @@ The agent adjusts document depth naturally based on feature complexity. Simple f
 
 Checkpoints are end-of-phase validation operations that provide quality control for AI-driven development.
 
-**Purpose:**
-
-- Validate code quality independent of functional testing
-- Ensure AI-generated code meets project standards
-- Catch issues early before accumulating technical debt
-
 **Checkpoint Types:**
 
 - **Self-review:** Agent reviews implementation against phase deliverable
@@ -145,57 +139,33 @@ The CWF planning workflow follows this command-driven flow:
 
 **1. `/explore` Command (Optional)**
 
-- **Human:** Runs `/explore` command (optional step for iterative design discovery)
-- **Agent:**
-  - Explores repo context to inform targeted questions
-  - Makes informed guesses based on codebase, confirms with user
-  - Proposes 2-3 alternative approaches with trade-offs
-  - Incrementally builds and validates design summary in conversation
-  - Requires explicit user approval before transition
-- **Outcome:** Complete design context in conversation, ready for `/write-spec` extraction
-- **Note:** Can be skipped in favor of informal planning discussion or written specification
+Incrementally builds design summary in conversation with user approval
 
 **2. `/write-spec` Command**
 
-- **Human:** Runs `/write-spec` command
-- **Agent:** Generates two documents:
-  - Spec: Architectural context and WHY/WHAT decisions
-  - State: Step-by-step HOW/WHEN execution guidance
-  - Validates structure and consistency between documents
+- Generates spec (WHY/WHAT) and state (WHEN/HOW) documents
 
 **3. Phase-by-Phase Implementation**
 
-The implementation follows this repeating cycle:
+Repeating cycle per phase:
 
-- **Human:** Runs `/implement` command
-- **Agent:**
-  - Reads spec for architectural understanding
-  - Checks state to identify completed tasks and current phase
-  - Works through tasks for current phase sequentially
-  - Marks tasks complete as work progresses
-  - Executes checkpoints (code quality, complexity checks, etc)
-  - Signals phase completion for human review at phase boundary
-- **Human:**
-  - Reviews phase results when agent signals completion
-  - Runs `/clear` to start fresh session for next phase
-  - **Repeats cycle:** Runs `/implement` again for next phase
+- Human runs `/implement`, agent reads spec + state
+- Agent works through tasks sequentially, marks complete, executes checkpoints
+- Agent signals phase completion, stops for human review
+- Human reviews, runs `/clear`, then `/implement` again for next phase
 
-**Note:** Conversation history is lost after `/clear`; only spec, state checkboxes, and committed code persist across cycles.
+Conversation history is lost after `/clear`; only spec, state checkboxes, and committed code persist across cycles.
 
 **4. `/amend` Command (When Needed)**
 
-- **Human:** Discusses amendment and runs `/amend` when requirements change during development
-- **Agent:**
-  - Adds tasks to incomplete phases
-  - Creates new phases for additional work
-  - Updates spec sections with new context
-  - Follows amendment safety rules
-- **Agent:** Continues development with amended spec
+- Human runs `/amend` when requirements change during development
+- Agent adds tasks to incomplete phases, creates new phases, updates spec sections
+- Follows amendment safety rules
 
 **5. Feature Completion**
 
-- **Agent:** Completes all phases and signals completion
-- **Human:** Reviews and confirms feature is complete
+- Agent completes all phases and signals completion
+- Human reviews and confirms
 
 ## Quick Reference
 

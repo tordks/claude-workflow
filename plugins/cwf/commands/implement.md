@@ -68,12 +68,11 @@ For each task in the current phase:
 
 1. **Read** the task description from state
 2. **Implement** the task following spec guidance
-3. **Test** the task according to project standards
-4. **Mark complete** in `.cwf/{feature-name}/{feature-name}-state.md`:
+3. **Mark complete** in `.cwf/{feature-name}/{feature-name}-state.md`:
    - Change `- [ ] [PX.Y] **ComponentName**` to `- [x] [PX.Y] **ComponentName**`
    - MAY add agent note as blockquote under task: `> Used X approach because Y`
 
-Agent MAY add discovered tasks during implementation when necessary.
+Agent MAY add discovered tasks during implementation, but only to incomplete phases. Never modify completed tasks or phases.
 
 Repeat until all tasks in current phase are complete.
 
@@ -104,110 +103,34 @@ When all checkpoints pass:
 
 **Between phases:** Human reviews work, optionally runs `/clear` and if so continues with a new call to `/implement {feature-name}` to resume.
 
-## Example Workflow
+## Output Templates
+
+### Progress Check (always output first)
 
 ```text
-# Starting fresh
-Reading spec for feature: query-command
-- Spec: .cwf/query-command/query-command-spec.md
-- State: .cwf/query-command/query-command-state.md
-
-Progress check: No tasks completed yet. Starting from Phase 1.
-
-# Executing tasks
-Working on [P1.1] **ModuleStructure**: Set up basic module structure
-[implements the task]
-✓ Marked [P1.1] **ModuleStructure** as complete
-
-Working on [P1.2] **CoreModels**: Create core data models
-[implements the task]
-✓ Marked [P1.2] **CoreModels** as complete
-
-# Phase completion
-All Phase 1 tasks complete. Executing checkpoints...
-
-Checkpoint: Self-review implementation against phase deliverable
-✓ Marked checkpoint complete
-
-Checkpoint: Code quality - ruff check src/
-✓ Passed. Marked checkpoint complete
-
-Checkpoint: Code complexity - radon cc src/
-✓ Passed. Marked checkpoint complete
-
-Phase 1 Complete!
-
-Summary of changes:
-- Created directory structure for modular architecture
-- Implemented core data models with Pydantic validation
-- Added type hints and proper __init__.py exports
-
-All checkpoints passed. Foundation layer complete.
-
-Suggested commit:
-feat: establish foundational architecture
-
-Enables modular development with core models, strict type validation,
-and clear module boundaries.
-
-
-Stopping for review. Please approve before proceeding to Phase 2.
+✓ Phase 1: Complete (N/N tasks)
+→ Phase 2: In progress (N/M tasks)
+  Phase 3: Not started
 ```
 
-If resuming mid-feature:
+### Phase Completion (output after all checkpoints pass)
 
 ```text
-Progress check:
-✓ Phase 1: Complete (2/2 tasks)
-✓ Phase 2: Complete (4/4 tasks)
-→ Phase 3: In progress (1/3 tasks)
-
-Resuming from Phase 3, [P3.2] **ValidationLayer**...
+Phase X Complete!
+- [summary of what was accomplished]
+✓ All checkpoints passed.
+Stopping for review.
 ```
 
 ## When Tasks Are Unclear
 
-Assess task clarity using these criteria:
+**Clear** — Task goal is explicit, approach straightforward or documented in spec. Proceed with implementation.
 
-**Clear (proceed with implementation):**
+**Minor ambiguity** — Goal is clear but approach has 2-3 valid options. Pick the best option, proceed, and document the assumption as an agent note (`>`) under the task in the state document.
 
-- Task goal is explicit
-- Acceptance criteria defined or obvious
-- Required files/components identified
-- Approach is straightforward or documented in spec
-
-**Minor ambiguity (make reasonable assumption):**
-
-- Task goal is clear but approach has 2-3 valid options
-- Some details missing but not critical to core functionality
-- Can infer intent from context and spec
-- Document assumption in code comments
-
-**Major ambiguity (stop and ask):**
-
-- Task goal is vague or has multiple interpretations
-- Missing critical information (which task, what data structure, etc.)
-- Approach unclear and not documented in spec
-- Decision affects architecture or future phases
-
-**Process:**
-
-1. Read task description carefully
-2. Check relevant spec sections for context
-3. Assess clarity level using criteria above
-4. If Major ambiguity: Use AskUserQuestion with task name, what's unclear, which spec sections checked, and recommended approach
-5. If Minor ambiguity: Proceed with documented assumption
-6. If Clear: Proceed with implementation
-
-## When Issues Arise
-
-- Document the issue clearly
-- Use AskUserQuestion for multiple valid approaches or critical decisions
-- Continue with reasonable assumptions if minor
-- Stop and ask if significant or affects architecture
+**Major ambiguity** — Goal is vague, has multiple interpretations, or decision affects architecture/future phases. Stop and use AskUserQuestion with task name, what's unclear, and recommended approach.
 
 ## Code Quality
 
 - Keep codebase runnable throughout
-- Run tests after implementing functionality
 - Follow project principles and rules

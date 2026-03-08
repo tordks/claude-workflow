@@ -23,7 +23,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 Every task in the state document MUST follow this markdown format:
 
 ```markdown
-- [ ] [PX.Y] **TaskName** — What this task delivers
+- [ ] [PX.Y] **Task name** — What this task delivers
 ```
 
 Where `P` is a literal prefix, `X` is the phase number, and `Y` is the task number within that phase.
@@ -33,32 +33,41 @@ Where `P` is a literal prefix, `X` is the phase number, and `Y` is the task numb
 - Tasks MUST use checkboxes: `- [ ]` for incomplete, `- [x]` for completed
 - Tasks MUST include a task ID in `[PX.Y]` format before the bold name
 - Task IDs MUST be sequential within each phase (no gaps, no reuse)
-- Task names MUST be bold: `**TaskName**`
-- Task names MUST be PascalCase or descriptive labels
+- Task names MUST be bold: `**Task name**`
+- Task names MUST be short noun phrases identifying the component or capability
 - Names MUST be separated from descriptions by an em dash (` — `)
-- Tasks SHOULD be module/service/feature level (not file-operation level)
+- Descriptions SHOULD state what the task concretely delivers, not restate the name
+- Tasks SHOULD each represent one component — a module, service, or feature boundary (not file operations, not entire features)
 - Tasks MUST NOT use markdown headings (`###`)
 - The same task name MAY appear in multiple phases with different descriptions
 - Agent MAY add discovered tasks during implementation (using the next sequential ID)
+
+**Task Granularity (Informative):**
+
+Each task should represent one component — a module, service, or feature boundary. Ask: "does this task have a clear before/after in the system?"
+
+- Too coarse: `**Entire search feature**` — multiple components lumped together
+- Right level: `**Search cache**` — one component with clear responsibility
+- Too fine: `**Cache imports**` — a file operation, not a deliverable
 
 **Agent Notes:**
 
 Agent notes MAY be added as single-line blockquotes directly under a task. These preserve cross-session context about implementation decisions, discoveries, or approach taken.
 
 ```markdown
-- [x] [P1.2] **QueryParser** — Parses user search strings into structured queries
+- [x] [P1.2] **Query parser** — Parses user search strings into structured queries
   > Used recursive descent instead of regex for nested operator support
-- [ ] [P1.3] **SearchCache** — LRU cache for frequent queries
+- [ ] [P1.3] **Search cache** — LRU cache for frequent queries
 ```
 
 **Example (Informative):**
 
 ```markdown
-- [x] [P1.1] **DocumentIndexer** — Builds TF-IDF index from document corpus
+- [x] [P1.1] **Document indexer** — Builds TF-IDF index from document corpus
   > Chose scikit-learn's TfidfVectorizer over manual implementation for reliability
-- [x] [P1.2] **QueryRanker** — Ranks documents using cosine similarity
-- [ ] [P1.3] **SearchCache** — LRU cache with configurable entry limit
-- [ ] [P1.4] **SearchAPI** — HTTP endpoint exposing search functionality
+- [x] [P1.2] **Query ranker** — Ranks documents using cosine similarity
+- [ ] [P1.3] **Search cache** — LRU cache with configurable entry limit
+- [ ] [P1.4] **Search endpoint** — HTTP endpoint exposing search functionality
 ```
 
 ---
@@ -81,9 +90,9 @@ Phases MUST be numbered sequentially starting from 1. Every phase MUST follow th
 **Deliverable:** Concrete outcome (e.g., "Working search indexer with validated TF-IDF scoring")
 
 **Tasks:**
-- [ ] [P1.1] **TaskName** — What this task delivers
+- [ ] [P1.1] **Task name** — What this task delivers
   > Optional agent note added during implementation
-- [ ] [P1.2] **AnotherTask** — Description with clear scope
+- [ ] [P1.2] **Another task** — Description with clear scope
 
 **Checkpoints:**
 - [ ] Code quality: `ruff check src/`
@@ -122,9 +131,9 @@ Tasks that depend on others SHOULD be ordered after their dependencies within a 
 **Example (Informative):**
 
 ```markdown
-- [ ] [P1.1] **DocumentIndexer** — Builds TF-IDF index from document corpus
-- [ ] [P1.2] **QueryRanker** — Ranks documents against query using cosine similarity
-- [ ] [P1.3] **SearchCache** — LRU cache wrapping QueryRanker results
+- [ ] [P1.1] **Document indexer** — Builds TF-IDF index from document corpus
+- [ ] [P1.2] **Query ranker** — Ranks documents against query using cosine similarity
+- [ ] [P1.3] **Search cache** — LRU cache wrapping QueryRanker results
 ```
 
 ---
@@ -143,47 +152,37 @@ The statement SHOULD be 1-3 sentences describing what capabilities now exist, wh
 
 ---
 
-## Full State Document Example (Informative)
+## Output Template
 
-```markdown
-# Document Search State
+````markdown
+# [Feature Name] State
 
-## Phase 1: Core Search Engine
+## Phase 1: [Descriptive Name]
 
-**Goal:** Build foundational search components with validated ranking algorithm
+**Goal:** [One-sentence description of what this phase accomplishes]
 
-**Deliverable:** Working search indexer and ranker with passing unit tests
-
-**Tasks:**
-- [x] [P1.1] **DocumentIndexer** — Builds and maintains TF-IDF index from document corpus
-  > Used scikit-learn TfidfVectorizer; index persists to disk as pickle
-- [x] [P1.2] **QueryParser** — Parses user search strings into structured queries
-  > Recursive descent parser handles AND/OR operators and quoted phrases
-- [ ] [P1.3] **QueryRanker** — Ranks documents against query using cosine similarity
-
-**Checkpoints:**
-- [ ] Code quality: `ruff check src/search/`
-- [ ] Self-review: Verify ranking produces correct ordering for test queries
-
-**Phase 1 Complete:** Core search engine operational with indexing and ranking validated.
-
-## Phase 2: API and Caching
-
-**Goal:** Expose search functionality via HTTP with performance optimization
-
-**Deliverable:** Working search endpoint with sub-100ms cached response times
+**Deliverable:** [Concrete outcome that can be verified]
 
 **Tasks:**
-- [ ] [P2.1] **SearchCache** — LRU cache for frequent queries with configurable limit
-- [ ] [P2.2] **SearchAPI** — HTTP endpoint with pagination and error handling
-- [ ] [P2.3] **DocumentIndexer** — Add real-time index updates on document changes
+- [ ] [P1.1] **[Task name]** — [What this task delivers]
+- [ ] [P1.2] **[Task name]** — [What this task delivers]
 
 **Checkpoints:**
-- [ ] Code quality: `ruff check src/`
-- [ ] Self-review: Verify end-to-end search flow meets performance criteria
+- [ ] Code quality: `[project-specific linting/formatting command]`
+- [ ] Self-review: [What to verify against deliverable]
 
-**Phase 2 Complete:** Search feature fully operational with caching and API access.
-```
+**Phase 1 Complete:** [System state after phase completion]
+
+## Phase 2: [Descriptive Name]
+
+[Same structure as Phase 1, with P2.Y task IDs]
+````
+
+---
+
+## Context Independence
+
+State documents MUST be understandable without conversation history. Task descriptions MUST be clear enough to execute when read alongside the spec. The state MUST NOT duplicate architectural rationale from the spec (WHY/WHAT belongs in the spec; WHEN/HOW belongs in the state).
 
 ---
 
@@ -196,7 +195,7 @@ State documents are conformant when they:
 - Include required elements in every phase (Goal, Deliverable, Tasks, Checkpoints, Phase Complete)
 - Use correct task syntax (`- [ ] [PX.Y] **Name** — description`)
 - Use sequential task IDs within each phase (no gaps, no reuse)
-- Use PascalCase or descriptive labels for task names
+- Use short noun phrases for task names
 - Order tasks after their dependencies
 - Use checkpoints for quality/validation (not functional work)
 - Contain no architectural rationale or design alternatives (belongs in spec)

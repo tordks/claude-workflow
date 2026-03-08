@@ -24,6 +24,8 @@ Every task in the state document MUST follow this markdown format:
 
 ```markdown
 - [ ] [PX.Y] **Task name** — What this task delivers
+  - Implementation detail
+  - Implementation detail
 ```
 
 Where `P` is a literal prefix, `X` is the phase number, and `Y` is the task number within that phase.
@@ -36,11 +38,22 @@ Where `P` is a literal prefix, `X` is the phase number, and `Y` is the task numb
 - Task names MUST be bold: `**Task name**`
 - Task names MUST be short noun phrases identifying the component or capability
 - Names MUST be separated from descriptions by an em dash (` — `)
-- Descriptions SHOULD state what the task concretely delivers, not restate the name
+- Descriptions MUST be a concise summary (one line) of what the task delivers
+- Descriptions MUST NOT contain method signatures, parameters, cache configurations, or step-by-step implementation instructions
 - Tasks SHOULD each represent one component — a module, service, or feature boundary (not file operations, not entire features)
 - Tasks MUST NOT use markdown headings (`###`)
 - The same task name MAY appear in multiple phases with different descriptions
 - Agent MAY add discovered tasks during implementation (using the next sequential ID)
+
+**Implementation Details:**
+
+Tasks MAY include indented sub-bullets (`-`) for concise implementation guidance. Sub-bullets provide the specific details an agent needs to execute the task.
+
+- Sub-bullets MUST be indented under their parent task
+- Each sub-bullet SHOULD be a short phrase, not a full sentence
+- Sub-bullets SHOULD cover: key methods/interfaces, delegation targets, configuration values, or notable constraints
+- Sub-bullets MUST NOT repeat information from the spec's Solution Design — reference the spec for architectural context
+- A task SHOULD have at most 3-5 sub-bullets; if more are needed, the task may be too coarse
 
 **Task Granularity (Informative):**
 
@@ -52,11 +65,13 @@ Each task should represent one component — a module, service, or feature bound
 
 **Agent Notes:**
 
-Agent notes MAY be added as single-line blockquotes directly under a task. These preserve cross-session context about implementation decisions, discoveries, or approach taken.
+Agent notes MAY be added as single-line blockquotes (`>`) directly under a task during implementation. These preserve cross-session context about decisions, discoveries, or approach taken. Agent notes MUST NOT be added at generation time — use sub-bullets for pre-planned guidance.
 
 ```markdown
 - [x] [P1.2] **Query parser** — Parses user search strings into structured queries
-  > Used recursive descent instead of regex for nested operator support
+  - Recursive descent parser for nested operator support
+  - Returns structured Query object
+  > Chose recursive descent over regex — regex couldn't handle nested parens
 - [ ] [P1.3] **Search cache** — LRU cache for frequent queries
 ```
 
@@ -64,10 +79,16 @@ Agent notes MAY be added as single-line blockquotes directly under a task. These
 
 ```markdown
 - [x] [P1.1] **Document indexer** — Builds TF-IDF index from document corpus
-  > Chose scikit-learn's TfidfVectorizer over manual implementation for reliability
-- [x] [P1.2] **Query ranker** — Ranks documents using cosine similarity
+  - Uses scikit-learn TfidfVectorizer
+  - Accepts list of document strings, returns sparse matrix
+  > Considered manual TF-IDF but scikit-learn handles edge cases better
+- [x] [P1.2] **Query ranker** — Ranks documents against query using cosine similarity
 - [ ] [P1.3] **Search cache** — LRU cache with configurable entry limit
+  - cachetools LRU, maxsize from config
+  - Wraps QueryRanker.rank() results
 - [ ] [P1.4] **Search endpoint** — HTTP endpoint exposing search functionality
+  - GET /search?q= with pagination params
+  - Delegates to cache → ranker → indexer
 ```
 
 ---
@@ -167,6 +188,8 @@ The statement SHOULD be 1-3 sentences describing what capabilities now exist, wh
 
 **Tasks:**
 - [ ] [P1.1] **[Task name]** — [What this task delivers]
+  - [Implementation detail]
+  - [Implementation detail]
 - [ ] [P1.2] **[Task name]** — [What this task delivers]
 
 **Checkpoints:**
@@ -196,8 +219,11 @@ State documents are conformant when they:
 - Number phases sequentially starting from 1
 - Include required elements in every phase (Goal, Deliverable, Tasks, Checkpoints, Phase Complete)
 - Use correct task syntax (`- [ ] [PX.Y] **Name** — description`)
+- Use concise one-line descriptions (no method signatures or implementation instructions)
+- Use sub-bullets for implementation details (short phrases, max 3-5 per task)
 - Use sequential task IDs within each phase (no gaps, no reuse)
 - Use short noun phrases for task names
+- Use blockquote notes (`>`) only during implementation, not at generation time
 - Order tasks after their dependencies
 - Use checkpoints for quality/validation (not functional work)
 - Contain no architectural rationale or design alternatives (belongs in spec)
